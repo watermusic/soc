@@ -1,0 +1,4 @@
+soc_soc:
+    resource: "@SOCSocBundle/Resources/config/routing.yml"
+    prefix:   /soc
+
