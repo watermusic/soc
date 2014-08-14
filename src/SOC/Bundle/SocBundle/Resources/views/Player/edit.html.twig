@@ -1,0 +1,15 @@
+{% extends 'SOCSocBundle:Default:index.html.twig' %}
+
+{% block body -%}
+    <h1>Spieler bearbeiten</h1>
+
+    {{ form(edit_form) }}
+        <ul class="record_actions list-unstyled">
+    <li>
+        <a href="{{ path('player') }}">
+            Zurück zur Liste
+        </a>
+    </li>
+    <li>{{ form(delete_form) }}</li>
+</ul>
+{% endblock %}

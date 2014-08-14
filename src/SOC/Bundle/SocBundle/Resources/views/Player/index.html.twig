@@ -1,0 +1,55 @@
+{% extends 'SOCSocBundle:Default:index.html.twig' %}
+
+{% block body -%}
+    <h1>Spieler Liste</h1>
+
+    <table class="records_list table table-striped">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Name</th>
+                <th>Verein</th>
+                <th>Position</th>
+                <th>Wert</th>
+                <th>Verkaufspreis</th>
+                <th>Käufer</th>
+                <th>Note</th>
+                <th>Punkte</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for entity in entities %}
+            <tr>
+                <td><a class="btn btn-default btn-xs" href="{{ path('player_show', { 'id': entity.id }) }}">{{ entity.id }}</a></td>
+                <td>{{ entity.name }}</td>
+                <td>{{ entity.verein }}</td>
+                <td>{{ entity.position }}</td>
+                <td>{{ entity.vkPreis }}</td>
+                <td>{{ entity.ekPreis }}</td>
+                <td>{{ entity.kaufer }}</td>
+                <td>{{ entity.note }}</td>
+                <td>{{ entity.punkte }}</td>
+                <td>
+                <ul class="list-unstyled">
+                    <li>
+                        <a class="btn btn-default btn-xs" href="{{ path('player_show', { 'id': entity.id }) }}">show</a>
+                    </li>
+                    <li>
+                        <a class="btn btn-default btn-xs" href="{{ path('player_edit', { 'id': entity.id }) }}">edit</a>
+                    </li>
+                </ul>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+        <ul class="list-unstyled">
+        <li>
+            <a class="btn btn-default btn-xs" href="{{ path('player_new') }}">
+                Neuen Spieler hinzufügen
+            </a>
+        </li>
+    </ul>
+    {% endblock %}
