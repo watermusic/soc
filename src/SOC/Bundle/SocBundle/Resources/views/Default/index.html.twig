@@ -1,1 +1,115 @@
-Hello {{ name }}!
+<!DOCTYPE html>
+<html>
+<head>
+
+    <title>{% block title %}S.O.C. - 2014/15{% endblock %}</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Bootstrap -->
+    <link href="{{ asset('css/bootstrap.css') }}" rel="stylesheet" media="screen">
+    {% block stylesheets %}{% endblock %}
+    <!-- HTML5 Shim and Respond.js add IE8 support of HTML5 elements and media queries -->
+    {% include 'BraincraftedBootstrapBundle::ie8-support.html.twig' %}
+
+    <style>
+
+        body {
+            padding-top: 70px;
+        }
+
+
+        .navbar .form-group {
+            margin-right: 12px;
+        }
+
+        .navbar .form-group label {
+            color: white;
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+<!-- Fixed navbar -->
+<div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+    <div class="container">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="#">S.O.C. - 2014/15</a>
+        </div>
+        <div class="navbar-collapse collapse">
+
+            <form class="navbar-form navbar-right" role="form" method="get" id="frmSearch" action="">
+                <div class="form-group">
+                    <label class="control-label" for="verein">Verein</label>
+                    <select class="form-control input-sm" id="verein" name="verein">
+                        {% for name in query.vereine %}
+                            <option>{{name}}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label class="control-label" for="spieler">Spieler</label>
+                    <select class="form-control input-sm" id="spieler" name="spieler">
+                        {% for name in query.spieler %}
+                        <option>{{name}}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label class="control-label" for="position">Position</label>
+                    <select class="form-control input-sm" id="position" name="position">
+                        {% for name in query.positionen %}
+                        <option>{{name}}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="form-group">
+                    <input type="text" placeholder="Suche..." class="form-control" id="suche" name="suche">
+                </div>
+            </form>
+
+        </div><!--/.nav-collapse -->
+    </div>
+</div>
+<div class="container">
+
+    {% block body -%}
+        <h1>This is the Body block</h1>
+    {% endblock %}
+
+</div>
+
+<!-- jQuery (necessary for Bootstraps JavaScript plugins) -->
+<script src="{{ asset('js/jquery.js') }}"></script>
+<!-- Include all JavaScripts, compiled by Assetic -->
+<script src="{{ asset('js/bootstrap.js') }}"></script>
+{% block javascripts %}{% endblock %}
+
+<script>
+
+    $(function() {
+
+        var ddVerein = $("#verein"),
+            ddSpieler = $("#spieler"),
+            ddPosition = $("#position"),
+            term = $("#suche"),
+            objForm = $("#frmSearch");
+
+
+        $("select").change(function () {
+
+        });
+
+    });
+
+</script>
+
+</body>
+</html>
