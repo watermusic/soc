@@ -2,6 +2,7 @@
 
 namespace SOC\Bundle\SocBundle\Controller;
 
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
@@ -24,11 +25,7 @@ class PlayerController extends Controller
         $em = $this->getDoctrine()->getManager();
         $request = $this->get("request");
 
-        $query = array();
-        $query['spieler'] = $request->get("spieler", null);
-        $query['verein'] = $request->get("verein", null);
-        $query['position'] = $request->get("position", null);
-        $query['suche'] = $request->get("suche", null);
+        $query = $this->getQuery();
 
 //        $entities = $em->getRepository('SOCSocBundle:Player')->findAll();
 
@@ -41,12 +38,12 @@ class PlayerController extends Controller
             $criteria[$name] = $val;
         }
 
-
-        $entities = $em->getRepository('SOCSocBundle:Player')->findBy($criteria);
+        $entities = $em->getRepository('SOCSocBundle:Player')->findBy($criteria, array('vkPreis' => 'DESC'));
 
         return $this->render('SOCSocBundle:Player:index.html.twig', array(
             'entities' => $entities,
-            'query' => $this->getStaticViewParameter(),
+            'statics' => $this->getStaticViewParameter(),
+            "query" => $query,
         ));
     }
     /**
@@ -70,6 +67,8 @@ class PlayerController extends Controller
         return $this->render('SOCSocBundle:Player:new.html.twig', array(
             'entity' => $entity,
             'form'   => $form->createView(),
+            'statics' => $this->getStaticViewParameter(),
+            "query" => $this->getQuery(),
         ));
     }
 
@@ -104,6 +103,8 @@ class PlayerController extends Controller
         return $this->render('SOCSocBundle:Player:new.html.twig', array(
             'entity' => $entity,
             'form'   => $form->createView(),
+            'statics' => $this->getStaticViewParameter(),
+            "query" => $this->getQuery(),
         ));
     }
 
@@ -126,6 +127,8 @@ class PlayerController extends Controller
         return $this->render('SOCSocBundle:Player:show.html.twig', array(
             'entity'      => $entity,
             'delete_form' => $deleteForm->createView(),
+            'statics' => $this->getStaticViewParameter(),
+            "query" => $this->getQuery(),
         ));
     }
 
@@ -150,6 +153,8 @@ class PlayerController extends Controller
             'entity'      => $entity,
             'edit_form'   => $editForm->createView(),
             'delete_form' => $deleteForm->createView(),
+            'statics' => $this->getStaticViewParameter(),
+            "query" => $this->getQuery(),
         ));
     }
 
@@ -162,7 +167,10 @@ class PlayerController extends Controller
     */
     private function createEditForm(Player $entity)
     {
-        $form = $this->createForm(new PlayerType(), $entity, array(
+
+        $statics = $this->getStaticViewParameter();
+
+        $form = $this->createForm(new PlayerType($statics["spieler"]), $entity, array(
             'action' => $this->generateUrl('player_update', array('id' => $entity->getId())),
             'method' => 'PUT',
         ));
@@ -199,6 +207,8 @@ class PlayerController extends Controller
             'entity'      => $entity,
             'edit_form'   => $editForm->createView(),
             'delete_form' => $deleteForm->createView(),
+            'statics' => $this->getStaticViewParameter(),
+            "query" => $this->getQuery(),
         ));
     }
     /**
@@ -223,6 +233,39 @@ class PlayerController extends Controller
         }
 
         return $this->redirect($this->generateUrl('player'));
+    }
+
+    /**
+     * Search a Soc entity
+     *
+     */
+    public function searchAction() {
+
+        error_reporting(E_ALL);
+        ini_set("display_errors", "1");
+
+        $request = $this->get("request");
+        $search = $request->get('q');
+
+        $em = $this->getDoctrine()->getManager();
+        $qb = $em->getRepository('SOCSocBundle:Player')->createQueryBuilder('p');
+        $query = $qb->where(
+            $qb->expr()->like('p.name', ':search')
+        )
+            ->setParameter('search', '%' . $search . '%')
+            ->getQuery();
+
+        $entities = $query->getResult();
+
+        $result = array();
+        foreach ($entities as $entity) {
+            $result[] = array(
+                "name" => $entity->getName()
+            );
+        }
+
+        return new JsonResponse($result);
+
     }
 
     /**
@@ -275,6 +318,20 @@ class PlayerController extends Controller
         $result["vereine"] = $vereine;
 
         return $result;
+    }
+
+
+    private function getQuery() {
+
+        $request = $this->get("request");
+
+        $query = array();
+        $query['kaufer'] = $request->get("kaufer", null);
+        $query['verein'] = $request->get("verein", null);
+        $query['position'] = $request->get("position", null);
+        $query['name'] = $request->get("name", null);
+
+        return $query;
     }
 
 }

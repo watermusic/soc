@@ -45,33 +45,33 @@
         </div>
         <div class="navbar-collapse collapse">
 
-            <form class="navbar-form navbar-right" role="form" method="get" id="frmSearch" action="">
+            <form class="navbar-form navbar-right" role="form" method="get" id="frmSearch" action="{{ path('player') }}">
                 <div class="form-group">
                     <label class="control-label" for="verein">Verein</label>
                     <select class="form-control input-sm" id="verein" name="verein">
-                        {% for name in query.vereine %}
-                            <option>{{name}}</option>
+                        {% for name in statics.vereine %}
+                            <option value="{{name}}" {{ (name == query.verein) ? 'selected' : '' }}>{{name}}</option>
                         {% endfor %}
                     </select>
                 </div>
                 <div class="form-group">
                     <label class="control-label" for="spieler">Spieler</label>
                     <select class="form-control input-sm" id="spieler" name="spieler">
-                        {% for name in query.spieler %}
-                        <option>{{name}}</option>
+                        {% for name in statics.spieler %}
+                            <option value="{{name}}" {{ (name == query.kaufer) ? 'selected' : '' }}>{{name}}</option>
                         {% endfor %}
                     </select>
                 </div>
                 <div class="form-group">
                     <label class="control-label" for="position">Position</label>
                     <select class="form-control input-sm" id="position" name="position">
-                        {% for name in query.positionen %}
-                        <option>{{name}}</option>
+                        {% for name in statics.positionen %}
+                        <option value="{{name}}" {{ (name == query.position) ? 'selected' : '' }}>{{name}}</option>
                         {% endfor %}
                     </select>
                 </div>
                 <div class="form-group">
-                    <input type="text" placeholder="Suche..." class="form-control" id="suche" name="suche">
+                    <input type="text" placeholder="Suche..." class="form-control" id="suche" name="name" value="{{query.name}}">
                 </div>
             </form>
 
@@ -104,7 +104,7 @@
 
 
         $("select").change(function () {
-
+            objForm.submit();
         });
 
     });

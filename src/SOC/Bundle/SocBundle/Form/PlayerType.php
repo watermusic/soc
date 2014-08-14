@@ -8,19 +8,30 @@ use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 class PlayerType extends AbstractType
 {
+
+    protected $players;
+
+    public function __construct($players = array()) {
+        $this->players = $players;
+    }
+
         /**
      * @param FormBuilderInterface $builder
      * @param array $options
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
+
         $builder
             ->add('name')
             ->add('verein')
             ->add('position')
             ->add('vkPreis')
             ->add('ekPreis')
-            ->add('kaufer')
+            ->add('kaufer', 'choice', array(
+                'choices'   => $this->players
+                )
+            )
             ->add('note')
             ->add('punkte')
         ;

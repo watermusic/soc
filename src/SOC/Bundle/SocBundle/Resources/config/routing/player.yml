@@ -28,3 +28,8 @@ player_delete:
     path:     /{id}/delete
     defaults: { _controller: "SOCSocBundle:Player:delete" }
     requirements: { _method: post|delete }
+
+player_search:
+    path:     /search
+    defaults: { _controller: "SOCSocBundle:Player:search" }
+
