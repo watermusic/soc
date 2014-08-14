@@ -1,0 +1,3 @@
+soc_soc_homepage:
+    path:     /hello/{name}
+    defaults: { _controller: SOCSocBundle:Default:index }
