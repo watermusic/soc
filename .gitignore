@@ -10,11 +10,11 @@ web/bundles/*
 
 # Configuration files
 app/config/parameters.ini
-app/config/parameters.yml
+# app/config/parameters.yml
 
 # Composer
 composer.phar
 
 # Idea
 /.idea
-/puphpet
+puphpet/*
