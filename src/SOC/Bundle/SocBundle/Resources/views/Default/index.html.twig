@@ -30,6 +30,11 @@
             margin-right: 6px;
         }
 
+        .autocomplete-suggestions { border: 1px solid #999; background: #FFF; overflow: auto; }
+        .autocomplete-suggestion { padding: 2px 5px; white-space: nowrap; overflow: hidden; }
+        .autocomplete-selected { background: #F0F0F0; }
+        .autocomplete-suggestions strong { font-weight: normal; color: #3399FF; }
+
     </style>
 
 </head>
@@ -76,7 +81,7 @@
                     </select>
                 </div>
                 <div class="form-group">
-                    <input type="text" placeholder="Suche..." class="form-control" id="suche" name="name" value="{{query.name}}">
+                    <input type="text" placeholder="Suche..." class="form-control" id="suche" name="name">
                 </div>
             </form>
 
@@ -115,11 +120,24 @@
             objForm.submit();
         });
 
+        objForm.submit(function() {
+            $("select", objForm).prop('selectedIndex', 0);
+        });
+
         clearFrm = function() {
             $("select", objForm).prop('selectedIndex', 0);
             term.val('');
             objForm.submit();
         };
+
+
+        var options = {
+            serviceUrl: '{{ path('player_search') }}',
+            onSelect: function() {
+                objForm.submit();
+            }
+        },
+        a = term.autocomplete(options);
 
     });
 
