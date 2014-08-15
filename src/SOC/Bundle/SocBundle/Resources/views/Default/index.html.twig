@@ -120,10 +120,6 @@
             objForm.submit();
         });
 
-        objForm.submit(function() {
-            $("select", objForm).prop('selectedIndex', 0);
-        });
-
         clearFrm = function() {
             $("select", objForm).prop('selectedIndex', 0);
             term.val('');
@@ -135,6 +131,7 @@
             serviceUrl: '{{ path('player_search') }}',
             onSelect: function() {
                 objForm.submit();
+                $("select", objForm).prop('selectedIndex', 0);
             }
         },
         a = term.autocomplete(options);
