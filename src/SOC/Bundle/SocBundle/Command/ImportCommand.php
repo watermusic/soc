@@ -21,27 +21,19 @@ use Symfony\Component\DomCrawler\Crawler;
 class ImportCommand extends ContainerAwareCommand
 {
 
-
-    protected $sites = array(
-        'torwart' => 'http://manager.kicker.de/classic/bundesliga/meinteam/ajax.ashx?ajaxtype=spielerauswahl&position=1&verein=0&sort=1&list=0&playerSearchStr=',
-        'abwehr' => 'http://manager.kicker.de/classic/bundesliga/meinteam/ajax.ashx?ajaxtype=spielerauswahl&position=2&verein=0&sort=1&list=0&playerSearchStr=',
-        'mittelfeld' => 'http://manager.kicker.de/classic/bundesliga/meinteam/ajax.ashx?ajaxtype=spielerauswahl&position=3&verein=0&sort=1&list=0&playerSearchStr=',
-        'sturm' => 'http://manager.kicker.de/classic/bundesliga/meinteam/ajax.ashx?ajaxtype=spielerauswahl&position=4&verein=0&sort=1&list=0&playerSearchStr=',
-    );
-
     /**
      * {@inheritDoc}
      */
     protected function configure()
     {
         $this
-            ->setName('soc:player:import')
+            ->setName('soc:player:import:ext')
             ->setDescription('Imports Player from the Kicker.de Website in Storage')
             ->setHelp(
                 <<<EOT
-                The <info>soc:player:import</info> Imports Player from the Kicker.de Website in Storage
+                The <info>soc:player:import:ext</info> Imports Player from the Kicker.de Website in Storage
 
-    <info>./app/console soc:player:import</info>
+    <info>./app/console soc:player:import:ext</info>
 
     Options:
     - clear
@@ -55,6 +47,16 @@ EOT
     protected function execute(InputInterface $input, OutputInterface $output)
     {
 
+        $path = $this->getContainer()->get('kernel')->getRootDir() . '/../web';
+        $uri = $path . '/assets/player.html';
+
+        $mapping = array(
+            "ABW" => "Abwehr",
+            "TOR" => "Torwart",
+            "MIT" => "Mittelfeld",
+            "STU" => "Sturm",
+        );
+
         $decorator = <<<'HTML'
 <!DOCTYPE html>
 <html>
@@ -67,45 +69,48 @@ HTML;
         $doctrine = $this->getContainer()->get('doctrine');
         $om = $doctrine->getManager();
         $connection = $doctrine->getConnection();
-        $connection->executeQuery('TRUNCATE TABLE Player');
+        $connection->executeQuery('TRUNCATE TABLE player');
 
-        foreach($this->sites as $position => $uri) {
+        $body = file_get_contents($uri);
+        $html = sprintf($decorator, $body);
 
-            $body = file_get_contents($uri);
-            $html = sprintf($decorator, $body);
+        $crawler = new Crawler($html);
 
-            $crawler = new Crawler($html);
+        $players = $crawler->filter("tbody tr");
 
-            $players = $crawler->filter("div.pli");
+        $progress = new ProgressBar($output, count($players));
+        $progress->start();
 
-            foreach($players as $player) {
+        foreach($players as $player) {
 
-                $player = new Crawler($player);
+            $player = new Crawler($player);
 
-                $result = array();
-                $result["name"] = $player->filter("a")->extract("_text")[0];
-                $result["verein"] = $player->filter("span.vrn")->extract("_text")[0];
-                $result["note"] = 3.5;
-                $result["vk_preis"] = str_replace(",", "", $player->filter("span.wert b")->extract("_text")[0]) * 100000;
-                $result["punkte"] = filter_var($player->filter("span.pkt")->extract("_text")[0], FILTER_SANITIZE_NUMBER_INT);
+            $result = array();
+            $result["name"] = $player->filter("td:nth-child(2)")->extract("_text")[0];
+            $result["verein"] = $player->filter("td:nth-child(3)")->extract("_text")[0];
+            $result["position"] = $mapping[$player->filter("td:nth-child(4)")->extract("_text")[0]];
+            $result["note"] = str_replace(",", "", $player->filter("td:nth-child(9)")->extract("_text")[0]) / 10.0;
+            $result["vk_preis"] = str_replace(",", "", $player->filter("td:nth-child(5)")->extract("_text")[0]) * 100000;
+            $result["punkte"] = filter_var($player->filter("td:nth-child(8)")->extract("_text")[0], FILTER_SANITIZE_NUMBER_INT) * 1.0;
 
-                $entity = new Player();
-                $entity
-                    ->setName(utf8_decode($result["name"]))
-                    ->setVerein(utf8_decode($result["verein"]))
-                    ->setNote($result["note"])
-                    ->setVkPreis($result["vk_preis"])
-                    ->setEkPreis(0.0)
-                    ->setKaufer("")
-                    ->setPosition(ucfirst($position))
-                    ->setPunkte($result["punkte"]);
 
-                $om->persist($entity);
-            }
+            $entity = new Player();
+            $entity
+                ->setName(utf8_decode($result["name"]))
+                ->setVerein(utf8_decode($result["verein"]))
+                ->setNote($result["note"])
+                ->setVkPreis($result["vk_preis"])
+                ->setEkPreis(0.0)
+                ->setKaufer("")
+                ->setPosition($result["position"])
+                ->setPunkte($result["punkte"]);
 
-            $om->flush();
-
+            $om->persist($entity);
+            $progress->advance();
         }
+
+        $om->flush();
+        $progress->finish();
 
     }
 
