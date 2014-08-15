@@ -9,10 +9,10 @@ use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 class PlayerType extends AbstractType
 {
 
-    protected $players;
+    protected $statics;
 
-    public function __construct($players = array()) {
-        $this->players = $players;
+    public function __construct($statics = array()) {
+        $this->statics = $statics;
     }
 
         /**
@@ -22,18 +22,45 @@ class PlayerType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
 
+        $vereine = array();
+        foreach($this->statics["vereine"] as $verein) {
+            $vereine[$verein] = $verein;
+        }
+
+        $positionen = array();
+        foreach($this->statics["positionen"] as $position) {
+            $positionen[$position] = $position;
+        }
+
+        $players = array();
+        foreach($this->statics["spieler"] as $player) {
+            $key = $player;
+            if($key === "- alle -") {
+                $key = "";
+            }
+            $players[$key] = $player;
+        }
+
+
         $builder
             ->add('name')
-            ->add('verein')
-            ->add('position')
-            ->add('vkPreis')
-            ->add('ekPreis')
-            ->add('kaufer', 'choice', array(
-                'choices'   => $this->players
+            ->add('verein', 'choice', array(
+                    'choices'   => $vereine
                 )
             )
-            ->add('note')
-            ->add('punkte')
+            ->add('position', 'choice', array(
+                    'choices'   => $positionen
+                )
+            )
+            ->add('vkPreis', 'money')
+            ->add('ekPreis', 'money')
+            ->add('kaufer', 'choice', array(
+                'choices'   => $players,
+                'required'  => false,
+                )
+            )
+            ->add('note', 'number')
+            ->add('punkte', 'number')
         ;
     }
     

@@ -27,23 +27,57 @@ class PlayerController extends Controller
 
         $query = $this->getQuery();
 
-//        $entities = $em->getRepository('SOCSocBundle:Player')->findAll();
-
+        $kaufer = false;
+        $extras = array();
         $criteria = array();
+
         foreach($query as $name => $val) {
 
             if($val === null || $val === "" || $val === '- alle -') {
                 continue;
             }
+
+            if($name === "kaufer") {
+                $kaufer = true;
+            }
+
             $criteria[$name] = $val;
         }
 
         $entities = $em->getRepository('SOCSocBundle:Player')->findBy($criteria, array('vkPreis' => 'DESC'));
 
+        if($kaufer === true) {
+
+            $money_spent = 0;
+            /**
+             * @var $player Player
+             */
+            foreach($entities as $player) {
+                $money_spent += $player->getEkPreis();
+            }
+
+            $number_of_players = count($entities);
+            $players_left = $this->container->getParameter("soc_players_to_buy");
+            $money_total = $this->container->getParameter("soc_amount");
+            $money_left = $money_total - $money_spent;
+            $money_per_player = ($money_left > 0) ? $money_left / $players_left : 0;
+
+
+            $extras = array(
+                "number_of_players" => $number_of_players,
+                "money_total" => $money_total,
+                "money_left" => $money_left,
+                "money_per_player" => $money_per_player,
+            );
+
+        }
+
+
         return $this->render('SOCSocBundle:Player:index.html.twig', array(
             'entities' => $entities,
             'statics' => $this->getStaticViewParameter(),
             "query" => $query,
+            "extras" => $extras,
         ));
     }
     /**
@@ -81,7 +115,10 @@ class PlayerController extends Controller
      */
     private function createCreateForm(Player $entity)
     {
-        $form = $this->createForm(new PlayerType(), $entity, array(
+
+        $statics = $this->getStaticViewParameter();
+
+        $form = $this->createForm(new PlayerType($statics), $entity, array(
             'action' => $this->generateUrl('player_create'),
             'method' => 'POST',
         ));
@@ -170,7 +207,7 @@ class PlayerController extends Controller
 
         $statics = $this->getStaticViewParameter();
 
-        $form = $this->createForm(new PlayerType($statics["spieler"]), $entity, array(
+        $form = $this->createForm(new PlayerType($statics), $entity, array(
             'action' => $this->generateUrl('player_update', array('id' => $entity->getId())),
             'method' => 'PUT',
         ));

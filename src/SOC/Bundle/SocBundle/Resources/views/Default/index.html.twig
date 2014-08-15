@@ -25,6 +25,11 @@
             color: white;
         }
 
+        .list-unstyled li {
+            float: left;
+            margin-right: 6px;
+        }
+
     </style>
 
 </head>
@@ -41,7 +46,7 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand" href="#">S.O.C. - 2014/15</a>
+            <a class="navbar-brand" href="javascript:clearFrm();">S.O.C. - 2014/15</a>
         </div>
         <div class="navbar-collapse collapse">
 
@@ -56,7 +61,7 @@
                 </div>
                 <div class="form-group">
                     <label class="control-label" for="spieler">Spieler</label>
-                    <select class="form-control input-sm" id="spieler" name="spieler">
+                    <select class="form-control input-sm" id="kaufer" name="kaufer">
                         {% for name in statics.spieler %}
                             <option value="{{name}}" {{ (name == query.kaufer) ? 'selected' : '' }}>{{name}}</option>
                         {% endfor %}
@@ -88,24 +93,33 @@
 
 <!-- jQuery (necessary for Bootstraps JavaScript plugins) -->
 <script src="{{ asset('js/jquery.js') }}"></script>
+<script src="{{ asset('js/jquery.autocomplete.js') }}"></script>
 <!-- Include all JavaScripts, compiled by Assetic -->
 <script src="{{ asset('js/bootstrap.js') }}"></script>
 {% block javascripts %}{% endblock %}
 
 <script>
 
+    var clearFrm;
+
     $(function() {
 
         var ddVerein = $("#verein"),
-            ddSpieler = $("#spieler"),
+            ddSpieler = $("#kaufer"),
             ddPosition = $("#position"),
             term = $("#suche"),
             objForm = $("#frmSearch");
 
 
-        $("select").change(function () {
+        $("select", objForm).change(function () {
             objForm.submit();
         });
+
+        clearFrm = function() {
+            $("select", objForm).prop('selectedIndex', 0);
+            term.val('');
+            objForm.submit();
+        };
 
     });
 
