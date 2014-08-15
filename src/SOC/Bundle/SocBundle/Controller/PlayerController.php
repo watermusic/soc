@@ -335,7 +335,7 @@ class PlayerController extends Controller
         $conn = $this->getDoctrine()->getConnection();
 
 
-        $sql = "SELECT DISTINCT verein FROM Player ORDER BY verein ASC";
+        $sql = "SELECT DISTINCT verein FROM player ORDER BY verein ASC";
         $stmt = $conn->executeQuery($sql);
         $res = $stmt->fetchAll();
 
