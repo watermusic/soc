@@ -282,7 +282,7 @@ class PlayerController extends Controller
         ini_set("display_errors", "1");
 
         $request = $this->get("request");
-        $search = $request->get('q');
+        $search = $request->get('query');
 
         $em = $this->getDoctrine()->getManager();
         $qb = $em->getRepository('SOCSocBundle:Player')->createQueryBuilder('p');
@@ -294,11 +294,12 @@ class PlayerController extends Controller
 
         $entities = $query->getResult();
 
-        $result = array();
+        $result = array(
+            "query" => $search,
+            "suggestions" => array(),
+        );
         foreach ($entities as $entity) {
-            $result[] = array(
-                "name" => $entity->getName()
-            );
+            array_push($result["suggestions"], $entity->getName());
         }
 
         return new JsonResponse($result);
