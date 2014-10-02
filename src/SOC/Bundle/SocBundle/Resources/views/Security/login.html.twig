@@ -1,0 +1,53 @@
+{% extends "FOSUserBundle::layout.html.twig" %}
+
+{% trans_default_domain 'FOSUserBundle' %}
+
+{% block stylesheets %}
+<style>
+    .container {
+        width: 430px;
+        padding: 5% 15px 15px;
+        margin: 0 auto;
+    }
+
+    .form {
+        padding: 1px 15px 0 15px;
+    }
+
+</style>
+{% endblock %}
+
+{% block fos_user_content %}
+{% if error %}
+    <div>{{ error|trans }}</div>
+{% endif %}
+
+<div class="container row">
+    <form class="form" action="{{ path("fos_user_security_check") }}" method="post">
+        <input type="hidden" name="_csrf_token" value="{{ csrf_token }}" />
+        <div class="header large-12 ">
+            <h3 class="title">Login</h3>
+        </div>
+        <div class="large-12">
+            <div class="form-group large-12">
+                <label class="large-6" for="username">{{ 'security.login.username'|trans }}</label>
+                <input type="text" class="form-control large-6" id="username" name="_username" placeholder="{{ 'security.login.username'|trans }}" value="{{ last_username }}"  required="required" />
+            </div>
+            <div class="form-group large-12">
+                <label class="large-6" for="password">{{ 'security.login.password'|trans }}</label>
+                <input type="password" class="form-control large-6" id="password" name="_password" required="required"  placeholder="{{ 'security.login.password'|trans }}" />
+            </div>
+            <div class="checkbox">
+                <input type="checkbox" id="remember_me" name="_remember_me" value="on" />
+                <label for="remember_me">{{ 'security.login.remember_me'|trans }}</label>
+            </div>
+        </div>
+        <div class="large-12">
+            <div class="group">
+                <input type="submit" class="small radius success button small-4" id="_submit" name="_submit" value="{{ 'security.login.submit'|trans }}" />
+            </div>
+        </div>
+        <div class="clear"></div>
+    </form>
+</div>
+{% endblock fos_user_content %}

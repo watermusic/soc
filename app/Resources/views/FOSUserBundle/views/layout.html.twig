@@ -1,0 +1,36 @@
+{% extends '::base.html.twig' %}
+
+{% block title %}SOC Login{% endblock %}
+
+{% block body %}
+    <div class="container row">
+        <form class="form">
+                <div class="header large-12 ">
+                    <h3 class="title">Login</h3>
+                </div>
+                <div class="large-12">
+                    <div class="form-group large-12">
+                        <label class="large-6">Email address</label>
+                        <input type="email" class="form-control large-6" id="input-email" placeholder="E-mail" >
+                    </div>
+                    <div class="form-group large-12 p0 pt12 m0">
+                        <label class="large-6">Password</label>
+                        <input type="password" class="form-control large-6" id="input-password" placeholder="Password">
+                    </div>
+                    <div class="form-group columns large-12  p0 pt12 tr sb-effect-displayed animated fadeInUp" data-sb="fadeInUp" style="opacity: 1;">
+                        <a href="#">Forgot password?</a>
+                    </div>
+                    <div class="checkbox pt12 fr sb-effect-displayed animated fadeInUp" data-sb="fadeInUp" style="opacity: 1;">
+                        <label class="fr p0"><input type="checkbox"> Keep me logged in</label>
+                    </div>
+                </div>
+                <div class="footer columns large-12 pt12">
+                    <div class="group">
+                        <a class="small radius success button columns small-4 fr sb-effect-displayed animated fadeInDown" data-step-finish="" data-sb="fadeInDown" style="opacity: 1;"> Log in</a>
+                    </div>
+                </div>
+                <div class="clear"></div>
+        </form>
+    </div>
+    {% block fos_user_content %}{% endblock %}
+{% endblock %}

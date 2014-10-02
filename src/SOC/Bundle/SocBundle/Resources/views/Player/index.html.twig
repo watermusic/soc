@@ -1,0 +1,108 @@
+{% extends 'SOCSocBundle:Default:index.html.twig' %}
+
+{% block body -%}
+
+    <div class="row">
+
+        <div class="col-lg-12">
+
+
+            <h1>Spieler Liste</h1>
+
+            <table class="records_list table table-striped">
+                <thead>
+                <tr>
+                    <th>Id</th>
+                    <th>Name</th>
+                    <th>Verein</th>
+                    <th>Position</th>
+                    {% set queryArray = queryArray|merge({'order':'vkPreis'}) %}
+                    <th><a href="{{ path('player', queryArray) }}">Wert</a></th>
+                    {% set queryArray = queryArray|merge({'order':'ekPreis'}) %}
+                    <th><a href="{{ path('player', queryArray) }}">Verkaufspreis</a></th>
+                    <th>Käufer</th>
+                    {% set queryArray = queryArray|merge({'order':'note'}) %}
+                    <th><a href="{{ path('player', queryArray) }}">Note</a></th>
+                    {% set queryArray = queryArray|merge({'order':'punkte'}) %}
+                    <th><a href="{{ path('player', queryArray) }}">Punkte</a></th>
+                    {% set dir = (queryArray.dir == 'ASC') ? 'DESC' : 'ASC' %}
+                    {% set queryArray = queryArray|merge({'dir':dir}) %}
+                    <th><a href="{{ path('player', queryArray) }}"><</a></th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for entity in entities %}
+                    <tr>
+                        <td><a class="btn btn-default btn-xs"
+                               href="{{ path('player_show', { 'id': entity.id }) }}">{{ entity.id }}</a></td>
+                        <td>{{ entity.name }}</td>
+                        <td>{{ entity.verein }}</td>
+                        <td>{{ entity.position }}</td>
+                        <td>{{ entity.vkPreis|number_format(2, ',', '.') }}</td>
+                        <td>{{ entity.ekPreis|number_format(2, ',', '.') }}</td>
+                        <td>{{ entity.kaeufer }}</td>
+                        <td>{{ entity.note }}</td>
+                        <td>{{ entity.punkte }}</td>
+                        <td>
+                            <ul class="list-unstyled">
+                                <li>
+                                    <a class="btn btn-default btn-xs"
+                                       href="{{ path('player_show', { 'id': entity.id }) }}">show</a>
+                                </li>
+                                <li>
+                                    <a class="btn btn-default btn-xs"
+                                       href="{{ path('player_edit', { 'id': entity.id }) }}">edit</a>
+                                </li>
+                            </ul>
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+
+        </div>
+
+    </div>
+
+    {% if extras|length > 0 %}
+
+        <div class="row">
+
+            <div class="col-lg-8"></div>
+            <div class="col-lg-4">
+
+                <table class="table">
+                    <tbody>
+                    <tr class="active">
+                        <td class="text-right">Anzahl Spieler: </td>
+                        <td>{{ extras.number_of_players }}</td>
+                    </tr>
+                    {#<tr>#}
+                        {#<td class="text-right">Geld verfügbar: </td>#}
+                        {#<td>{{ extras.money_total }}</td>#}
+                    {#</tr>#}
+                    <tr class="info">
+                        <td class="text-right">pro Spieler: </td>
+                        <td>{{ extras.money_per_player|number_format(2, ',', '.') }}</td>
+                    </tr>
+                    <tr class="success">
+                        <td class="text-right">Geld übrig: </td>
+                        <td>{{ extras.money_left|number_format(2, ',', '.') }}</td>
+                    </tr>
+                    </tbody>
+                </table>
+
+            </div>
+
+        </div>
+
+    {% endif %}
+
+    <ul class="list-unstyled">
+        <li>
+            <a class="btn btn-primary btn-xs" href="{{ path('player_new') }}">
+                Neuen Spieler hinzufügen
+            </a>
+        </li>
+    </ul>
+{% endblock %}

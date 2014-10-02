@@ -1,0 +1,7 @@
+soc_soc_homepage:
+    path:     /hello/{name}
+    defaults: { _controller: SOCSocBundle:Default:index }
+
+SOCSocBundle_player:
+    resource: "@SOCSocBundle/Resources/config/routing/player.yml"
+    prefix:   /player

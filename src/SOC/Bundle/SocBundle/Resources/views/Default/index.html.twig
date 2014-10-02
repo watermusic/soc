@@ -1,0 +1,155 @@
+{% extends '::base.html.twig' %}
+{% block stylesheets %}
+<style>
+
+    body {
+        padding-top: 70px;
+    }
+
+    .navbar .form-group {
+        margin-right: 12px;
+    }
+
+    .navbar .form-group label {
+        color: white;
+    }
+
+    .list-unstyled li {
+        float: left;
+        margin-right: 6px;
+    }
+
+    .autocomplete-suggestions { border: 1px solid #999; background: #FFF; overflow: auto; }
+    .autocomplete-suggestion { padding: 2px 5px; white-space: nowrap; overflow: hidden; }
+    .autocomplete-selected { background: #F0F0F0; }
+    .autocomplete-suggestions strong { font-weight: normal; color: #3399FF; }
+
+</style>
+{% endblock %}
+
+
+
+{% block body %}
+
+    {% block navigation %}
+
+        <nav class="top-bar" data-topbar role="navigation">
+            <ul class="title-area">
+                <li class="name">
+                    <h1><a href="#">S.O.C. - 2014/15</a></h1>
+                </li>
+                <!-- Remove the class "menu-icon" to get rid of menu icon. Take out "Menu" to just have icon alone -->
+                <li class="toggle-topbar menu-icon"><a href="#"><span>Menu</span></a></li>
+            </ul>
+
+            <section class="top-bar-section">
+                <!-- Right Nav Section -->
+                <ul class="right">
+                    <li class="active"><a href="#">Right Button Active</a></li>
+                    <li class="has-dropdown">
+                        <a href="#">Right Button Dropdown</a>
+                        <ul class="dropdown">
+                            <li><a href="#">First link in dropdown</a></li>
+                            <li class="active"><a href="#">Active link in dropdown</a></li>
+                        </ul>
+                    </li>
+                </ul>
+
+                <!-- Left Nav Section -->
+                <ul class="left">
+                    <li><a href="#">Left Nav Button</a></li>
+                </ul>
+            </section>
+        </nav>
+
+        <!-- Fixed navbar -->
+        <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+            <div class="container">
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <a class="navbar-brand" href="javascript:clearFrm();">S.O.C. - 2014/15</a>
+                </div>
+                <div class="navbar-collapse collapse">
+
+                    <form class="navbar-form navbar-right" role="form" method="get" id="frmSearch" action="{{ path('player') }}">
+                        <div class="form-group">
+                            <label class="control-label" for="verein">Verein</label>
+                            <select class="form-control input-sm" id="verein" name="verein">
+                                {% for name in statics.vereine %}
+                                    <option value="{{name}}" {{ (name == query.verein) ? 'selected' : '' }}>{{name}}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label" for="spieler">Spieler</label>
+                            <select class="form-control input-sm" id="kaeufer" name="kaeufer">
+                                {% for name in statics.spieler %}
+                                    <option value="{{name}}" {{ (name == query.kaeufer) ? 'selected' : '' }}>{{name}}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label" for="position">Position</label>
+                            <select class="form-control input-sm" id="position" name="position">
+                                {% for name in statics.positionen %}
+                                    <option value="{{name}}" {{ (name == query.position) ? 'selected' : '' }}>{{name}}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <input type="text" placeholder="Suche..." class="form-control" id="suche" name="name">
+                        </div>
+                    </form>
+
+                </div><!--/.nav-collapse -->
+            </div>
+        </div>
+    {% endblock %}
+
+
+{% endblock %}
+
+<script src="{{ asset('js/jquery.autocomplete.js') }}"></script>
+{% block javascripts %}{% endblock %}
+
+<script>
+
+    var clearFrm;
+
+    $(function() {
+
+        var ddVerein = $("#verein"),
+            ddSpieler = $("#kaeufer"),
+            ddPosition = $("#position"),
+            term = $("#suche"),
+            objForm = $("#frmSearch");
+
+
+        $("select", objForm).change(function () {
+            objForm.submit();
+        });
+
+        clearFrm = function() {
+            $("select", objForm).prop('selectedIndex', 0);
+            term.val('');
+            objForm.submit();
+        };
+
+
+        var options = {
+            serviceUrl: '{{ path('player_search') }}',
+            onSelect: function() {
+                objForm.submit();
+                $("select", objForm).prop('selectedIndex', 0);
+            }
+        },
+        a = term.autocomplete(options);
+
+    });
+
+</script>

@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+    <title>{% block title %}Welcome!{% endblock %}</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Foundation -->
+    <link rel="stylesheet" type="text/css" href="{{ asset('bundles/bmatznerfoundation/css/foundation.min.css') }}" />
+    <script src="{{ asset('bundles/bmatznerfoundation/js/vendor/modernizr.js') }}"></script>
+    {% block stylesheets %}{% endblock %}
+
+</head>
+
+<body>
+
+{% block body %}
+    <h1>This is the Body block</h1>
+{% endblock %}
+
+<script type="text/javascript" src="{{ asset('bundles/bmatznerfoundation/js/vendor/jquery.js') }}"></script>
+<script type="text/javascript" src="{{ asset('bundles/bmatznerfoundation/js/foundation.min.js') }}"></script>
+{% block javascripts %}{% endblock %}
+</body>
+</html>

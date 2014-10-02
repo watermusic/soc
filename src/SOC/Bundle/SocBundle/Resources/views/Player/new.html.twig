@@ -1,0 +1,15 @@
+{% extends 'SOCSocBundle:Default:index.html.twig' %}
+
+{% block body -%}
+    <h1>Spieler hinzufügen</h1>
+
+    {{ form(form) }}
+
+        <ul class="record_actions list-unstyled">
+    <li>
+        <a href="{{ path('player') }}">
+            Zurück zur Liste
+        </a>
+    </li>
+</ul>
+{% endblock %}
