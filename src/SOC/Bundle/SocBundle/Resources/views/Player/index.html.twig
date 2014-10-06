@@ -1,15 +1,19 @@
 {% extends 'SOCSocBundle:Default:index.html.twig' %}
 
-{% block body -%}
+{% block body %}
+
+    {{ include ('SOCSocBundle:Player:navigation.html.twig') }}
+
+    <br>
 
     <div class="row">
 
-        <div class="col-lg-12">
+        <div class="large-3 columns">
+            <h6 class="panel">Description</h6>
+        </div>
 
-
-            <h1>Spieler Liste</h1>
-
-            <table class="records_list table table-striped">
+        <div class="large-9 columns">
+            <table>
                 <thead>
                 <tr>
                     <th>Id</th>
@@ -59,50 +63,104 @@
                 {% endfor %}
                 </tbody>
             </table>
+        </div>
+
+    </div>
+
+    <div class="row">
+        <div class="large-12 columns">
 
         </div>
 
     </div>
 
-    {% if extras|length > 0 %}
 
-        <div class="row">
 
-            <div class="col-lg-8"></div>
-            <div class="col-lg-4">
+    {#{% if extras|length > 0 %}#}
 
-                <table class="table">
-                    <tbody>
-                    <tr class="active">
-                        <td class="text-right">Anzahl Spieler: </td>
-                        <td>{{ extras.number_of_players }}</td>
-                    </tr>
-                    {#<tr>#}
-                        {#<td class="text-right">Geld verfügbar: </td>#}
-                        {#<td>{{ extras.money_total }}</td>#}
-                    {#</tr>#}
-                    <tr class="info">
-                        <td class="text-right">pro Spieler: </td>
-                        <td>{{ extras.money_per_player|number_format(2, ',', '.') }}</td>
-                    </tr>
-                    <tr class="success">
-                        <td class="text-right">Geld übrig: </td>
-                        <td>{{ extras.money_left|number_format(2, ',', '.') }}</td>
-                    </tr>
-                    </tbody>
-                </table>
+    {#<div class="row">#}
 
-            </div>
+    {#<div class="large-8 columns"></div>#}
+    {#<div class="large-4 columns">#}
 
-        </div>
+    {#<table>#}
+    {#<tbody>#}
+    {#<tr class="active">#}
+    {#<td class="text-right">Anzahl Spieler:</td>#}
+    {#<td>{{ extras.number_of_players }}</td>#}
+    {#</tr>#}
+    {#&#123;&#35;<tr>&#35;&#125;#}
+    {#&#123;&#35;<td class="text-right">Geld verfügbar: </td>&#35;&#125;#}
+    {#&#123;&#35;<td>{{ extras.money_total }}</td>&#35;&#125;#}
+    {#&#123;&#35;</tr>&#35;&#125;#}
+    {#<tr class="info">#}
+    {#<td class="text-right">pro Spieler:</td>#}
+    {#<td>{{ extras.money_per_player|number_format(2, ',', '.') }}</td>#}
+    {#</tr>#}
+    {#<tr class="success">#}
+    {#<td class="text-right">Geld übrig:</td>#}
+    {#<td>{{ extras.money_left|number_format(2, ',', '.') }}</td>#}
+    {#</tr>#}
+    {#</tbody>#}
+    {#</table>#}
 
-    {% endif %}
+    {#</div>#}
 
-    <ul class="list-unstyled">
-        <li>
-            <a class="btn btn-primary btn-xs" href="{{ path('player_new') }}">
-                Neuen Spieler hinzufügen
-            </a>
-        </li>
-    </ul>
+    {#</div>#}
+
+    {#{% endif %}#}
+
+    {#<ul class="list-unstyled">#}
+    {#<li>#}
+    {#<a class="btn btn-primary btn-xs" href="{{ path('player_new') }}">#}
+    {#Neuen Spieler hinzufügen#}
+    {#</a>#}
+    {#</li>#}
+    {#</ul>#}
+    {##}
+    {##}
+
+
+{% endblock %}
+{% block javascripts %}
+
+    {{ parent() }}
+
+    <script>
+
+        var clearFrm;
+
+        $(function () {
+
+            var ddVerein = $("#verein"),
+                    ddSpieler = $("#kaeufer"),
+                    ddPosition = $("#position"),
+                    term = $("#suche"),
+                    objForm = $("#frmSearch");
+
+
+            $("select", objForm).change(function () {
+                objForm.submit();
+            });
+
+            clearFrm = function () {
+                $("select", objForm).prop('selectedIndex', 0);
+                term.val('');
+                objForm.submit();
+            };
+
+
+            var options = {
+                        serviceUrl: '{{ path('player_search') }}',
+                        onSelect: function () {
+                            objForm.submit();
+                            $("select", objForm).prop('selectedIndex', 0);
+                        }
+                    },
+                    a = term.autocomplete(options);
+
+        });
+
+    </script>
+
 {% endblock %}

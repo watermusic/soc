@@ -2,6 +2,21 @@
 
 {% block title %}SOC Login{% endblock %}
 
+{% block stylesheets %}
+    {% stylesheets '@SOCSocBundle/Resources/public/css/*' %}
+    <link rel="stylesheet" type="text/css" href="{{ asset_url }}" />
+    {% endstylesheets %}
+{% endblock %}
+
 {% block body %}
     {% block fos_user_content %}{% endblock %}
+{% endblock %}
+
+{% block javascripts %}
+
+    {{ parent() }}
+
+    {% javascripts '@SOCSocBundle/Resources/public/js/*' %}
+    <script src="{{ asset_url }}"></script>
+    {% endjavascripts %}
 {% endblock %}
