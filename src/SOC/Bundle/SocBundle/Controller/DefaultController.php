@@ -6,11 +6,17 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
 class DefaultController extends Controller
 {
-    public function indexAction($name)
+    public function indexAction()
     {
+
+        $em = $this->getDoctrine()->getManager();
+
+        $entity = $em->getRepository('SOCSocBundle:Score')->find(1);
+
+        var_dump($entity->getPlayer());
+
         $view = array(
-            'title' => $this->container->getParameter("soc_site_title"),
-            'name' => $name,
+            'name' => 'hakan',
         );
 
         return $this->render('SOCSocBundle:Default:index.html.twig', $view);

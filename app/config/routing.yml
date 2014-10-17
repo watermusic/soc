@@ -5,10 +5,10 @@ soc_soc:
 fos_user:
     resource: "@FOSUserBundle/Resources/config/routing/all.xml"
 
-# redirecting the root
+#redirecting the root
 root:
     path: /
     defaults:
         _controller: FrameworkBundle:Redirect:urlRedirect
-        path: /soc/player
+        path: soc/player
         permanent: true

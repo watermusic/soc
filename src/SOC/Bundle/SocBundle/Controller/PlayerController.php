@@ -120,7 +120,7 @@ class PlayerController extends Controller
             $em->persist($entity);
             $em->flush();
 
-            return $this->redirect($this->generateUrl('player_show', array('id' => $entity->getId())));
+            return $this->redirect($this->generateUrl('soc_player_show', array('id' => $entity->getId())));
         }
 
         return $this->render('SOCSocBundle:Player:new.html.twig', array(
@@ -144,7 +144,7 @@ class PlayerController extends Controller
         $statics = $this->getStaticViewParameter();
 
         $form = $this->createForm(new PlayerType($statics), $entity, array(
-            'action' => $this->generateUrl('player_create'),
+            'action' => $this->generateUrl('soc_player_create'),
             'method' => 'POST',
         ));
 
@@ -233,7 +233,7 @@ class PlayerController extends Controller
         $statics = $this->getStaticViewParameter();
 
         $form = $this->createForm(new PlayerType($statics), $entity, array(
-            'action' => $this->generateUrl('player_update', array('id' => $entity->getId())),
+            'action' => $this->generateUrl('soc_player_update', array('id' => $entity->getId())),
             'method' => 'PUT',
         ));
 
@@ -262,7 +262,7 @@ class PlayerController extends Controller
         if ($editForm->isValid()) {
             $em->flush();
 
-            return $this->redirect($this->generateUrl('player_edit', array('id' => $id)));
+            return $this->redirect($this->generateUrl('soc_player_edit', array('id' => $id)));
         }
 
         return $this->render('SOCSocBundle:Player:edit.html.twig', array(
@@ -294,7 +294,7 @@ class PlayerController extends Controller
             $em->flush();
         }
 
-        return $this->redirect($this->generateUrl('player'));
+        return $this->redirect($this->generateUrl('soc_player_show'));
     }
 
     /**
@@ -341,7 +341,7 @@ class PlayerController extends Controller
     private function createDeleteForm($id)
     {
         return $this->createFormBuilder()
-            ->setAction($this->generateUrl('player_delete', array('id' => $id)))
+            ->setAction($this->generateUrl('soc_player_delete', array('id' => $id)))
             ->setMethod('DELETE')
             ->add('submit', 'submit', array('label' => 'Delete'))
             ->getForm()

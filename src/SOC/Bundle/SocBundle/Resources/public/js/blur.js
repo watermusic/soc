@@ -1,6 +1,6 @@
 $(function() {
     // Change this value to adjust the amount of blur
-    var BLUR_RADIUS = 100;
+    var BLUR_RADIUS = 40;
 
     var canvas = document.querySelector('[data-canvas]');
     var canvasContext = canvas.getContext('2d');

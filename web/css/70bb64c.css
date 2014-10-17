@@ -1,0 +1,40 @@
+.blur {
+    padding: 3em 0;
+    position: relative;
+    display: block;
+    width: 100%;
+    height: 100%;
+}
+
+.blur fieldset {
+    background-color: #fff;
+}
+
+.blur-background {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+    overflow: hidden
+}
+/*
+ * MopaBootstrapBundle
+ *
+ * Copyright 2011 Mohrenweiser & Partner
+ * Licensed under the Apache License v2.0
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Import this file in your css files as first 
+ * OR
+ * Add it to the stylesheets of assetic or 
+ * Add it as described on http://www.lesscss.org with the less.js
+ *  (maybe pathes must be adapted in that case)
+ */
+
+/* Main bootstrap.less entry point */
+@import "../bootstrap/bootstrap.css";
+
+/* The Example css for this bundle */
+@import "../path/to/your/example.css"; 
