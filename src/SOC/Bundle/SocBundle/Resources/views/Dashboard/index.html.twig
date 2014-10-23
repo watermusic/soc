@@ -182,7 +182,6 @@
                         ctx,
                         lineOptions,
                         lineData,
-                        chart,
                         pptMatchdayChart,
                         matchdays = {{ ppd.labels|raw }};
 
@@ -208,7 +207,7 @@
                     labels: matchdays,
                     datasets: [
                         {
-                            label: "Lutz",
+                            label: "{{ user.getUsername()|title }}",
                             fillColor: "rgba(220,220,220,0.5)",
                             strokeColor: "rgba(220,220,220,1)",
                             pointColor: "rgba(220,220,220,1)",
@@ -227,10 +226,7 @@
 
                     },
                     refresh : function() {
-
-
                         pptMatchdayChart.update();
-
                     }
 
                 };
