@@ -137,75 +137,7 @@
                         </div>
                     </div>
 
-                    <div class="ibox-content inspinia-timeline">
-
-                        <div class="timeline-item">
-                            <div class="row">
-                                <div class="col-xs-3 date">
-                                    <i class="fa fa-briefcase"></i>
-                                    12:00 am
-                                    <br>
-                                    <small class="text-navy">2 hour ago</small>
-                                </div>
-                                <div class="col-xs-7 content no-top-border">
-                                    <p class="m-b-xs"><strong>Meeting</strong></p>
-
-                                    <p>Bayern wieder auf und davon...</p>
-
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="timeline-item">
-                            <div class="row">
-                                <div class="col-xs-3 date">
-                                    <i class="fa fa-briefcase"></i>
-                                    12:00 am
-                                    <br>
-                                    <small class="text-navy">2 hour ago</small>
-                                </div>
-                                <div class="col-xs-7 content no-top-border">
-                                    <p class="m-b-xs"><strong>Meeting</strong></p>
-
-                                    <p>Bayern wieder auf und davon...</p>
-
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="timeline-item">
-                            <div class="row">
-                                <div class="col-xs-3 date">
-                                    <i class="fa fa-briefcase"></i>
-                                    12:00 am
-                                    <br>
-                                    <small class="text-navy">2 hour ago</small>
-                                </div>
-                                <div class="col-xs-7 content no-top-border">
-                                    <p class="m-b-xs"><strong>Meeting</strong></p>
-
-                                    <p>Bayern wieder auf und davon...</p>
-
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="timeline-item">
-                            <div class="row">
-                                <div class="col-xs-3 date">
-                                    <i class="fa fa-briefcase"></i>
-                                    12:00 am
-                                    <br>
-                                    <small class="text-navy">2 hour ago</small>
-                                </div>
-                                <div class="col-xs-7 content no-top-border">
-                                    <p class="m-b-xs"><strong>Meeting</strong></p>
-
-                                    <p>Bayern wieder auf und davon...</p>
-
-                                </div>
-                            </div>
-                        </div>
+                    <div class="ibox-content inspinia-timeline" id="news-timeline">
 
                     </div>
                 </div>
@@ -227,5 +159,17 @@
 
     </div>
     </div>
+
+{% endblock %}
+{% block javascripts %}
+    {{ parent() }}
+
+    {% javascripts
+    '@SOCSocBundle/Resources/public/js/inspinia.js'
+    '@SOCSocBundle/Resources/public/js/moment-with-locales.js'
+    '@SOCSocBundle/Resources/public/js/jquery.mustache.js'
+    '@SOCSocBundle/Resources/public/js/jquery-loading.js' %}
+    <script src="{{ asset_url }}"></script>
+    {% endjavascripts %}
 
 {% endblock %}

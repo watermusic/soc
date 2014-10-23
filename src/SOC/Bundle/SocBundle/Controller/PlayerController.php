@@ -96,6 +96,7 @@ class PlayerController extends Controller
 
         }
 
+        $user = $this->container->get('security.context')->getToken()->getUser();
 
         return $this->render('SOCSocBundle:Player:index.html.twig', array(
             'entities' => $entities,
@@ -103,6 +104,7 @@ class PlayerController extends Controller
             "query" => $query,
             "extras" => $extras,
             "queryArray" => $queryArray,
+            "user" => $user,
         ));
     }
     /**
@@ -123,11 +125,14 @@ class PlayerController extends Controller
             return $this->redirect($this->generateUrl('soc_player_show', array('id' => $entity->getId())));
         }
 
+        $user = $this->container->get('security.context')->getToken()->getUser();
+
         return $this->render('SOCSocBundle:Player:new.html.twig', array(
             'entity' => $entity,
             'form'   => $form->createView(),
             'statics' => $this->getStaticViewParameter(),
             "query" => $this->getQuery(),
+            "user" => $user,
         ));
     }
 
@@ -161,12 +166,14 @@ class PlayerController extends Controller
     {
         $entity = new Player();
         $form   = $this->createCreateForm($entity);
+        $user = $this->container->get('security.context')->getToken()->getUser();
 
         return $this->render('SOCSocBundle:Player:new.html.twig', array(
             'entity' => $entity,
             'form'   => $form->createView(),
             'statics' => $this->getStaticViewParameter(),
             "query" => $this->getQuery(),
+            "user" => $user,
         ));
     }
 
@@ -186,11 +193,14 @@ class PlayerController extends Controller
 
         $deleteForm = $this->createDeleteForm($id);
 
+        $user = $this->container->get('security.context')->getToken()->getUser();
+
         return $this->render('SOCSocBundle:Player:show.html.twig', array(
             'entity'      => $entity,
             'delete_form' => $deleteForm->createView(),
             'statics' => $this->getStaticViewParameter(),
             "query" => $this->getQuery(),
+            "user" => $user,
         ));
     }
 
@@ -211,12 +221,15 @@ class PlayerController extends Controller
         $editForm = $this->createEditForm($entity);
         $deleteForm = $this->createDeleteForm($id);
 
+        $user = $this->container->get('security.context')->getToken()->getUser();
+
         return $this->render('SOCSocBundle:Player:edit.html.twig', array(
             'entity'      => $entity,
             'edit_form'   => $editForm->createView(),
             'delete_form' => $deleteForm->createView(),
             'statics' => $this->getStaticViewParameter(),
             "query" => $this->getQuery(),
+            "user" => $user,
         ));
     }
 

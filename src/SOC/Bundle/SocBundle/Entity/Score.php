@@ -22,11 +22,9 @@ class Score
     private $id;
 
     /**
-     * @var integer
-     *
-     * @ORM\Column(name="player")
-     * @ORM\ManyToOne(targetEntity="User")
-     * @ORM\JoinColumn(name="user_id", referencedColumnName="id")
+     * @var User
+     * @ORM\OneToOne(targetEntity="User")
+     * @ORM\JoinColumn(name="player", referencedColumnName="id")
      */
     private $player;
 

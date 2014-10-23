@@ -2,6 +2,14 @@ soc_dashboard_index:
     path:     /
     defaults: { _controller: SOCSocBundle:Default:index }
 
+soc_dashboard_news:
+    path:     /dashboard/news
+    defaults: { _controller: SOCSocBundle:Default:news }
+
+soc_template_index:
+    path:     /template/{name}
+    defaults: { _controller: SOCSocBundle:Default:template }
+
 soc_lineup_index:
     path:     /lineup
     defaults: { _controller: SOCSocBundle:Default:index }

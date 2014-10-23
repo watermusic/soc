@@ -1,0 +1,256 @@
+{% extends 'SOCSocBundle:Default:index.html.twig' %}
+
+{% block stylesheets %}
+    {% stylesheets
+    'bundles/socsoc/css/jquery-loading.css'
+    filter='cssrewrite' %}
+    <link rel="stylesheet" href="{{ asset_url }}" />
+    {% endstylesheets %}
+{% endblock %}
+
+{% block content_header %}
+
+    <div class="row wrapper border-bottom white-bg page-heading">
+        <div class="col-lg-10">
+            <h2>Dashboard</h2>
+            <ol class="breadcrumb">
+                <li>
+                    <a href="{{ path('soc_dashboard_index') }}">Home</a>
+                </li>
+                <li class="active">
+                    <strong>Dashboard</strong>
+                </li>
+            </ol>
+        </div>
+        <div class="col-lg-2">
+
+        </div>
+    </div>
+
+{% endblock %}
+
+{% block content_main %}
+    <div class="row wrapper wrapper-content animated fadeInRight">
+        <div class="col-lg-6">
+            <div class="ibox float-e-margins">
+                <div class="ibox-title">
+                    <h5>Tabelle</h5>
+                </div>
+                <div class="ibox-content">
+
+                    <table class="table table-striped">
+                        <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Name</th>
+                            <th>Punkte</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for name, standing in standings %}
+                            <tr>
+                                <td>{{ loop.index }}</td>
+                                <td>{{ name }}</td>
+                                <td>{{ standing }}</td>
+                            </tr>
+                        {% endfor %}
+
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="ibox float-e-margins">
+                <div class="ibox-title">
+                    <h5>Punkte pro Spieltag</h5>
+                </div>
+                <div class="ibox-content">
+                    <canvas id="pptMatchday" width="400" height="400"></canvas>
+                </div>
+            </div>
+            <div class="ibox float-e-margins">
+                <div class="ibox-title">
+                    <h5>Saisonverlauf</h5>
+                </div>
+                <div class="ibox-content">
+                    <p>
+                        Use any of the available button classes to quickly create a styled button.
+                    </p>
+
+                    <h3 class="font-bold">
+                        Normal buttons
+                    </h3>
+
+                    <p>
+                        <button type="button" class="btn btn-w-m btn-default">Default</button>
+                    </p>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-6">
+            <div class="ibox float-e-margins">
+                <div class="ibox-title">
+                    <h5>Bundesliga News</h5>
+
+                    <div class="ibox-tools">
+                        <a id="news-refresh">
+                            <i class="fa fa-refresh"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <div class="ibox-content inspinia-timeline" id="news-timeline">
+
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <div class="row">
+        <div class="col-lg-12">
+        {{ dump(user.getUsername()) }}
+        </div>
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+
+    {% javascripts
+    '@SOCSocBundle/Resources/public/js/plugins/chartJs/Chart.min.js' %}
+    <script src="{{ asset_url }}"></script>
+    {% endjavascripts %}
+
+    <script id="news-timeline-item" type="x-tmpl-mustache">
+    {{ news.template|raw }}
+    </script>
+    <script>
+
+        var SOC = SOC || {};
+
+        $(function() {
+
+            SOC.NewsCtrl = (function () {
+
+                var feed_url = '{{ path('soc_dashboard_news') }}',
+                    viewCont = $('#news-timeline'),
+                    viewRefreshBtn = $('#news-refresh'),
+                    template = $('#news-timeline-item').html();
+
+                var drawTimeline = function(items) {
+                    items = _.map(items, function(num) {
+                        num.date = moment(num.date).calendar();
+                        return num;
+                    });
+                    var items = {'items' : items};
+                    var rendered = Mustache.render(template, items);
+                    viewCont.html(rendered);
+                };
+
+                return {
+                    init: function () {
+
+                        Mustache.parse(template);
+
+                        viewRefreshBtn.on('click', function() {
+                            SOC.NewsCtrl.refresh();
+                        });
+
+                        _.delay(SOC.NewsCtrl.refresh(), 500);
+
+                    },
+                    refresh : function() {
+
+                        viewCont.html('<br>');
+                        $('#news-timeline').parent().loading();
+                        $.getJSON(feed_url)
+                                .done(function(res) {
+                                    drawTimeline(res);
+                                    $('#news-timeline').parent().loading('stop');
+                                }).fail(function() {
+                                    $('#news-timeline').parent().loading('stop');
+                                });
+
+                    }
+                };
+
+
+            })();
+
+            SOC.MatchdayCtrl = (function() {
+
+                var
+                        ctx,
+                        lineOptions,
+                        lineData,
+                        chart,
+                        pptMatchdayChart,
+                        matchdays = {{ ppd.labels|raw }};
+
+                ctx = document.getElementById("pptMatchday").getContext("2d");
+
+                lineOptions = {
+                    scaleShowGridLines: true,
+                    scaleGridLineColor: "rgba(0,0,0,.05)",
+                    scaleGridLineWidth: 1,
+                    bezierCurve: true,
+                    bezierCurveTension: 0.4,
+                    pointDot: true,
+                    pointDotRadius: 4,
+                    pointDotStrokeWidth: 1,
+                    pointHitDetectionRadius: 20,
+                    datasetStroke: true,
+                    datasetStrokeWidth: 2,
+                    datasetFill: true,
+                    responsive: true
+                };
+
+                lineData = {
+                    labels: matchdays,
+                    datasets: [
+                        {
+                            label: "Lutz",
+                            fillColor: "rgba(220,220,220,0.5)",
+                            strokeColor: "rgba(220,220,220,1)",
+                            pointColor: "rgba(220,220,220,1)",
+                            pointStrokeColor: "#fff",
+                            pointHighlightFill: "#fff",
+                            pointHighlightStroke: "rgba(220,220,220,1)",
+                            data: {{ ppd.data|raw }}
+                        }
+                    ]
+                };
+                pptMatchdayChart = new Chart(ctx).Bar(lineData, lineOptions);
+
+                return {
+
+                    init: function() {
+
+                    },
+                    refresh : function() {
+
+
+                        pptMatchdayChart.update();
+
+                    }
+
+                };
+
+            })();
+
+            SOC.MainCtrl = (function () {
+
+                return {
+                    init: function () {
+                        moment.locale('de');
+                        SOC.NewsCtrl.init();
+                    }
+                };
+
+            })();
+            SOC.MainCtrl.init();
+
+        });
+
+    </script>
+
+{% endblock %}
