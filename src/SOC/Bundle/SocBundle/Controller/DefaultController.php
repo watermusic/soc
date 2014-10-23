@@ -28,7 +28,6 @@ class DefaultController extends Controller
             }
             $standings[$name] += $score->getScore();
 
-
             if(!isset($ppd[$name])) {
                 $ppd[$name] = array();
             }
