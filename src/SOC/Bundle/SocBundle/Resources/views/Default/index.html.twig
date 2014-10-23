@@ -1,144 +1,175 @@
-<!DOCTYPE html>
-<html>
-<head>
+{% extends 'SOCSocBundle::layout.html.twig' %}
 
-    <title>{% block title %}S.O.C. - 2014/15{% endblock %}</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!-- Bootstrap -->
-    <link href="{{ asset('css/bootstrap.css') }}" rel="stylesheet" media="screen">
-    {% block stylesheets %}{% endblock %}
-    <!-- HTML5 Shim and Respond.js add IE8 support of HTML5 elements and media queries -->
-    {% include 'BraincraftedBootstrapBundle::ie8-support.html.twig' %}
+{% block body %}
 
-    <style>
+    <div id="wrapper">
 
-        body {
-            padding-top: 70px;
-        }
+    {% include 'SOCSocBundle:Default:navigation-main.html.twig' %}
 
+    <div id="page-wrapper" class="gray-bg">
 
-        .navbar .form-group {
-            margin-right: 12px;
-        }
+    {% include 'SOCSocBundle:Default:navigation-minor.html.twig' %}
 
-        .navbar .form-group label {
-            color: white;
-        }
+    {% block content_header %}
 
-        .list-unstyled li {
-            float: left;
-            margin-right: 6px;
-        }
+        <div class="row wrapper border-bottom white-bg page-heading">
+            <div class="col-lg-10">
+                <h2>Dashboard</h2>
+                <ol class="breadcrumb">
+                    <li>
+                        <a href="{{ path('soc_dashboard_index') }}">Home</a>
+                    </li>
+                    <li class="active">
+                        <strong>Dashboard</strong>
+                    </li>
+                </ol>
+            </div>
+            <div class="col-lg-2">
 
-        .autocomplete-suggestions { border: 1px solid #999; background: #FFF; overflow: auto; }
-        .autocomplete-suggestion { padding: 2px 5px; white-space: nowrap; overflow: hidden; }
-        .autocomplete-selected { background: #F0F0F0; }
-        .autocomplete-suggestions strong { font-weight: normal; color: #3399FF; }
-
-    </style>
-
-</head>
-
-<body>
-
-<!-- Fixed navbar -->
-<div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
-    <div class="container">
-        <div class="navbar-header">
-            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                <span class="sr-only">Toggle navigation</span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-            </button>
-            <a class="navbar-brand" href="javascript:clearFrm();">S.O.C. - 2014/15</a>
+            </div>
         </div>
-        <div class="navbar-collapse collapse">
 
-            <form class="navbar-form navbar-right" role="form" method="get" id="frmSearch" action="{{ path('player') }}">
-                <div class="form-group">
-                    <label class="control-label" for="verein">Verein</label>
-                    <select class="form-control input-sm" id="verein" name="verein">
-                        {% for name in statics.vereine %}
-                            <option value="{{name}}" {{ (name == query.verein) ? 'selected' : '' }}>{{name}}</option>
-                        {% endfor %}
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label class="control-label" for="spieler">Spieler</label>
-                    <select class="form-control input-sm" id="kaufer" name="kaufer">
-                        {% for name in statics.spieler %}
-                            <option value="{{name}}" {{ (name == query.kaufer) ? 'selected' : '' }}>{{name}}</option>
-                        {% endfor %}
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label class="control-label" for="position">Position</label>
-                    <select class="form-control input-sm" id="position" name="position">
-                        {% for name in statics.positionen %}
-                        <option value="{{name}}" {{ (name == query.position) ? 'selected' : '' }}>{{name}}</option>
-                        {% endfor %}
-                    </select>
-                </div>
-                <div class="form-group">
-                    <input type="text" placeholder="Suche..." class="form-control" id="suche" name="name">
-                </div>
-            </form>
-
-        </div><!--/.nav-collapse -->
-    </div>
-</div>
-<div class="container">
-
-    {% block body -%}
-        <h1>This is the Body block</h1>
     {% endblock %}
 
-</div>
+    {% block content_main %}
+        <div class="row wrapper wrapper-content animated fadeInRight">
+            <div class="col-lg-6">
+                <div class="ibox float-e-margins">
+                    <div class="ibox-title">
+                        <h5>Tabelle</h5>
+                    </div>
+                    <div class="ibox-content">
 
-<!-- jQuery (necessary for Bootstraps JavaScript plugins) -->
-<script src="{{ asset('js/jquery.js') }}"></script>
-<script src="{{ asset('js/jquery.autocomplete.js') }}"></script>
-<!-- Include all JavaScripts, compiled by Assetic -->
-<script src="{{ asset('js/bootstrap.js') }}"></script>
-{% block javascripts %}{% endblock %}
+                        <table class="table table-striped">
+                            <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>Name</th>
+                                <th>Punkte</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr>
+                                <td>1</td>
+                                <td>Lutz</td>
+                                <td>186</td>
+                            </tr>
+                            <tr>
+                                <td>2</td>
+                                <td>Jens</td>
+                                <td>132</td>
+                            </tr>
+                            <tr>
+                                <td>3</td>
+                                <td>Alex</td>
+                                <td>112</td>
+                            </tr>
+                            <tr>
+                                <td>4</td>
+                                <td>Torsten</td>
+                                <td>106</td>
+                            </tr>
+                            <tr>
+                                <td>5</td>
+                                <td>Christian</td>
+                                <td>92</td>
+                            </tr>
+                            <tr>
+                                <td>6</td>
+                                <td>Rainer</td>
+                                <td>72</td>
+                            </tr>
 
-<script>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="ibox float-e-margins">
+                    <div class="ibox-title">
+                        <h5>Punkte pro Spieltag</h5>
+                    </div>
+                    <div class="ibox-content">
+                        <p>
+                            Use any of the available button classes to quickly create a styled button.
+                        </p>
 
-    var clearFrm;
+                        <h3 class="font-bold">
+                            Normal buttons
+                        </h3>
 
-    $(function() {
+                        <p>
+                            <button type="button" class="btn btn-w-m btn-default">Default</button>
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="ibox float-e-margins">
+                    <div class="ibox-title">
+                        <h5>Saisonverlauf</h5>
+                    </div>
+                    <div class="ibox-content">
+                        <p>
+                            Use any of the available button classes to quickly create a styled button.
+                        </p>
 
-        var ddVerein = $("#verein"),
-            ddSpieler = $("#kaufer"),
-            ddPosition = $("#position"),
-            term = $("#suche"),
-            objForm = $("#frmSearch");
+                        <h3 class="font-bold">
+                            Normal buttons
+                        </h3>
 
+                        <p>
+                            <button type="button" class="btn btn-w-m btn-default">Default</button>
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="ibox float-e-margins">
+                    <div class="ibox-title">
+                        <h5>Bundesliga News</h5>
 
-        $("select", objForm).change(function () {
-            objForm.submit();
-        });
+                        <div class="ibox-tools">
+                            <a class="close-link">
+                                <i class="fa fa-refresh"></i>
+                            </a>
+                        </div>
+                    </div>
 
-        clearFrm = function() {
-            $("select", objForm).prop('selectedIndex', 0);
-            term.val('');
-            objForm.submit();
-        };
+                    <div class="ibox-content inspinia-timeline" id="news-timeline">
 
+                    </div>
+                </div>
+            </div>
 
-        var options = {
-            serviceUrl: '{{ path('player_search') }}',
-            onSelect: function() {
-                objForm.submit();
-                $("select", objForm).prop('selectedIndex', 0);
-            }
-        },
-        a = term.autocomplete(options);
+        </div>
+    {% endblock %}
 
-    });
+    {% block content_footer %}
+        <div class="footer">
+            <div class="pull-right">
+                Yeah <strong>iii</strong>.
+            </div>
+            <div>
+                <strong>Copyright</strong> S.O.C. &copy; 2014-2015
+            </div>
+        </div>
+    {% endblock %}
 
-</script>
+    </div>
+    </div>
 
-</body>
-</html>
+{% endblock %}
+{% block javascripts %}
+    {{ parent() }}
+
+    {% javascripts
+    '@SOCSocBundle/Resources/public/js/inspinia.js'
+    '@SOCSocBundle/Resources/public/js/moment-with-locales.js'
+    '@SOCSocBundle/Resources/public/js/jquery.mustache.js'
+    '@SOCSocBundle/Resources/public/js/jquery-loading.js' %}
+    <script src="{{ asset_url }}"></script>
+    {% endjavascripts %}
+
+{% endblock %}

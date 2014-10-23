@@ -1,15 +1,28 @@
-{% extends 'SOCSocBundle:Default:index.html.twig' %}
+{% extends 'SOCSocBundle:Player:index.html.twig' %}
 
-{% block body -%}
-    <h1>Spieler hinzufügen</h1>
+{% block content_main %}
 
-    {{ form(form) }}
+    <div class="row wrapper wrapper-content animated fadeInRight">
+        <div class="col-lg-6">
+            <div class="ibox float-e-margins">
+                <div class="ibox-title">
+                    <h5>Spieler hinzufügen</h5>
+                </div>
+                <div class="ibox-content">
 
-        <ul class="record_actions list-unstyled">
-    <li>
-        <a href="{{ path('player') }}">
-            Zurück zur Liste
-        </a>
-    </li>
-</ul>
+                    {{ form(form) }}
+                    <ul class="record_actions list-unstyled">
+                        <li>
+                            <a class="btn btn-primary btn-xs" href="{{ path('soc_player_index') }}">
+                                Zurück zur Liste
+                            </a>
+                        </li>
+                    </ul>
+
+
+                </div>
+            </div>
+        </div>
+
+    </div>
 {% endblock %}

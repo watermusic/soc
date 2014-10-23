@@ -18,6 +18,9 @@ class AppKernel extends Kernel
             new Sensio\Bundle\FrameworkExtraBundle\SensioFrameworkExtraBundle(),
             new SOC\Bundle\SocBundle\SOCSocBundle(),
             new Braincrafted\Bundle\BootstrapBundle\BraincraftedBootstrapBundle(),
+            new FOS\UserBundle\FOSUserBundle(),
+            new FOS\RestBundle\FOSRestBundle(),
+            new JMS\SerializerBundle\JMSSerializerBundle(),
         );
 
         if (in_array($this->getEnvironment(), array('dev', 'test'))) {
@@ -33,4 +36,23 @@ class AppKernel extends Kernel
     {
         $loader->load(__DIR__.'/config/config_'.$this->getEnvironment().'.yml');
     }
+
+//    public function getCacheDir()
+//    {
+//        if (in_array($this->environment, array('dev', 'test'))) {
+//            return '/dev/shm/soc/cache/' .  $this->environment;
+//        }
+//
+//        return parent::getCacheDir();
+//    }
+//
+//    public function getLogDir()
+//    {
+//        if (in_array($this->environment, array('dev', 'test'))) {
+//            return '/dev/shm/soc/logs';
+//        }
+//
+//        return parent::getLogDir();
+//    }
+
 }

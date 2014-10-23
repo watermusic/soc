@@ -7,7 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * Player
  *
- * @ORM\Table(name="player",indexes={@ORM\index(columns={"name"})})
+ * @ORM\Table(name="soc_player",indexes={@ORM\Index(columns={"name"})})
  * @ORM\Entity(repositoryClass="SOC\Bundle\SocBundle\Entity\PlayerRepository")
  */
 class Player
@@ -59,9 +59,9 @@ class Player
     /**
      * @var string
      *
-     * @ORM\Column(name="kaufer", type="string", length=255)
+     * @ORM\Column(name="kaeufer", type="string", length=255)
      */
-    private $kaufer;
+    private $kaeufer;
 
     /**
      * @var float
@@ -204,14 +204,14 @@ class Player
     }
 
     /**
-     * Set kaufer
+     * Set kaeufer
      *
-     * @param string $kaufer
+     * @param string $kaeufer
      * @return Player
      */
-    public function setKaufer($kaufer)
+    public function setKaeufer($kaeufer)
     {
-        $this->kaufer = $kaufer;
+        $this->kaeufer = $kaeufer;
 
         return $this;
     }
@@ -221,9 +221,9 @@ class Player
      *
      * @return string
      */
-    public function getKaufer()
+    public function getKaeufer()
     {
-        return $this->kaufer;
+        return $this->kaeufer;
     }
 
     /**

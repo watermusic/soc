@@ -101,7 +101,7 @@ HTML;
                 ->setNote($result["note"])
                 ->setVkPreis($result["vk_preis"])
                 ->setEkPreis(0.0)
-                ->setKaufer("")
+                ->setKaeufer("")
                 ->setPosition($result["position"])
                 ->setPunkte($result["punkte"]);
 

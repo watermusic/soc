@@ -1,35 +1,35 @@
-player:
+soc_player_index:
     path:     /
     defaults: { _controller: "SOCSocBundle:Player:index" }
 
-player_show:
+soc_player_show:
     path:     /{id}/show
     defaults: { _controller: "SOCSocBundle:Player:show" }
 
-player_new:
+soc_player_new:
     path:     /new
     defaults: { _controller: "SOCSocBundle:Player:new" }
 
-player_create:
+soc_player_create:
     path:     /create
     defaults: { _controller: "SOCSocBundle:Player:create" }
     requirements: { _method: post }
 
-player_edit:
+soc_player_edit:
     path:     /{id}/edit
     defaults: { _controller: "SOCSocBundle:Player:edit" }
 
-player_update:
+soc_player_update:
     path:     /{id}/update
     defaults: { _controller: "SOCSocBundle:Player:update" }
     requirements: { _method: post|put }
 
-player_delete:
+soc_player_delete:
     path:     /{id}/delete
     defaults: { _controller: "SOCSocBundle:Player:delete" }
     requirements: { _method: post|delete }
 
-player_search:
+soc_player_search:
     path:     /search
     defaults: { _controller: "SOCSocBundle:Player:search" }
 

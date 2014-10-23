@@ -54,7 +54,7 @@ class PlayerType extends AbstractType
             )
             ->add('vkPreis', 'money')
             ->add('ekPreis', 'money')
-            ->add('kaufer', 'choice', array(
+            ->add('kaeufer', 'choice', array(
                 'choices'   => $players,
                 'required'  => false,
                 )

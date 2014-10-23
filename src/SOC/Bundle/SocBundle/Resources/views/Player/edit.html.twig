@@ -1,15 +1,29 @@
-{% extends 'SOCSocBundle:Default:index.html.twig' %}
+{% extends 'SOCSocBundle:Player:index.html.twig' %}
 
-{% block body -%}
-    <h1>Spieler bearbeiten</h1>
+{% block content_main %}
 
-    {{ form(edit_form) }}
-        <ul class="record_actions list-unstyled">
-    <li>
-        <a class="btn btn-primary btn-xs" href="{{ path('player') }}">
-            Zurück zur Liste
-        </a>
-    </li>
-    <li>{{ form(delete_form) }}</li>
-</ul>
+<div class="row wrapper wrapper-content animated fadeInRight">
+    <div class="col-lg-6">
+        <div class="ibox float-e-margins">
+            <div class="ibox-title">
+                <h5>Spieler bearbeiten</h5>
+            </div>
+            <div class="ibox-content">
+
+                {{ form(edit_form) }}
+                <ul class="record_actions list-unstyled">
+                    <li>
+                        <a class="btn btn-primary btn-xs" href="{{ path('soc_player_index') }}">
+                            Zurück zur Liste
+                        </a>
+                    </li>
+                    <li>{{ form(delete_form) }}</li>
+                </ul>
+
+
+            </div>
+        </div>
+    </div>
+
+</div>
 {% endblock %}

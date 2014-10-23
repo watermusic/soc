@@ -4,7 +4,7 @@ imports:
 
 framework:
     #esi:             ~
-    #translator:      { fallback: "%locale%" }
+    translator:      { fallback: "%locale%" }
     secret:          "%secret%"
     router:
         resource: "%kernel.root_dir%/config/routing.yml"
@@ -33,7 +33,7 @@ twig:
 assetic:
     debug:          "%kernel.debug%"
     use_controller: false
-    bundles:        [ ]
+    #bundles:        [ ]
     #java: /usr/bin/java
     filters:
         lessphp:
@@ -71,5 +71,11 @@ swiftmailer:
     password:  "%mailer_password%"
     spool:     { type: memory }
 
+fos_user:
+    db_driver: orm
+    firewall_name: main
+    user_class: SOC\Bundle\SocBundle\Entity\User
+
 braincrafted_bootstrap:
     less_filter: lessphp
+

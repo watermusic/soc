@@ -25,39 +25,63 @@ class PlayerController extends Controller
         $em = $this->getDoctrine()->getManager();
         $request = $this->get("request");
 
+        if(!$request->query->has("order")) {
+            $request->query->add(array("order" => "vkPreis"));
+        }
+
+        if(!$request->query->has("dir")) {
+            $request->query->add(array("dir" => "DESC"));
+        }
+
         $query = $this->getQuery();
 
-        $kaufer = false;
+        $queryArray = $request->query->all();
+
+        $vkPreis = $request->get("order", "vkPreis");
+        $dir = $request->get("dir", "DESC");
+
+        $kaeufer = false;
         $extras = array();
         $criteria = array();
 
         foreach($query as $name => $val) {
 
+            if($name === "order"  || $name === "dir") {
+                continue;
+            }
+
             if($val === null || $val === "" || $val === '- alle -') {
                 continue;
             }
 
-            if($name === "kaufer") {
-                $kaufer = true;
+            if($name === "kaeufer") {
+                $kaeufer = true;
             }
 
             $criteria[$name] = $val;
         }
 
-        $entities = $em->getRepository('SOCSocBundle:Player')->findBy($criteria, array('vkPreis' => 'DESC'));
+        $entities = $em->getRepository('SOCSocBundle:Player')->findBy($criteria, array($vkPreis => $dir));
 
-        if($kaufer === true) {
+        if($kaeufer === true) {
 
             $money_spent = 0;
+            $players_count = 0;
             /**
              * @var $player Player
              */
             foreach($entities as $player) {
                 $money_spent += $player->getEkPreis();
+                $players_count += 1;
+            }
+
+            $players_left = $this->container->getParameter("soc_players_to_buy") - $players_count;
+
+            if($players_left <= 0 ) {
+                $players_left = 1;
             }
 
             $number_of_players = count($entities);
-            $players_left = $this->container->getParameter("soc_players_to_buy");
             $money_total = $this->container->getParameter("soc_amount");
             $money_left = $money_total - $money_spent;
             $money_per_player = ($money_left > 0) ? $money_left / $players_left : 0;
@@ -72,12 +96,15 @@ class PlayerController extends Controller
 
         }
 
+        $user = $this->container->get('security.context')->getToken()->getUser();
 
         return $this->render('SOCSocBundle:Player:index.html.twig', array(
             'entities' => $entities,
             'statics' => $this->getStaticViewParameter(),
             "query" => $query,
             "extras" => $extras,
+            "queryArray" => $queryArray,
+            "user" => $user,
         ));
     }
     /**
@@ -95,14 +122,17 @@ class PlayerController extends Controller
             $em->persist($entity);
             $em->flush();
 
-            return $this->redirect($this->generateUrl('player_show', array('id' => $entity->getId())));
+            return $this->redirect($this->generateUrl('soc_player_show', array('id' => $entity->getId())));
         }
+
+        $user = $this->container->get('security.context')->getToken()->getUser();
 
         return $this->render('SOCSocBundle:Player:new.html.twig', array(
             'entity' => $entity,
             'form'   => $form->createView(),
             'statics' => $this->getStaticViewParameter(),
             "query" => $this->getQuery(),
+            "user" => $user,
         ));
     }
 
@@ -119,7 +149,7 @@ class PlayerController extends Controller
         $statics = $this->getStaticViewParameter();
 
         $form = $this->createForm(new PlayerType($statics), $entity, array(
-            'action' => $this->generateUrl('player_create'),
+            'action' => $this->generateUrl('soc_player_create'),
             'method' => 'POST',
         ));
 
@@ -136,12 +166,14 @@ class PlayerController extends Controller
     {
         $entity = new Player();
         $form   = $this->createCreateForm($entity);
+        $user = $this->container->get('security.context')->getToken()->getUser();
 
         return $this->render('SOCSocBundle:Player:new.html.twig', array(
             'entity' => $entity,
             'form'   => $form->createView(),
             'statics' => $this->getStaticViewParameter(),
             "query" => $this->getQuery(),
+            "user" => $user,
         ));
     }
 
@@ -161,11 +193,14 @@ class PlayerController extends Controller
 
         $deleteForm = $this->createDeleteForm($id);
 
+        $user = $this->container->get('security.context')->getToken()->getUser();
+
         return $this->render('SOCSocBundle:Player:show.html.twig', array(
             'entity'      => $entity,
             'delete_form' => $deleteForm->createView(),
             'statics' => $this->getStaticViewParameter(),
             "query" => $this->getQuery(),
+            "user" => $user,
         ));
     }
 
@@ -186,12 +221,15 @@ class PlayerController extends Controller
         $editForm = $this->createEditForm($entity);
         $deleteForm = $this->createDeleteForm($id);
 
+        $user = $this->container->get('security.context')->getToken()->getUser();
+
         return $this->render('SOCSocBundle:Player:edit.html.twig', array(
             'entity'      => $entity,
             'edit_form'   => $editForm->createView(),
             'delete_form' => $deleteForm->createView(),
             'statics' => $this->getStaticViewParameter(),
             "query" => $this->getQuery(),
+            "user" => $user,
         ));
     }
 
@@ -208,7 +246,7 @@ class PlayerController extends Controller
         $statics = $this->getStaticViewParameter();
 
         $form = $this->createForm(new PlayerType($statics), $entity, array(
-            'action' => $this->generateUrl('player_update', array('id' => $entity->getId())),
+            'action' => $this->generateUrl('soc_player_update', array('id' => $entity->getId())),
             'method' => 'PUT',
         ));
 
@@ -237,7 +275,7 @@ class PlayerController extends Controller
         if ($editForm->isValid()) {
             $em->flush();
 
-            return $this->redirect($this->generateUrl('player_edit', array('id' => $id)));
+            return $this->redirect($this->generateUrl('soc_player_edit', array('id' => $id)));
         }
 
         return $this->render('SOCSocBundle:Player:edit.html.twig', array(
@@ -269,7 +307,7 @@ class PlayerController extends Controller
             $em->flush();
         }
 
-        return $this->redirect($this->generateUrl('player'));
+        return $this->redirect($this->generateUrl('soc_player_show'));
     }
 
     /**
@@ -316,7 +354,7 @@ class PlayerController extends Controller
     private function createDeleteForm($id)
     {
         return $this->createFormBuilder()
-            ->setAction($this->generateUrl('player_delete', array('id' => $id)))
+            ->setAction($this->generateUrl('soc_player_delete', array('id' => $id)))
             ->setMethod('DELETE')
             ->add('submit', 'submit', array('label' => 'Delete'))
             ->getForm()
@@ -335,7 +373,7 @@ class PlayerController extends Controller
         $conn = $this->getDoctrine()->getConnection();
 
 
-        $sql = "SELECT DISTINCT verein FROM player ORDER BY verein ASC";
+        $sql = "SELECT DISTINCT verein FROM soc_player ORDER BY verein ASC";
         $stmt = $conn->executeQuery($sql);
         $res = $stmt->fetchAll();
 
@@ -364,7 +402,7 @@ class PlayerController extends Controller
         $request = $this->get("request");
 
         $query = array();
-        $query['kaufer'] = $request->get("kaufer", null);
+        $query['kaeufer'] = $request->get("kaeufer", null);
         $query['verein'] = $request->get("verein", null);
         $query['position'] = $request->get("position", null);
         $query['name'] = $request->get("name", null);

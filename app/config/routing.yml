@@ -2,3 +2,13 @@ soc_soc:
     resource: "@SOCSocBundle/Resources/config/routing.yml"
     prefix:   /soc
 
+fos_user:
+    resource: "@FOSUserBundle/Resources/config/routing/all.xml"
+
+#redirecting the root
+root:
+    path: /
+    defaults:
+        _controller: FrameworkBundle:Redirect:urlRedirect
+        path: soc/player
+        permanent: true

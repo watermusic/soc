@@ -1,5 +1,25 @@
-soc_soc_homepage:
-    path:     /hello/{name}
+soc_dashboard_index:
+    path:     /
+    defaults: { _controller: SOCSocBundle:Default:index }
+
+soc_dashboard_news:
+    path:     /dashboard/news
+    defaults: { _controller: SOCSocBundle:Default:news }
+
+soc_template_index:
+    path:     /template/{name}
+    defaults: { _controller: SOCSocBundle:Default:template }
+
+soc_lineup_index:
+    path:     /lineup
+    defaults: { _controller: SOCSocBundle:Default:index }
+
+soc_standings_index:
+    path:     /standings
+    defaults: { _controller: SOCSocBundle:Default:index }
+
+soc_matchday_index:
+    path:     /matchday
     defaults: { _controller: SOCSocBundle:Default:index }
 
 SOCSocBundle_player:
