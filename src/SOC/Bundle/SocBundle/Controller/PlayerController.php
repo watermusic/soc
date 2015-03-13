@@ -8,6 +8,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
 use SOC\Bundle\SocBundle\Entity\Player;
 use SOC\Bundle\SocBundle\Form\PlayerType;
+use Symfony\Component\HttpFoundation\Response;
 
 /**
  * Player controller.
@@ -107,9 +108,11 @@ class PlayerController extends Controller
             "user" => $user,
         ));
     }
+
     /**
      * Creates a new Player entity.
-     *
+     * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
      */
     public function createAction(Request $request)
     {
@@ -161,6 +164,7 @@ class PlayerController extends Controller
     /**
      * Displays a form to create a new Player entity.
      *
+     * @return Response
      */
     public function newAction()
     {
@@ -179,7 +183,8 @@ class PlayerController extends Controller
 
     /**
      * Finds and displays a Player entity.
-     *
+     * @param int $id
+     * @return \Symfony\Component\HttpFoundation\Response
      */
     public function showAction($id)
     {
@@ -206,7 +211,8 @@ class PlayerController extends Controller
 
     /**
      * Displays a form to edit an existing Player entity.
-     *
+     * @param int $id
+     * @return \Symfony\Component\HttpFoundation\Response
      */
     public function editAction($id)
     {
@@ -254,9 +260,12 @@ class PlayerController extends Controller
 
         return $form;
     }
+
     /**
      * Edits an existing Player entity.
-     *
+     * @param Request $request
+     * @param int $id
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
      */
     public function updateAction(Request $request, $id)
     {
@@ -286,9 +295,12 @@ class PlayerController extends Controller
             "query" => $this->getQuery(),
         ));
     }
+
     /**
      * Deletes a Player entity.
-     *
+     * @param Request $request
+     * @param int $id
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse
      */
     public function deleteAction(Request $request, $id)
     {
@@ -312,12 +324,9 @@ class PlayerController extends Controller
 
     /**
      * Search a Soc entity
-     *
+     * @return JsonResponse
      */
     public function searchAction() {
-
-        error_reporting(E_ALL);
-        ini_set("display_errors", "1");
 
         $request = $this->get("request");
         $search = $request->get('query');
@@ -366,12 +375,18 @@ class PlayerController extends Controller
      */
     private function getStaticViewParameter() {
 
-        $players = $this->container->getParameter("soc_player");
+        $userManager = $this->container->get("fos_user.user_manager");
+
+        $players = [];
+        $users = $userManager->findUsers();
+        foreach ($users as $user) {
+            $players[] = $user->getUsername();
+        }
+
         /**
          * @var $conn \Doctrine\DBAL\Connection
          */
         $conn = $this->getDoctrine()->getConnection();
-
 
         $sql = "SELECT DISTINCT verein FROM soc_player ORDER BY verein ASC";
         $stmt = $conn->executeQuery($sql);
@@ -396,7 +411,9 @@ class PlayerController extends Controller
         return $result;
     }
 
-
+    /**
+     * @return array
+     */
     private function getQuery() {
 
         $request = $this->get("request");

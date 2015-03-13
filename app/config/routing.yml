@@ -10,5 +10,5 @@ root:
     path: /
     defaults:
         _controller: FrameworkBundle:Redirect:urlRedirect
-        path: soc/player
+        path: /soc/player
         permanent: true

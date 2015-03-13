@@ -85,7 +85,6 @@ class DefaultController extends Controller
      */
     public function templateAction($name)
     {
-
         return new Response();
 
     }
