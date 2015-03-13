@@ -21,6 +21,7 @@ class DefaultController extends Controller
         $standings = [];
         $ppd = [];
         $season = [];
+        $count = 0;
         foreach($scores as $score) {
             $name = ucfirst($score->getPlayer()->getUsername());
             if(!isset($standings[$name])) {
@@ -32,6 +33,7 @@ class DefaultController extends Controller
                 $ppd[$name] = array();
             }
             $ppd[$name][] = $score->getScore();
+            $count = count($ppd[$name]);
         }
         arsort($standings);
 
@@ -44,8 +46,9 @@ class DefaultController extends Controller
                 'template' => file_get_contents(__DIR__ . '/../Resources/views/Dashboard/timeline-item.html.mustache'),
             ),
             'ppd' => array(
-                'labels' => json_encode(range(1, count($ppd[$name]))),
-                'data' => json_encode($ppd[ucfirst($user->getUsername())]),
+                'labels' => json_encode(range(1, $count)),
+                //'data' => json_encode($ppd[ucfirst($user->getUsername())]),
+                'data' => json_encode($ppd),
             ),
         );
 
