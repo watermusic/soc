@@ -2,8 +2,10 @@
 
 namespace SOC\Bundle\SocBundle\Controller;
 
+use SOC\Bundle\SocBundle\Entity\User;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Security\Core\Security;
 use Symfony\Component\Security\Core\SecurityContextInterface;
 use Symfony\Component\Security\Core\Exception\AuthenticationException;
 
@@ -16,21 +18,21 @@ class SecurityController extends Controller
         $session = $request->getSession();
 
         // get the error if any (works with forward and redirect -- see below)
-        if ($request->attributes->has(SecurityContextInterface::AUTHENTICATION_ERROR)) {
-            $error = $request->attributes->get(SecurityContextInterface::AUTHENTICATION_ERROR);
-        } elseif (null !== $session && $session->has(SecurityContextInterface::AUTHENTICATION_ERROR)) {
-            $error = $session->get(SecurityContextInterface::AUTHENTICATION_ERROR);
-            $session->remove(SecurityContextInterface::AUTHENTICATION_ERROR);
+        if ($request->attributes->has(Security::AUTHENTICATION_ERROR)) {
+            $error = $request->attributes->get(Security::AUTHENTICATION_ERROR);
+        } elseif (null !== $session && $session->has(Security::AUTHENTICATION_ERROR)) {
+            $error = $session->get(Security::AUTHENTICATION_ERROR);
+            $session->remove(Security::AUTHENTICATION_ERROR);
         } else {
             $error = null;
         }
 
         if (!$error instanceof AuthenticationException) {
-            $error = null; // The value does not come from the security component.
+            $error = null;
         }
 
         // last username entered by the user
-        $lastUsername = (null === $session) ? '' : $session->get(SecurityContextInterface::LAST_USERNAME);
+        $lastUsername = (null === $session) ? '' : $session->get(Security::LAST_USERNAME);
 
         $csrfToken = $this->container->has('form.csrf_provider')
             ? $this->container->get('form.csrf_provider')->generateCsrfToken('authenticate')
@@ -45,17 +47,16 @@ class SecurityController extends Controller
 
     public function renderLogin(array $data)
     {
-        /** @var $userManager \FOS\UserBundle\Model\UserManagerInterface */
-        $userManager = $this->container->get('fos_user.user_manager');
+        $userManager = $this->get('fos_user.user_manager');
         $users = $userManager->findUsers();
 
         $data['users'] = array();
         foreach($users as $user) {
+            /** @var User $user  */
             array_push($data['users'], $user->getUsernameCanonical());
         }
         sort($data['users']);
-        return $this->container->get('templating')->renderResponse('FOSUserBundle:Security:login.html.twig', $data);
+        return $this->get('templating')->renderResponse('FOSUserBundle:Security:login.html.twig', $data);
     }
-
 
 }
