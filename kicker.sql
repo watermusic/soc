@@ -1,5 +1,4 @@
 
-
 CREATE TABLE IF NOT EXISTS `kk_spieler2014_2015` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(100) NOT NULL,
