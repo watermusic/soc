@@ -69,7 +69,7 @@ class DefaultController extends Controller
         $data = array();
         foreach ($items as $node) {
 
-            //$date = new \DateTime($node->getElementsByTagName('pubDate')->item(0)->nodeValue);
+            /** @var \DOMDocument $node */
             $item = array (
                 'title' => $node->getElementsByTagName('title')->item(0)->nodeValue,
                 'desc' => $node->getElementsByTagName('description')->item(0)->nodeValue,
