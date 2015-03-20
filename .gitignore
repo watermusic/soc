@@ -2,7 +2,9 @@
 /app/bootstrap.php.cache
 /app/cache/*
 /app/config/parameters.yml
-/app/logs/*
+/app/logs/
+/app/SymfonyRequirements.php
+/app/check.php
 !app/cache/.gitkeep
 !app/logs/.gitkeep
 /build/
@@ -11,3 +13,4 @@
 /.idea/
 /.vagrant/
 /composer.phar
+/composer.lock

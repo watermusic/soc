@@ -2,6 +2,12 @@ soc_soc:
     resource: "@SOCSocBundle/Resources/config/routing.yml"
     prefix:   /soc
 
+soc_lutz_index:
+    pattern: /lb/{slug}.{_format}
+    defaults: { _controller: SOCSocBundle:Default:test }
+    requirements:
+        _format: html
+
 fos_user:
     resource: "@FOSUserBundle/Resources/config/routing/all.xml"
 

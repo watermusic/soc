@@ -84,12 +84,18 @@ class DefaultController extends Controller
 
 
     /**
-     * @param string $name
+     * @param string $slug
+     * @param string $_format
+     * @return Response
      */
-    public function templateAction($name)
+    public function testAction($slug, $_format)
     {
-        return new Response();
+        $view = array(
+            "slug" => $slug,
+            "_format" => $_format,
+        );
 
+        return $this->render('SOCSocBundle:Default:test.html.twig', $view);
     }
 
 }

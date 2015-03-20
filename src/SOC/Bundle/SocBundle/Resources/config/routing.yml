@@ -22,6 +22,8 @@ soc_matchday_index:
     path:     /matchday
     defaults: { _controller: SOCSocBundle:Default:index }
 
+
+
 SOCSocBundle_player:
     resource: "@SOCSocBundle/Resources/config/routing/player.yml"
     prefix:   /player
