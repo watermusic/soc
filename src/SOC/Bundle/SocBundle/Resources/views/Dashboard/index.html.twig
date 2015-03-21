@@ -1,13 +1,5 @@
 {% extends 'SOCSocBundle:Default:index.html.twig' %}
 
-{% block stylesheets %}
-    {% stylesheets
-    'bundles/socsoc/css/jquery-loading.css'
-    filter='cssrewrite' %}
-    <link rel="stylesheet" href="{{ asset_url }}" />
-    {% endstylesheets %}
-{% endblock %}
-
 {% block content_header %}
 
     <div class="row wrapper border-bottom white-bg page-heading">
@@ -107,7 +99,7 @@
     </div>
     <div class="row">
         <div class="col-lg-12">
-        {{ dump(user.getUsername()) }}
+        {#{{ dump(user.getUsername()) }}#}
         </div>
     </div>
 {% endblock %}
@@ -161,13 +153,10 @@
                     refresh : function() {
 
                         viewCont.html('<br>');
-                        $('#news-timeline').parent().loading();
                         $.getJSON(feed_url)
                                 .done(function(res) {
                                     drawTimeline(res);
-                                    $('#news-timeline').parent().loading('stop');
                                 }).fail(function() {
-                                    $('#news-timeline').parent().loading('stop');
                                 });
 
                     }

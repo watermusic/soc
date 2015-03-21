@@ -13,9 +13,7 @@ class DefaultController extends Controller
     public function indexAction()
     {
         $mn = $this->getDoctrine()->getManager();
-
         $score_repo = $mn->getRepository('SOCSocBundle:Score');
-
         $scores = $score_repo->findAll();
 
         $standings = [];
@@ -37,7 +35,7 @@ class DefaultController extends Controller
         }
         arsort($standings);
 
-        $user = $this->container->get('security.context')->getToken()->getUser();
+        $user = $this->get('security.token_storage')->getToken()->getUser();
 
         $view = array(
             'user' => $user,
