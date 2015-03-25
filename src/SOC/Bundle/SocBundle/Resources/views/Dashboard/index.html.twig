@@ -2,7 +2,7 @@
 
 {% block stylesheets %}
     {% stylesheets
-    'bundles/socsoc/css/jquery-loading.css'
+    'bundles/socsoc/css/nprogress.css'
     filter='cssrewrite' %}
     <link rel="stylesheet" href="{{ asset_url }}" />
     {% endstylesheets %}
@@ -161,13 +161,10 @@
                     refresh : function() {
 
                         viewCont.html('<br>');
-                        $('#news-timeline').parent().loading();
                         $.getJSON(feed_url)
                                 .done(function(res) {
                                     drawTimeline(res);
-                                    $('#news-timeline').parent().loading('stop');
                                 }).fail(function() {
-                                    $('#news-timeline').parent().loading('stop');
                                 });
 
                     }
