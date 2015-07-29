@@ -8,12 +8,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
     {% stylesheets
-    'bundles/socsoc/css/bootstrap.css'
-    'bundles/socsoc/font-awesome/css/font-awesome.css'
-    'bundles/socsoc/css/animate.css'
-    'bundles/socsoc/css/style.css'
-    'bundles/socsoc/css/nprogress.css'
-    filter='cssrewrite' %}
+    '@css_default' %}
     <link rel="stylesheet" href="{{ asset_url }}" />
     {% endstylesheets %}
 
@@ -27,13 +22,13 @@
 {% endblock %}
 
 {% block javascripts %}
+
     {% javascripts
-    '@SOCSocBundle/Resources/public/js/jquery-2.1.1.js'
-    '@SOCSocBundle/Resources/public/js/bootstrap.js'
-    '@SOCSocBundle/Resources/public/js/plugins/metisMenu/jquery.metisMenu.js'
-    '@SOCSocBundle/Resources/public/js/plugins/slimscroll/jquery.slimscroll.js'
-    '@SOCSocBundle/Resources/public/js/underscore-min.js' %}
+    '@js_default' %}
     <script src="{{ asset_url }}"></script>
+    {% endjavascripts %}
+
+    {% javascripts  %}
     <script>
 
         $(function() {

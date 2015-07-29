@@ -18,7 +18,7 @@ use Symfony\Component\DomCrawler\Crawler;
  *
  * @author Antoine Hérault <antoine.herault@gmail.com>
  */
-class ImportCommand extends ContainerAwareCommand
+class PlayerImportCommand extends ContainerAwareCommand
 {
 
     /**
@@ -27,7 +27,7 @@ class ImportCommand extends ContainerAwareCommand
     protected function configure()
     {
         $this
-            ->setName('soc:player:import:ext')
+            ->setName('soc:player:import1')
             ->setDescription('Imports Player from the Kicker.de Website in Storage')
             ->setHelp(
                 <<<EOT

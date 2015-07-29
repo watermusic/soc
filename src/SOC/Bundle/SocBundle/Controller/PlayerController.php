@@ -19,12 +19,12 @@ class PlayerController extends Controller
 
     /**
      * Lists all Player entities.
-     *
+     * @param Request $request
+     * @return Response
      */
-    public function indexAction()
+    public function indexAction(Request $request)
     {
         $em = $this->getDoctrine()->getManager();
-        $request = $this->get("request");
 
         if(!$request->query->has("order")) {
             $request->query->add(array("order" => "vkPreis"));
@@ -34,7 +34,7 @@ class PlayerController extends Controller
             $request->query->add(array("dir" => "DESC"));
         }
 
-        $query = $this->getQuery();
+        $query = $this->getQuery($request);
 
         $queryArray = $request->query->all();
 
@@ -97,7 +97,7 @@ class PlayerController extends Controller
 
         }
 
-        $user = $this->container->get('security.context')->getToken()->getUser();
+        $user = $this->get('security.token_storage')->getToken()->getUser();
 
         return $this->render('SOCSocBundle:Player:index.html.twig', array(
             'entities' => $entities,
@@ -128,14 +128,12 @@ class PlayerController extends Controller
             return $this->redirect($this->generateUrl('soc_player_show', array('id' => $entity->getId())));
         }
 
-        $user = $this->container->get('security.context')->getToken()->getUser();
-
         return $this->render('SOCSocBundle:Player:new.html.twig', array(
             'entity' => $entity,
             'form'   => $form->createView(),
             'statics' => $this->getStaticViewParameter(),
-            "query" => $this->getQuery(),
-            "user" => $user,
+            "query" => $this->getQuery($request),
+            "user" => $this->getCurrentUser(),
         ));
     }
 
@@ -164,29 +162,30 @@ class PlayerController extends Controller
     /**
      * Displays a form to create a new Player entity.
      *
+     * @param Request $request
      * @return Response
      */
-    public function newAction()
+    public function newAction(Request $request)
     {
         $entity = new Player();
         $form   = $this->createCreateForm($entity);
-        $user = $this->container->get('security.context')->getToken()->getUser();
 
         return $this->render('SOCSocBundle:Player:new.html.twig', array(
             'entity' => $entity,
             'form'   => $form->createView(),
             'statics' => $this->getStaticViewParameter(),
-            "query" => $this->getQuery(),
-            "user" => $user,
+            "query" => $this->getQuery($request),
+            "user" => $this->getCurrentUser(),
         ));
     }
 
     /**
      * Finds and displays a Player entity.
      * @param int $id
-     * @return \Symfony\Component\HttpFoundation\Response
+     * @param Request $request
+     * @return Response
      */
-    public function showAction($id)
+    public function showAction($id, Request $request)
     {
         $em = $this->getDoctrine()->getManager();
 
@@ -198,23 +197,22 @@ class PlayerController extends Controller
 
         $deleteForm = $this->createDeleteForm($id);
 
-        $user = $this->container->get('security.context')->getToken()->getUser();
-
         return $this->render('SOCSocBundle:Player:show.html.twig', array(
             'entity'      => $entity,
             'delete_form' => $deleteForm->createView(),
             'statics' => $this->getStaticViewParameter(),
-            "query" => $this->getQuery(),
-            "user" => $user,
+            "query" => $this->getQuery($request),
+            "user" => $this->getCurrentUser(),
         ));
     }
 
     /**
      * Displays a form to edit an existing Player entity.
      * @param int $id
-     * @return \Symfony\Component\HttpFoundation\Response
+     * @param Request $request
+     * @return Response
      */
-    public function editAction($id)
+    public function editAction($id, Request $request)
     {
         $em = $this->getDoctrine()->getManager();
 
@@ -227,15 +225,13 @@ class PlayerController extends Controller
         $editForm = $this->createEditForm($entity);
         $deleteForm = $this->createDeleteForm($id);
 
-        $user = $this->container->get('security.context')->getToken()->getUser();
-
         return $this->render('SOCSocBundle:Player:edit.html.twig', array(
             'entity'      => $entity,
             'edit_form'   => $editForm->createView(),
             'delete_form' => $deleteForm->createView(),
             'statics' => $this->getStaticViewParameter(),
-            "query" => $this->getQuery(),
-            "user" => $user,
+            "query" => $this->getQuery($request),
+            "user" => $this->getCurrentUser(),
         ));
     }
 
@@ -292,7 +288,7 @@ class PlayerController extends Controller
             'edit_form'   => $editForm->createView(),
             'delete_form' => $deleteForm->createView(),
             'statics' => $this->getStaticViewParameter(),
-            "query" => $this->getQuery(),
+            "query" => $this->getQuery($request),
         ));
     }
 
@@ -324,11 +320,11 @@ class PlayerController extends Controller
 
     /**
      * Search a Soc entity
+     * @param Request $request
      * @return JsonResponse
      */
-    public function searchAction() {
+    public function searchAction(Request $request) {
 
-        $request = $this->get("request");
         $search = $request->get('query');
 
         $em = $this->getDoctrine()->getManager();
@@ -412,11 +408,10 @@ class PlayerController extends Controller
     }
 
     /**
+     * @param Request $request
      * @return array
      */
-    private function getQuery() {
-
-        $request = $this->get("request");
+    private function getQuery($request) {
 
         $query = array();
         $query['kaeufer'] = $request->get("kaeufer", null);
@@ -425,6 +420,13 @@ class PlayerController extends Controller
         $query['name'] = $request->get("name", null);
 
         return $query;
+    }
+
+    /**
+     * @return mixed
+     */
+    private function getCurrentUser() {
+        return $this->get('security.token_storage')->getToken()->getUser();
     }
 
 }

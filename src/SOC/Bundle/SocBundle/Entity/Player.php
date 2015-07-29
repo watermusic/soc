@@ -29,11 +29,11 @@ class Player
     private $name;
 
     /**
-     * @var string
+     * @var Team
      *
-     * @ORM\Column(name="verein", type="string", length=255)
+     * @ORM\ManyToOne(targetEntity="Team", cascade={"all"}, fetch="EAGER")
      */
-    private $verein;
+    private $team;
 
     /**
      * @var string
@@ -112,26 +112,26 @@ class Player
     }
 
     /**
-     * Set verein
+     * Set team
      *
-     * @param string $verein
+     * @param Team $team
      * @return Player
      */
-    public function setVerein($verein)
+    public function setTeam(Team $team)
     {
-        $this->verein = $verein;
+        $this->team = $team;
 
         return $this;
     }
 
     /**
-     * Get verein
+     * Get team
      *
-     * @return string
+     * @return Team
      */
-    public function getVerein()
+    public function getTeam()
     {
-        return $this->verein;
+        return $this->team;
     }
 
     /**

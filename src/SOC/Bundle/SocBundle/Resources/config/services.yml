@@ -2,6 +2,13 @@ parameters:
 #    soc_soc.example.class: SOC\Bundle\SocBundle\Example
 
 services:
-#    soc_soc.example:
-#        class: %soc_soc.example.class%
-#        arguments: [@service_id, "plain_value", %parameter%]
+    sonata.admin.player:
+        class: SOC\Bundle\SocBundle\Admin\PlayerAdmin
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: "Content", label: "Spieler" }
+        arguments:
+            - ~
+            - SOC\Bundle\SocBundle\Entity\Player
+            - ~
+        calls:
+            - [ setTranslationDomain, [SOCSocBundle]]
