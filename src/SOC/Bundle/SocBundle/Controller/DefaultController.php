@@ -96,4 +96,10 @@ class DefaultController extends Controller
         return $this->render('SOCSocBundle:Default:test.html.twig', $view);
     }
 
+
+    public function templateAction()
+    {
+
+    }
+
 }

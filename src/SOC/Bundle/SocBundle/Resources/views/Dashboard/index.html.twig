@@ -1,5 +1,13 @@
 {% extends 'SOCSocBundle:Default:index.html.twig' %}
 
+{% block stylesheets %}
+    {% stylesheets
+    'bundles/socsoc/css/nprogress.css'
+    filter='cssrewrite' %}
+    <link rel="stylesheet" href="{{ asset_url }}" />
+    {% endstylesheets %}
+{% endblock %}
+
 {% block content_header %}
 
     <div class="row wrapper border-bottom white-bg page-heading">
@@ -99,7 +107,7 @@
     </div>
     <div class="row">
         <div class="col-lg-12">
-        {#{{ dump(user.getUsername()) }}#}
+
         </div>
     </div>
 {% endblock %}
