@@ -158,7 +158,6 @@ HTML;
                     ->setNote($player["note"])
                     ->setVkPreis($player["vk_preis"])
                     ->setEkPreis(0.0)
-                    ->setKaeufer("")
                     ->setPosition($p)
                     ->setPunkte($player["punkte"]);
 
