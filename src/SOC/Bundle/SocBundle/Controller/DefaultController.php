@@ -12,9 +12,8 @@ class DefaultController extends Controller
 
     public function indexAction()
     {
-        $mn = $this->getDoctrine()->getManager();
-        $score_repo = $mn->getRepository('SOCSocBundle:Score');
-        $scores = $score_repo->findAll();
+        $scoreRepo = $this->getDoctrine()->getRepository('SOCSocBundle:Score');
+        $scores = $scoreRepo->findAll();
 
         $standings = [];
         $ppd = [];

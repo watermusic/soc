@@ -7,12 +7,12 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 
 /**
- * Team
+ * Position
  *
- * @ORM\Table(name="soc_team",indexes={@ORM\Index(columns={"name"})})
- * @ORM\Entity(repositoryClass="SOC\Bundle\SocBundle\Entity\TeamRepository")
+ * @ORM\Table(name="soc_position",indexes={@ORM\Index(columns={"name"})})
+ * @ORM\Entity(repositoryClass="SOC\Bundle\SocBundle\Entity\PositionRepository")
  */
-class Team
+class Position
 {
     /**
      * @var integer
@@ -32,7 +32,7 @@ class Team
 
     /**
      * @var Collection|Player[]
-     * @ORM\OneToMany(targetEntity="SOC\Bundle\SocBundle\Entity\Player", mappedBy="verein", cascade={"all"}, orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity="SOC\Bundle\SocBundle\Entity\Player", mappedBy="position", cascade={"all"}, orphanRemoval=true)
      */
     private $players;
 
@@ -83,13 +83,13 @@ class Team
      * Add player
      *
      * @param Player $player
-     * @return Team
+     * @return Position
      */
     public function addPlayer(Player $player)
     {
         if (!$this->hasPlayer($player)) {
             $this->players[] = $player;
-            $player->setTeam($this);
+            $player->setPosition($this);
         }
 
         return $this;
@@ -99,12 +99,12 @@ class Team
      * Remove player
      *
      * @param Player $player
-     * @return Team
+     * @return Position
      */
     public function removePlayer(Player $player)
     {
         $this->players->removeElement($player);
-        $player->setTeam(null);
+        $player->setPosition(null);
         return $this;
     }
 

@@ -2,6 +2,7 @@
 
 namespace SOC\Bundle\SocBundle\Controller;
 
+use SOC\Bundle\SocBundle\Entity\User;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -376,31 +377,26 @@ class PlayerController extends Controller
         $players = [];
         $users = $userManager->findUsers();
         foreach ($users as $user) {
+            /**
+             * @var $user User
+             */
             $players[] = $user->getUsername();
         }
 
-        /**
-         * @var $conn \Doctrine\DBAL\Connection
-         */
-        $conn = $this->getDoctrine()->getConnection();
 
-        $sql = "SELECT DISTINCT verein FROM soc_player ORDER BY verein ASC";
-        $stmt = $conn->executeQuery($sql);
-        $res = $stmt->fetchAll();
+        $teamRepo = $this->getDoctrine()->getRepository('SOCSocBundle:Team');
+        $teams = $teamRepo->findAll();
+
+        $posRepo = $this->getDoctrine()->getRepository('SOCSocBundle:Position');
+        $positionen = $posRepo->findAll();
 
         $vereine = array("- alle -");
-        foreach($res as $val) {
-            array_push($vereine, $val["verein"]);
+        foreach($teams as $team) {
+            array_push($vereine, $team->getName());
         }
 
         $result = array();
-        $result["positionen"] = array(
-            "- alle -",
-            "Torwart",
-            "Abwehr",
-            "Mittelfeld",
-            "Sturm",
-        );
+        $result["positionen"] = $positionen;
         $result["spieler"] = $players;
         $result["vereine"] = $vereine;
 

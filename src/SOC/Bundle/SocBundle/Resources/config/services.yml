@@ -12,3 +12,36 @@ services:
             - ~
         calls:
             - [ setTranslationDomain, [SOCSocBundle]]
+
+    sonata.admin.user:
+        class: SOC\Bundle\SocBundle\Admin\UserAdmin
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: "Content", label: "Teilnehmer" }
+        arguments:
+            - ~
+            - SOC\Bundle\SocBundle\Entity\User
+            - ~
+        calls:
+            - [ setTranslationDomain, [SOCSocBundle]]
+
+    sonata.admin.position:
+        class: SOC\Bundle\SocBundle\Admin\PositionAdmin
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: "Content", label: "Positionen" }
+        arguments:
+            - ~
+            - SOC\Bundle\SocBundle\Entity\Position
+            - ~
+        calls:
+            - [ setTranslationDomain, [SOCSocBundle]]
+
+    sonata.admin.team:
+        class: SOC\Bundle\SocBundle\Admin\TeamAdmin
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: "Content", label: "Vereine" }
+        arguments:
+            - ~
+            - SOC\Bundle\SocBundle\Entity\Team
+            - ~
+        calls:
+            - [ setTranslationDomain, [SOCSocBundle]]

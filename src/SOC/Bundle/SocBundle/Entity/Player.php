@@ -38,7 +38,7 @@ class Player
     /**
      * @var string
      *
-     * @ORM\Column(name="position", type="string", length=255)
+     * @ORM\ManyToOne(targetEntity="Position", cascade={"all"}, fetch="EAGER")
      */
     private $position;
 
@@ -57,11 +57,11 @@ class Player
     private $ekPreis;
 
     /**
-     * @var string
+     * @var User
      *
-     * @ORM\Column(name="kaeufer", type="string", length=255)
+     * @ORM\ManyToOne(targetEntity="User", cascade={"all"}, fetch="EAGER")
      */
-    private $kaeufer;
+    private $user;
 
     /**
      * @var float
@@ -137,10 +137,10 @@ class Player
     /**
      * Set position
      *
-     * @param string $position
+     * @param Position $position
      * @return Player
      */
-    public function setPosition($position)
+    public function setPosition(Position $position)
     {
         $this->position = $position;
 
@@ -150,7 +150,7 @@ class Player
     /**
      * Get position
      *
-     * @return string
+     * @return Position
      */
     public function getPosition()
     {
@@ -204,14 +204,14 @@ class Player
     }
 
     /**
-     * Set kaeufer
+     * Set User
      *
-     * @param string $kaeufer
+     * @param User $user
      * @return Player
      */
-    public function setKaeufer($kaeufer)
+    public function setUser(User $user)
     {
-        $this->kaeufer = $kaeufer;
+        $this->user = $user;
 
         return $this;
     }
@@ -219,11 +219,11 @@ class Player
     /**
      * Get kaufer
      *
-     * @return string
+     * @return User
      */
-    public function getKaeufer()
+    public function getUser()
     {
-        return $this->kaeufer;
+        return $this->user;
     }
 
     /**

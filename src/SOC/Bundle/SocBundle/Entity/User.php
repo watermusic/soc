@@ -25,9 +25,16 @@ class User extends BaseUser
      */
     protected $scores;
 
+    /**
+     * @ORM\OneToMany(targetEntity="Player", mappedBy="user")
+     */
+    protected $players;
+
+
     public function __construct()
     {
         $this->scores = new ArrayCollection();
+        $this->players = new ArrayCollection();
         parent::__construct();
     }
 
@@ -61,6 +68,40 @@ class User extends BaseUser
         if ($this->scores->contains($score)) {
             $score->setPlayer(null);
             $this->scores->removeElement($score);
+        }
+        return $this;
+    }
+
+    /**
+     * @return Collection|Player[]
+     */
+    public function getPlayer()
+    {
+        return $this->players;
+    }
+
+    /**
+     * @param Player $player
+     * @return $this
+     */
+    public function addPlayer(Player $player)
+    {
+        if (!$this->players->contains($player)) {
+            $player->setUser($this);
+            $this->players->add($player);
+        }
+        return $this;
+    }
+
+    /**
+     * @param Player $player
+     * @return $this
+     */
+    public function removePlayer(Player $player)
+    {
+        if ($this->players->contains($player)) {
+            $player->setUser(null);
+            $this->players->removeElement($player);
         }
         return $this;
     }
