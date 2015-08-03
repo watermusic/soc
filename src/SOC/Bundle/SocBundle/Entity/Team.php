@@ -32,7 +32,7 @@ class Team
 
     /**
      * @var Collection|Player[]
-     * @ORM\OneToMany(targetEntity="SOC\Bundle\SocBundle\Entity\Player", mappedBy="verein", cascade={"all"}, orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity="SOC\Bundle\SocBundle\Entity\Player", mappedBy="team", cascade={"all"}, orphanRemoval=true)
      */
     private $players;
 

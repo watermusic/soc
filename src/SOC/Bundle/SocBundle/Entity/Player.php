@@ -31,14 +31,14 @@ class Player
     /**
      * @var Team
      *
-     * @ORM\ManyToOne(targetEntity="Team", cascade={"all"}, fetch="EAGER")
+     * @ORM\ManyToOne(targetEntity="Team", inversedBy="players", cascade={"all"}, fetch="EAGER")
      */
     private $team;
 
     /**
      * @var string
      *
-     * @ORM\ManyToOne(targetEntity="Position", cascade={"all"}, fetch="EAGER")
+     * @ORM\ManyToOne(targetEntity="Position", inversedBy="players", cascade={"all"}, fetch="EAGER")
      */
     private $position;
 
@@ -59,7 +59,7 @@ class Player
     /**
      * @var User
      *
-     * @ORM\ManyToOne(targetEntity="User", cascade={"all"}, fetch="EAGER")
+     * @ORM\ManyToOne(targetEntity="User", inversedBy="players", cascade={"all"}, fetch="EAGER")
      */
     private $user;
 
