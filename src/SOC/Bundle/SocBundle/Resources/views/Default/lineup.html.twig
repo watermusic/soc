@@ -227,7 +227,7 @@
 
                                                         <li class="bench-item">
 
-                                                            <div class="ibox-content text-center pi {{ player.team.name|lower }}">
+                                                            <div class="ibox-content text-center pi {{ player.team.name|lower }}" data-ref="{{ player.id }}">
                                                                 <h4 class="title">{{ player.name}}</h4>
                                                                 <div class="m-b-sm">
                                                                     <img alt="image" class="img-circle portrait" src="{{ player.thumbUrl}}">
@@ -288,6 +288,9 @@
     <script>
 
         $(function() {
+
+            var lineUp = {{ lineup.data|json_encode }};
+
         });
 
     </script>

@@ -26,6 +26,11 @@ class User extends BaseUser
     protected $scores;
 
     /**
+     * @ORM\OneToMany(targetEntity="Lineup", mappedBy="user")
+     */
+    protected $lineups;
+
+    /**
      * @ORM\OneToMany(targetEntity="Player", mappedBy="user")
      */
     protected $players;
@@ -35,6 +40,7 @@ class User extends BaseUser
     {
         $this->scores = new ArrayCollection();
         $this->players = new ArrayCollection();
+        $this->lineups = new ArrayCollection();
         parent::__construct();
     }
 
@@ -102,6 +108,41 @@ class User extends BaseUser
         if ($this->players->contains($player)) {
             $player->setUser(null);
             $this->players->removeElement($player);
+        }
+        return $this;
+    }
+
+
+    /**
+     * @return Collection|Lineup[]
+     */
+    public function getLineups()
+    {
+        return $this->lineups;
+    }
+
+    /**
+     * @param Lineup $lineup
+     * @return $this
+     */
+    public function addLineup(Lineup $lineup)
+    {
+        if (!$this->lineups->contains($lineup)) {
+            $lineup->setUser($this);
+            $this->lineups->add($lineup);
+        }
+        return $this;
+    }
+
+    /**
+     * @param Lineup $lineup
+     * @return $this
+     */
+    public function removeLineup(Lineup $lineup)
+    {
+        if ($this->players->contains($lineup)) {
+            $lineup->setUser(null);
+            $this->players->removeElement($lineup);
         }
         return $this;
     }

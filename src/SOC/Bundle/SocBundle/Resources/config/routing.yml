@@ -14,6 +14,10 @@ soc_lineup_index:
     path:     /lineup
     defaults: { _controller: SOCSocBundle:Default:lineup }
 
+soc_lineup_test:
+    path:     /test
+    defaults: { _controller: SOCSocBundle:Default:test }
+
 soc_standings_index:
     path:     /standings
     defaults: { _controller: SOCSocBundle:Default:index }
@@ -22,8 +26,13 @@ soc_matchday_index:
     path:     /matchday
     defaults: { _controller: SOCSocBundle:Default:index }
 
-
-
-SOCSocBundle_player:
+soc_player:
     resource: "@SOCSocBundle/Resources/config/routing/player.yml"
     prefix:   /player
+
+soc_rest:
+    resource: "@SOCSocBundle/Resources/config/routing/rest.yml"
+    prefix:   /api/rest
+
+
+

@@ -2,6 +2,7 @@
 
 namespace SOC\Bundle\SocBundle\Controller;
 
+use SOC\Bundle\SocBundle\Entity\Lineup;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
@@ -87,8 +88,11 @@ class DefaultController extends Controller
         $doctrine = $this->getDoctrine();
         $teamRepository = $doctrine->getRepository('SOCSocBundle:Team');
         $playerRepository = $doctrine->getRepository('SOCSocBundle:Player');
+        $lineupRepository = $doctrine->getRepository('SOCSocBundle:Lineup');
 
         $teams = $teamRepository->findAll();
+
+        $lineups = $lineupRepository->findAll();
 
         $allPlayers = $playerRepository->findBy(array('user' => $user));
         $positionen = array();
@@ -105,7 +109,7 @@ class DefaultController extends Controller
 
         $view = array(
             'user' => $user,
-            'lineup' => array(1,2,3,4,5,6,7,8,9,10,11),
+            'lineup' => $lineups[0],
             'teams' => $teams,
             'positionen' => $positionen,
         );
@@ -116,15 +120,33 @@ class DefaultController extends Controller
     }
 
     /**
-     * @param string $slug
-     * @param string $_format
      * @return Response
      */
-    public function testAction($slug, $_format)
+    public function testAction()
     {
+
+        $doctrine = $this->getDoctrine();
+        $user = $this->get('security.token_storage')->getToken()->getUser();
+        $om = $doctrine->getManager();
+
+        $data = array(
+            "lineup" => array(1, 57, 58, 93, 228, 253, 281, 292, 297, 499, 504),
+        );
+
+        $lineup = new Lineup();
+        $lineup
+            ->setUser($user)
+            ->setMatchday(1)
+            ->setData($data)
+            ;
+
+
+        $om->persist($lineup);
+        $om->flush();
+
         $view = array(
-            "slug" => $slug,
-            "_format" => $_format,
+            "slug" => '',
+            "_format" => '',
         );
 
         return $this->render('SOCSocBundle:Default:test.html.twig', $view);
