@@ -31,3 +31,4 @@ security:
         - { path: ^/admin/, role: ROLE_ADMIN }
         - { path: ^/soc/dashboard, role: ROLE_ADMIN }
         - { path: ^/soc/player, role: ROLE_USER }
+        - { path: ^/soc/lineup, role: ROLE_USER }

@@ -106,6 +106,7 @@ HTML;
             $result["note"] = 3.5;
             $result["vk_preis"] = str_replace(",", "", $player->filter("span.wert b")->extract("_text")[0]) * 100000;
             $result["punkte"] = (float)$player->filter("span.pkt b")->extract("_text")[0];
+            $result["thumb_url"] = $player->filter("img")->extract("src")[0];
             $result["position"] = $position;
 
             $result["verein"] = str_replace(
@@ -159,6 +160,7 @@ HTML;
                     ->setVkPreis($player["vk_preis"])
                     ->setEkPreis(0.0)
                     ->setPosition($p)
+                    ->setThumbUrl($player["thumb_url"])
                     ->setPunkte($player["punkte"]);
 
                 $om->persist($entity);

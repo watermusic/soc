@@ -36,7 +36,7 @@ class Player
     private $team;
 
     /**
-     * @var string
+     * @var Position
      *
      * @ORM\ManyToOne(targetEntity="Position", inversedBy="players", cascade={"all"}, fetch="EAGER")
      */
@@ -77,6 +77,12 @@ class Player
      */
     private $punkte;
 
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="thumb_url", type="string", length=255)
+     */
+    private $thumbUrl;
 
     /**
      * Get id
@@ -271,4 +277,24 @@ class Player
     {
         return $this->punkte;
     }
+
+    /**
+     * @return string
+     */
+    public function getThumbUrl()
+    {
+        return $this->thumbUrl;
+    }
+
+    /**
+     * @param string $thumbUrl
+     * @return Player
+     */
+    public function setThumbUrl($thumbUrl)
+    {
+        $this->thumbUrl = $thumbUrl;
+
+        return $this;
+    }
+
 }

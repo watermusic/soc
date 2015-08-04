@@ -80,6 +80,41 @@ class DefaultController extends Controller
     }
 
 
+    public function lineupAction()
+    {
+
+        $user = $this->get('security.token_storage')->getToken()->getUser();
+        $doctrine = $this->getDoctrine();
+        $teamRepository = $doctrine->getRepository('SOCSocBundle:Team');
+        $playerRepository = $doctrine->getRepository('SOCSocBundle:Player');
+
+        $teams = $teamRepository->findAll();
+
+        $allPlayers = $playerRepository->findBy(array('user' => $user));
+        $positionen = array();
+
+        foreach ($allPlayers as $player) {
+
+            $posName = $player->getPosition()->getName();
+            if(!isset($positionen[$posName])) {
+                $positionen[$posName] = array();
+            }
+            array_push($positionen[$posName], $player);
+        }
+
+
+        $view = array(
+            'user' => $user,
+            'lineup' => array(1,2,3,4,5,6,7,8,9,10,11),
+            'teams' => $teams,
+            'positionen' => $positionen,
+        );
+
+        dump($view);
+
+        return $this->render('SOCSocBundle:Default:lineup.html.twig', $view);
+    }
+
     /**
      * @param string $slug
      * @param string $_format

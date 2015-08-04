@@ -12,7 +12,7 @@ soc_template_index:
 
 soc_lineup_index:
     path:     /lineup
-    defaults: { _controller: SOCSocBundle:Default:index }
+    defaults: { _controller: SOCSocBundle:Default:lineup }
 
 soc_standings_index:
     path:     /standings

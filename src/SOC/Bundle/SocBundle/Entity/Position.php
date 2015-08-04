@@ -14,6 +14,15 @@ use Doctrine\Common\Collections\Collection;
  */
 class Position
 {
+
+    const POS_TORWART = 'TW';
+
+    const POS_ABWEHR = 'AB';
+
+    const POS_MITTELFELD = 'MF';
+
+    const POS_STURM = 'ST';
+
     /**
      * @var integer
      *
