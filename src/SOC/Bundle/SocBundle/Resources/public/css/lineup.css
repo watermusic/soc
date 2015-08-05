@@ -1,8 +1,8 @@
 .pi {
     padding:0;
     overflow: hidden;
-    /*border: 1px solid #e7eaec;*/
-    width: 150px;
+    border: 1px solid #e7eaec;
+    width: 140px;
     margin: 0 12px 12px 0;
 }
 .pi:hover,
@@ -19,9 +19,7 @@
     background-color: #f8f8f9;
     color: #bebec3;
     font-weight: 600;
-}
-.pi .player-imitation.xl {
-    padding: 120px 0;
+    position: relative;
 }
 .pi .player-desc {
     padding: 20px;
@@ -54,12 +52,12 @@
     position: relative;
 }
 
-.pi:before {
+.pi .player-imitation:before {
     content: ' ';
     display: block;
     position: absolute;
     left: 50%;
-    top: 20%;
+    top: 0;
     width: 100%;
     height: 100%;
     z-index: 1;
@@ -74,109 +72,109 @@
 
 
 
-.pi.augsburg:before {
+.pi .player-imitation.augsburg:before {
     background-image: url(/bundles/socsoc/img/augsburg.svg);
 }
 
 
 
-.pi.bayern:before {
+.pi .player-imitation.bayern:before {
     background-image: url(/bundles/socsoc/img/bayern.svg);
 }
 
 
 
-.pi.bremen:before {
+.pi .player-imitation.bremen:before {
     background-image: url(/bundles/socsoc/img/bremen.svg);
 }
 
 
 
-.pi.darmstadt:before {
+.pi .player-imitation.darmstadt:before {
     background-image: url(/bundles/socsoc/img/darmstadt.svg);
 }
 
 
 
-.pi.dortmund:before {
+.pi .player-imitation.dortmund:before {
     background-image: url(/bundles/socsoc/img/dortmund.svg);
 }
 
 
 
-.pi.frankfurt:before {
+.pi .player-imitation.frankfurt:before {
     background-image: url(/bundles/socsoc/img/frankfurt.svg);
 }
 
 
 
-.pi.gladbach:before {
+.pi .player-imitation.gladbach:before {
     background-image: url(/bundles/socsoc/img/gladbach.svg);
 }
 
 
 
-.pi.hamburg:before {
+.pi .player-imitation.hamburg:before {
     background-image: url(/bundles/socsoc/img/hamburg.svg);
 }
 
 
 
-.pi.hannover:before {
+.pi .player-imitation.hannover:before {
     background-image: url(/bundles/socsoc/img/hannover.svg);
 }
 
 
 
-.pi.hertha:before {
+.pi .player-imitation.hertha:before {
     background-image: url(/bundles/socsoc/img/hertha.svg);
 }
 
 
 
-.pi.hoffenheim:before {
+.pi .player-imitation.hoffenheim:before {
     background-image: url(/bundles/socsoc/img/hoffenheim.svg);
 }
 
 
 
-.pi.ingolstadt:before {
+.pi .player-imitation.ingolstadt:before {
     background-image: url(/bundles/socsoc/img/ingolstadt.svg);
 }
 
 
 
-.pi.köln:before {
+.pi .player-imitation.köln:before {
     background-image: url(/bundles/socsoc/img/köln.svg);
 }
 
 
 
-.pi.leverkusen:before {
+.pi .player-imitation.leverkusen:before {
     background-image: url(/bundles/socsoc/img/leverkusen.svg);
 }
 
 
 
-.pi.mainz:before {
+.pi .player-imitation.mainz:before {
     background-image: url(/bundles/socsoc/img/mainz.svg);
 }
 
 
 
-.pi.schalke:before {
+.pi .player-imitation.schalke:before {
     background-image: url(/bundles/socsoc/img/schalke.svg);
 }
 
 
 
-.pi.stuttgart:before {
+.pi .player-imitation.stuttgart:before {
     background-image: url(/bundles/socsoc/img/stuttgart.svg);
 }
 
 
 
-.pi.wolfsburg:before {
+.pi .player-imitation.wolfsburg:before {
     background-image: url(/bundles/socsoc/img/wolfsburg.svg);
 }
 

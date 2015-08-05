@@ -97,8 +97,8 @@
                         <div class="ibox pi">
                             <div class="ibox-content">
 
-                                <div class="player-imitation">
-                                    <img class="img-circle" src="{{ player.thumbUrl}}">
+                                <div class="player-imitation {{ player.team.name|lower }}">
+                                    <img class="img-circle portrait" src="{{ player.thumbUrl}}">
                                 </div>
                                 <div class="player-desc">
                                     <small class="text-muted">{{ player.team}}</small>

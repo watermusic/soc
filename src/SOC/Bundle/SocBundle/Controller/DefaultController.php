@@ -124,10 +124,8 @@ class DefaultController extends Controller
 
         $user = $this->get('security.token_storage')->getToken()->getUser();
         $doctrine = $this->getDoctrine();
-        $teamRepository = $doctrine->getRepository('SOCSocBundle:Team');
         $playerRepository = $doctrine->getRepository('SOCSocBundle:Player');
 
-        $teams = $teamRepository->findAll();
         $allPlayers = $playerRepository->findBy(array('user' => $user));
 
         $playersNeeded = $this->getParameter('soc_players_needed');
