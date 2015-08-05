@@ -23,8 +23,7 @@ class Lineup
 
     /**
      * @var User
-     * @ORM\ManyToOne(targetEntity="User", inversedBy="scores")
-     * @ORM\JoinColumn(name="player", referencedColumnName="id")
+     * @ORM\ManyToOne(targetEntity="User", inversedBy="lineups")
      **/
     private $user;
 

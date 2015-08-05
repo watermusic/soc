@@ -25,6 +25,9 @@
             <li {% if app.request.get('_route') == 'soc_lineup_index' %} class="active"{% endif %}>
                 <a href="{{ path('soc_lineup_index') }}"><i class="fa fa-users"></i> <span class="nav-label">Aufstellung</span></a>
             </li>
+            <li {% if app.request.get('_route') == 'soc_team_index' %} class="active"{% endif %}>
+                <a href="{{ path('soc_team_index') }}"><i class="fa fa-users"></i> <span class="nav-label">Mein Team</span></a>
+            </li>
             {#<li {% if app.request.get('_route') == 'soc_standings_index' %} class="active"{% endif %}>#}
                 {#<a href="{{ path('soc_standings_index') }}"><i class="fa fa-list-ol"></i> <span class="nav-label">Tabelle</span></a>#}
             {#</li>#}
@@ -32,8 +35,8 @@
                 {#<a href="{{ path('soc_matchday_index') }}"><i class="fa fa-table"></i> <span class="nav-label">Punkte pro Spieltag</span></a>#}
             {#</li>#}
             {% if is_granted('ROLE_ADMIN') %}
-            <li {% if app.request.get('_route') == 'sonata_admin_dashboard' %} class="active"{% endif %}>
-                <a href="{{ path('sonata_admin_dashboard') }}"><i class="fa fa-euro"></i> <span class="nav-label">Versteigerung</span></a>
+            <li {% if app.request.get('_route') == 'admin_soc_soc_player_list' %} class="active"{% endif %}>
+                <a href="{{ path('admin_soc_soc_player_list') }}"><i class="fa fa-euro"></i> <span class="nav-label">Versteigerung</span></a>
             </li>
             {% endif %}
         </ul>

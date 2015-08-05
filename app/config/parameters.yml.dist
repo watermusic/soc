@@ -1,19 +1,30 @@
 parameters:
-    database_driver:   pdo_mysql
-    database_host:     127.0.0.1
-    database_port:     ~
-    database_name:     symfony
-    database_user:     root
-    database_password: ~
+    database_driver: pdo_mysql
+    database_host: 127.0.0.1
+    database_port: null
+    database_name: soc
+    database_user: root
+    database_password: linuxx
 
-    mailer_transport:  smtp
-    mailer_host:       127.0.0.1
-    mailer_user:       ~
-    mailer_password:   ~
+    mailer_transport: smtp
+    mailer_host: 127.0.0.1
+    mailer_user: null
+    mailer_password: null
 
-    locale:            en
-    secret:            ThisTokenIsNotSoSecretChangeIt
+    locale: de
+    secret: rantanplan
 
-    debug_toolbar:          true
-    debug_redirects:        false
+    debug_toolbar: true
+    debug_redirects: false
+
     use_assetic_controller: true
+
+    soc_participants:
+        - Lutz
+        - Jens
+        - Torsten
+        - Christian
+        - Alex
+
+    soc_budget: 60000000
+    soc_players_needed: 22

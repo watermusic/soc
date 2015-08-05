@@ -38,7 +38,7 @@ class PlayerImportExtendedCommand extends ContainerAwareCommand
     protected function configure()
     {
         $this
-            ->setName('soc:player:import2')
+            ->setName('soc:player:import')
             ->setDescription('Imports Player from the Kicker.de Website in Storage')
             ->setHelp(
                 <<<EOT

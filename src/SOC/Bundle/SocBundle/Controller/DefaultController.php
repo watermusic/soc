@@ -119,6 +119,44 @@ class DefaultController extends Controller
         return $this->render('SOCSocBundle:Default:lineup.html.twig', $view);
     }
 
+    public function teamAction()
+    {
+
+        $user = $this->get('security.token_storage')->getToken()->getUser();
+        $doctrine = $this->getDoctrine();
+        $teamRepository = $doctrine->getRepository('SOCSocBundle:Team');
+        $playerRepository = $doctrine->getRepository('SOCSocBundle:Player');
+
+        $teams = $teamRepository->findAll();
+        $allPlayers = $playerRepository->findBy(array('user' => $user));
+
+        $playersNeeded = $this->getParameter('soc_players_needed');
+        $budget = $this->getParameter('soc_budget');
+
+        $moneySpend = 0;
+        foreach ($allPlayers as $player) {
+            $moneySpend += $player->getEkPreis();
+        }
+
+        $moneyLeft = ($budget - $moneySpend >= 0) ? $budget - $moneySpend : 0;
+        $playersLeft = $playersNeeded - count($allPlayers);
+
+        $moneyPerPlayer = $moneyLeft / $playersLeft;
+
+        $view = array(
+            'user' => $user,
+            'players' => $allPlayers,
+            'title' => 'Team von ' . ucfirst($user->getUsername()),
+            'players_needed' => $playersNeeded,
+            'money_spend' => $moneySpend,
+            'money_left' => $moneyLeft,
+            'money_per_player' => $moneyPerPlayer,
+            'budget' => $budget,
+        );
+
+        return $this->render('SOCSocBundle:Default:team.html.twig', $view);
+    }
+
     /**
      * @return Response
      */

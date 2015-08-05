@@ -45,14 +45,14 @@ class Player
     /**
      * @var float
      *
-     * @ORM\Column(name="vk_preis", type="float")
+     * @ORM\Column(name="vk_preis", type="decimal", scale=2)
      */
     private $vkPreis;
 
     /**
      * @var float
      *
-     * @ORM\Column(name="ek_preis", type="float")
+     * @ORM\Column(name="ek_preis", type="decimal", scale=2)
      */
     private $ekPreis;
 

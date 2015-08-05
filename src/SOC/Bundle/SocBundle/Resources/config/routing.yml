@@ -14,6 +14,10 @@ soc_lineup_index:
     path:     /lineup
     defaults: { _controller: SOCSocBundle:Default:lineup }
 
+soc_team_index:
+    path:     /team
+    defaults: { _controller: SOCSocBundle:Default:team }
+
 soc_lineup_test:
     path:     /test
     defaults: { _controller: SOCSocBundle:Default:test }

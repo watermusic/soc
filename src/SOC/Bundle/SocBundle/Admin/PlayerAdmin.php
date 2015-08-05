@@ -26,6 +26,7 @@ class PlayerAdmin extends Admin
             ->add('name', 'text', array('label' => 'Name'))
             ->add('team', 'sonata_type_model_list')
             ->add('position', 'sonata_type_model_list')
+            ->add('vk_preis', 'money')
             ->add('user', 'sonata_type_model_list', array('label' => 'Teilnehmer'))
         ;
     }
@@ -37,6 +38,7 @@ class PlayerAdmin extends Admin
             ->add('name')
             ->add('team')
             ->add('position')
+            ->add('user')
         ;
     }
 
@@ -46,12 +48,41 @@ class PlayerAdmin extends Admin
         $listMapper
             ->addIdentifier('id')
             ->add('name')
-            ->add('team')
+            ->add(
+                'team',
+                null,
+                array(
+                    'sortable' => true,
+                    'sort_field_mapping' => array('fieldName' => 'name'),
+                    'sort_parent_association_mappings' => array(array('fieldName' => 'team')),
+                )
+            )
             ->add('position')
             ->add('punkte')
-            ->add('user', null, array('editable' => true, 'label' => 'Käufer'))
-            ->add('ek_preis', 'currency', array('editable' => true, 'currency' => 'EUR'))
-            ->add('vk_preis', 'currency', array('currency' => 'EUR', 'label' => 'Listenpreis'))
+            ->add(
+                'user',
+                null,
+                array(
+                    'editable' => true,
+                    'label' => 'Käufer'
+                )
+            )
+            ->add(
+                'ek_preis',
+                'currency',
+                array(
+                    'currency' => 'EUR',
+                    'label' => 'Einkaufspreis',
+                )
+            )
+            ->add(
+                'vk_preis',
+                'currency',
+                array(
+                    'currency' => 'EUR',
+                    'label' => 'Listenpreis',
+                )
+            )
         ;
     }
 

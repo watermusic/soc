@@ -1,0 +1,242 @@
+.pi {
+    padding:0;
+    overflow: hidden;
+    /*border: 1px solid #e7eaec;*/
+    width: 150px;
+    margin: 0 12px 12px 0;
+}
+.pi:hover,
+.pi.active {
+    border: 1px solid transparent;
+    -webkit-box-shadow: 0px 3px 7px 0px #a8a8a8;
+    -moz-box-shadow: 0px 3px 7px 0px #a8a8a8;
+    box-shadow: 0px 3px 7px 0px #a8a8a8;
+}
+
+.pi .player-imitation {
+    text-align: center;
+    padding: 20px 0;
+    background-color: #f8f8f9;
+    color: #bebec3;
+    font-weight: 600;
+}
+.pi .player-imitation.xl {
+    padding: 120px 0;
+}
+.pi .player-desc {
+    padding: 20px;
+    position: relative;
+}
+.pi .player-name {
+    font-size: 16px;
+    font-weight: 600;
+    color: #676a6c;
+    display: block;
+    margin: 2px 0 5px 0;
+}
+.pi .player-name:hover,
+.pi .player-name:focus {
+    color: #1ab394;
+}
+.pi .player-price {
+    font-size: 14px;
+    font-weight: 600;
+    color: #ffffff;
+    background-color: #1ab394;
+    padding: 6px 12px;
+    position: absolute;
+    top: -32px;
+    right: 0;
+}
+
+.pi .title, .pi .portrait, .pi .btn {
+    z-index: 2;
+    position: relative;
+}
+
+.pi:before {
+    content: ' ';
+    display: block;
+    position: absolute;
+    left: 50%;
+    top: 20%;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+    opacity: 0.25;
+    background-repeat: no-repeat;
+    -ms-background-size: cover;
+    -o-background-size: cover;
+    -moz-background-size: cover;
+    -webkit-background-size: cover;
+    background-size: cover;
+}
+
+
+
+.pi.augsburg:before {
+    background-image: url(/bundles/socsoc/img/augsburg.svg);
+}
+
+
+
+.pi.bayern:before {
+    background-image: url(/bundles/socsoc/img/bayern.svg);
+}
+
+
+
+.pi.bremen:before {
+    background-image: url(/bundles/socsoc/img/bremen.svg);
+}
+
+
+
+.pi.darmstadt:before {
+    background-image: url(/bundles/socsoc/img/darmstadt.svg);
+}
+
+
+
+.pi.dortmund:before {
+    background-image: url(/bundles/socsoc/img/dortmund.svg);
+}
+
+
+
+.pi.frankfurt:before {
+    background-image: url(/bundles/socsoc/img/frankfurt.svg);
+}
+
+
+
+.pi.gladbach:before {
+    background-image: url(/bundles/socsoc/img/gladbach.svg);
+}
+
+
+
+.pi.hamburg:before {
+    background-image: url(/bundles/socsoc/img/hamburg.svg);
+}
+
+
+
+.pi.hannover:before {
+    background-image: url(/bundles/socsoc/img/hannover.svg);
+}
+
+
+
+.pi.hertha:before {
+    background-image: url(/bundles/socsoc/img/hertha.svg);
+}
+
+
+
+.pi.hoffenheim:before {
+    background-image: url(/bundles/socsoc/img/hoffenheim.svg);
+}
+
+
+
+.pi.ingolstadt:before {
+    background-image: url(/bundles/socsoc/img/ingolstadt.svg);
+}
+
+
+
+.pi.köln:before {
+    background-image: url(/bundles/socsoc/img/köln.svg);
+}
+
+
+
+.pi.leverkusen:before {
+    background-image: url(/bundles/socsoc/img/leverkusen.svg);
+}
+
+
+
+.pi.mainz:before {
+    background-image: url(/bundles/socsoc/img/mainz.svg);
+}
+
+
+
+.pi.schalke:before {
+    background-image: url(/bundles/socsoc/img/schalke.svg);
+}
+
+
+
+.pi.stuttgart:before {
+    background-image: url(/bundles/socsoc/img/stuttgart.svg);
+}
+
+
+
+.pi.wolfsburg:before {
+    background-image: url(/bundles/socsoc/img/wolfsburg.svg);
+}
+
+
+.pi-lineup {
+    position: absolute;
+    width: 16%;
+}
+
+.pi-position-1 {
+    top: 78%;
+    left: 41%;
+}
+
+.pi-position-2 {
+    top: 54%;
+    left: 22%;
+}
+
+.pi-position-3 {
+    top: 54%;
+    left: 41%;
+}
+
+.pi-position-4 {
+    top: 54%;
+    left: 60%;
+}
+
+.pi-position-5 {
+    top: 30%;
+    left: 3%;
+}
+
+.pi-position-6 {
+    top: 30%;
+    left: 22%;
+}
+
+.pi-position-7 {
+    top: 30%;
+    left: 41%;
+}
+
+.pi-position-8 {
+    top: 30%;
+    left: 60%;
+}
+
+.pi-position-9 {
+    top: 30%;
+    left: 79%;
+}
+
+.pi-position-10 {
+    top: 5%;
+    left: 31%;
+}
+
+.pi-position-11 {
+    top: 5%;
+    left: 51%;
+}
