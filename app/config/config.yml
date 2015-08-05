@@ -73,6 +73,7 @@ assetic:
                 - bundles/socsoc/css/animate.css
                 - bundles/socsoc/css/style.css
                 - bundles/socsoc/css/nprogress.css
+                - bundles/socsoc/css/lineup.css
             filters:
                 - cssrewrite
 
