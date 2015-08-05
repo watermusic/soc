@@ -114,8 +114,6 @@ class DefaultController extends Controller
             'positionen' => $positionen,
         );
 
-        dump($view);
-
         return $this->render('SOCSocBundle:Default:lineup.html.twig', $view);
     }
 

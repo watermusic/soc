@@ -26,10 +26,21 @@
         }
 
         .bench-item > .pi {
-            background-color: #f9f9f9;
-            position: relative;
+            width: 123px;
+            margin: 0 9px 12px 0;
         }
 
+        .bench-item .ibox-content {
+            padding: 0;
+        }
+
+        .bench-item .pi .player-desc {
+            padding: 7px;
+        }
+
+        .bench-item .btn-xs, .btn-group-xs > .btn {
+            font-size: 9px;
+        }
     </style>
 
 {% endblock %}
@@ -129,16 +140,22 @@
 
                                                         <li class="bench-item">
 
-                                                            <div class="ibox-content text-center pi {{ player.team.name|lower }}" data-ref="{{ player.id }}">
-                                                                <h4 class="title">{{ player.name}}</h4>
-                                                                <div class="m-b-sm">
-                                                                    <img alt="image" class="img-circle portrait" src="{{ player.thumbUrl}}">
-                                                                </div>
-                                                                <div class="text-center">
-                                                                    <a class="btn btn-xs btn-danger btn-outline">TW</a>
-                                                                    <a class="btn btn-xs btn-success btn-outline">AB</a>
-                                                                    <a class="btn btn-xs btn-warning btn-outline">MF</a>
-                                                                    <a class="btn btn-xs btn-success btn-outline">ST</a>
+                                                            <div class="ibox pi" data-ref="{{ player.id }}">
+                                                                <div class="ibox-content">
+
+                                                                    <div class="player-imitation {{ player.team.name|lower }}">
+                                                                        <img class="img-circle portrait" src="{{ player.thumbUrl}}">
+                                                                    </div>
+                                                                    <div class="player-desc">
+                                                                        <small class="text-muted">{{ player.team}}</small>
+                                                                        <a href="#" class="player-name">{{ player.name}}</a>
+                                                                        <div class="small m-t-xs">
+                                                                            <a class="btn btn-xs btn-danger btn-outline">TW</a>
+                                                                            <a class="btn btn-xs btn-success btn-outline">AB</a>
+                                                                            <a class="btn btn-xs btn-warning btn-outline">MF</a>
+                                                                            <a class="btn btn-xs btn-success btn-outline">ST</a>
+                                                                        </div>
+                                                                    </div>
                                                                 </div>
                                                             </div>
 
