@@ -351,6 +351,10 @@
                                 position = $(this).data('position');
 
                             var result = SOC.LineupStorage.add(position, playerData.id);
+                            if(_.isObject(result) === false) {
+                                console.log('Platz schon voll oder Spieler schon auf dem Platz');
+                                return;
+                            }
                             SOC.LineupCtrl.render();
                             SOC.BenchCtrl.hidePlayer(playerData.id);
 
