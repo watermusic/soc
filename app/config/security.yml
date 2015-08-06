@@ -31,6 +31,4 @@ security:
         - { path: ^/register, role: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/resetting, role: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/admin/, role: ROLE_ADMIN }
-        - { path: ^/soc/dashboard, role: ROLE_USER }
-        - { path: ^/soc/player, role: ROLE_USER }
-        - { path: ^/soc/lineup, role: ROLE_USER }
+        - { path: ^/soc, role: ROLE_USER }
