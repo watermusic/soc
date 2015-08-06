@@ -109,7 +109,7 @@ class DefaultController extends Controller
 
         $view = array(
             'user' => $user,
-            'lineup' => $lineups[0],
+            'lineup' => array(),
             'teams' => $teams,
             'positionen' => $positionen,
             'template' => file_get_contents(__DIR__ . '/../Resources/views/Default/lineup-item.html.mustache'),

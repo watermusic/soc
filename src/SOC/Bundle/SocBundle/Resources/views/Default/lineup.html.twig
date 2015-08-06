@@ -351,6 +351,10 @@
                                 position = $(this).data('position');
 
                             var result = SOC.LineupStorage.add(position, playerData.id);
+                            if(!_.isObject(result)) {
+                                console.log('Der Spieler ist schon auf dem Platz oder der Mannschaftteil ist schon komplett.');
+                                return;
+                            }
                             SOC.LineupCtrl.render();
                             SOC.BenchCtrl.hidePlayer(playerData.id);
 
