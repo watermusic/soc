@@ -6,6 +6,8 @@ use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 
+use JMS\Serializer\Annotation as Serializer;
+
 /**
  * Position
  *
@@ -42,6 +44,8 @@ class Position
     /**
      * @var Collection|Player[]
      * @ORM\OneToMany(targetEntity="SOC\Bundle\SocBundle\Entity\Player", mappedBy="position", cascade={"all"}, orphanRemoval=true)
+     *
+     * @Serializer\Exclude
      */
     private $players;
 

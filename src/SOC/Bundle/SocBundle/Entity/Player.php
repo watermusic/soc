@@ -4,11 +4,16 @@ namespace SOC\Bundle\SocBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 
+use JMS\Serializer\Annotation as Serializer;
+
 /**
  * Player
  *
  * @ORM\Table(name="soc_player",indexes={@ORM\Index(columns={"name"})})
  * @ORM\Entity(repositoryClass="SOC\Bundle\SocBundle\Entity\PlayerRepository")
+ *
+ * @Serializer\ExclusionPolicy("all")
+ *
  */
 class Player
 {
@@ -18,6 +23,9 @@ class Player
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
+     *
+     * @Serializer\Expose
+     *
      */
     private $id;
 
@@ -25,13 +33,17 @@ class Player
      * @var string
      *
      * @ORM\Column(name="name", type="string", length=255)
+     *
+     * @Serializer\Expose
      */
-    private $name;
+    private $name = "";
 
     /**
      * @var Team
      *
      * @ORM\ManyToOne(targetEntity="Team", inversedBy="players", cascade={"all"}, fetch="EAGER")
+     *
+     * @Serializer\Expose
      */
     private $team;
 
@@ -39,6 +51,8 @@ class Player
      * @var Position
      *
      * @ORM\ManyToOne(targetEntity="Position", inversedBy="players", cascade={"all"}, fetch="EAGER")
+     *
+     * @Serializer\Expose
      */
     private $position;
 
@@ -46,15 +60,18 @@ class Player
      * @var float
      *
      * @ORM\Column(name="vk_preis", type="decimal", scale=2)
+     *
+     * @Serializer\Expose
+     * @Serializer\SerializedName("vkPreis")
      */
-    private $vkPreis;
+    private $vkPreis = 0.0;
 
     /**
      * @var float
      *
      * @ORM\Column(name="ek_preis", type="decimal", scale=2)
      */
-    private $ekPreis;
+    private $ekPreis = 0.0;
 
     /**
      * @var User
@@ -67,22 +84,29 @@ class Player
      * @var float
      *
      * @ORM\Column(name="note", type="float")
+     *
+     * @Serializer\Expose
      */
-    private $note;
+    private $note = 3.5;
 
     /**
      * @var float
      *
      * @ORM\Column(name="punkte", type="float")
+     *
+     * @Serializer\Expose
      */
-    private $punkte;
+    private $punkte = 0.0;
 
     /**
      * @var string
      *
      * @ORM\Column(name="thumb_url", type="string", length=255)
+     *
+     * @Serializer\Expose
+     * @Serializer\SerializedName("thumbUrl")
      */
-    private $thumbUrl;
+    private $thumbUrl = "";
 
     /**
      * Get id

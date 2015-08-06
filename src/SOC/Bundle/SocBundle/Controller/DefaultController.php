@@ -3,6 +3,7 @@
 namespace SOC\Bundle\SocBundle\Controller;
 
 use SOC\Bundle\SocBundle\Entity\Lineup;
+use SOC\Bundle\SocBundle\Entity\Team;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
@@ -106,12 +107,12 @@ class DefaultController extends Controller
             array_push($positionen[$posName], $player);
         }
 
-
         $view = array(
             'user' => $user,
             'lineup' => $lineups[0],
             'teams' => $teams,
             'positionen' => $positionen,
+            'template' => file_get_contents(__DIR__ . '/../Resources/views/Default/lineup-item.html.mustache'),
         );
 
         return $this->render('SOCSocBundle:Default:lineup.html.twig', $view);

@@ -6,6 +6,8 @@ use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 
+use JMS\Serializer\Annotation as Serializer;
+
 /**
  * Team
  *
@@ -33,8 +35,18 @@ class Team
     /**
      * @var Collection|Player[]
      * @ORM\OneToMany(targetEntity="SOC\Bundle\SocBundle\Entity\Player", mappedBy="team", cascade={"all"}, orphanRemoval=true)
+     *
+     * @Serializer\Type("array<SOC\Bundle\SocBundle\Entity\Player>")
+     * @Serializer\Exclude
      */
     private $players;
+
+
+
+    public function __construct()
+    {
+        $this->players = new ArrayCollection();
+    }
 
     /**
      * Get id

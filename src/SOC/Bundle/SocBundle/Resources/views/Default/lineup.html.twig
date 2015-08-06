@@ -25,16 +25,16 @@
             float: left;
         }
 
-        .bench-item > .pi {
+        .bench-item > .pi, .field > .pi {
             width: 123px;
             margin: 0 9px 12px 0;
         }
 
-        .bench-item .ibox-content {
+        .bench-item .ibox-content, .field .ibox-content {
             padding: 0;
         }
 
-        .bench-item .pi .player-desc {
+        .bench-item .pi .player-desc, .field .pi .player-desc {
             padding: 7px;
         }
 
@@ -86,15 +86,21 @@
 
                 {% for player in lineup %}
 
-                <div class="ibox-content text-center pi pi-lineup pi-position-{{ loop.index }} schalke">
-                    <h4 class="title">Huntelaar</h4>
-                    <div class="m-b-sm">
-                        <img alt="image" class="img-circle portrait" src="http://mediadb.kicker.de/2016/fussball/managerspiel/s/28674_2_2015720145211732.jpg">
+                    <div class="ibox pi pi-lineup pi-position-{{ loop.index }}" data-ref="{{ player.id }}">
+                        <div class="ibox-content">
+
+                            <div class="player-imitation {{ player.team.name|lower }}">
+                                <img class="img-circle portrait" src="{{ player.thumbUrl}}">
+                            </div>
+                            <div class="player-desc">
+                                <small class="text-muted">{{ player.team}}</small>
+                                <a href="#" class="player-name">{{ player.name}}</a>
+                                <div class="small m-t-xs">
+                                    <a class="btn btn-xs btn-danger btn-outline"><i class="fa fa-exchange"></i></a>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                    <div class="text-center">
-                        <a class="btn btn-xs btn-danger btn-outline"><i class="fa fa-exchange"></i></a>
-                    </div>
-                </div>
 
                 {% endfor %}
                 </div>
@@ -140,7 +146,7 @@
 
                                                         <li class="bench-item">
 
-                                                            <div class="ibox pi" data-ref="{{ player.id }}">
+                                                            <div class="ibox pi" data-ref="{{ player.id }}" data-value="{{ player|serialize }}">
                                                                 <div class="ibox-content">
 
                                                                     <div class="player-imitation {{ player.team.name|lower }}">
@@ -149,11 +155,11 @@
                                                                     <div class="player-desc">
                                                                         <small class="text-muted">{{ player.team}}</small>
                                                                         <a href="#" class="player-name">{{ player.name}}</a>
-                                                                        <div class="small m-t-xs">
-                                                                            <a class="btn btn-xs btn-danger btn-outline">TW</a>
-                                                                            <a class="btn btn-xs btn-success btn-outline">AB</a>
-                                                                            <a class="btn btn-xs btn-warning btn-outline">MF</a>
-                                                                            <a class="btn btn-xs btn-success btn-outline">ST</a>
+                                                                        <div class="small m-t-xs exchange">
+                                                                            <a href="javascript:void(0);" class="btn btn-xs btn-danger btn-outline" data-position="Torwart">TW</a>
+                                                                            <a href="javascript:void(0);" class="btn btn-xs btn-success btn-outline" data-position="Abwehr">AB</a>
+                                                                            <a href="javascript:void(0);" class="btn btn-xs btn-warning btn-outline" data-position="Mittelfeld">MF</a>
+                                                                            <a href="javascript:void(0);" class="btn btn-xs btn-success btn-outline" data-position="Sturm">ST</a>
                                                                         </div>
                                                                     </div>
                                                                 </div>
@@ -204,11 +210,177 @@
     <script src="{{ asset_url }}"></script>
     {% endjavascripts %}
 
+    <script id="lineup-item" type="x-tmpl-mustache">
+    {{ template|raw }}
+    </script>
     <script>
+
+        var SOC = SOC || {};
 
         $(function() {
 
-            var lineUp = {{ lineup.data|json_encode }};
+            SOC.LineupStorage = (function () {
+
+                var
+                    CONST_TORWART       = 'Torwart',
+                    CONST_ABWEHR        = 'Abwehr',
+                    CONST_MITTELFELD    = 'Mittelfeld',
+                    CONST_STURM         = 'Sturm',
+
+                    storage = {},
+                    limits = {};
+
+                storage[CONST_TORWART] = [];
+                storage[CONST_ABWEHR] = [];
+                storage[CONST_MITTELFELD] = [];
+                storage[CONST_STURM] = [];
+
+                limits[CONST_TORWART] = 1;
+                limits[CONST_ABWEHR] = 3;
+                limits[CONST_MITTELFELD] = 5;
+                limits[CONST_STURM] = 2;
+
+                var isSpace = function(position) {
+                    var n = limits[position];
+                    return storage[position].length < n;
+                };
+
+                return {
+
+                    init: function () {
+                    },
+                    add: function(position, playerId) {
+                        if(isSpace(position) === false) {
+                            return -1;
+                        }
+
+                        if(_.contains(storage[position], playerId)) {
+                            return false;
+                        }
+                        storage[position].push(playerId);
+                        return storage;
+                    },
+                    remove: function(position, playerId) {
+                        storage[position] = _.without(storage[position], playerId);
+                        return storage;
+                    },
+                    has: function(position, playerId) {
+                        return _.contains(storage[position], playerId);
+                    },
+                    get: function() {
+                        return storage;
+                    },
+                    getFlatten : function() {
+                        var
+                            result = [],
+                            m = 0;
+                        _.each(limits, function(limit, position) {
+                            for(var n = 0; n < limit; n++) {
+                                result[m] = (_.isUndefined(storage[position][n])) ? null : storage[position][n];
+                                m++;
+                            }
+                        });
+                        return result;
+                    },
+                    set: function(lineup) {
+                        storage = lineup;
+                        return storage;
+                    }
+
+                };
+
+            })();
+
+            SOC.LineupCtrl = (function () {
+
+                var field = $('.field'),
+                    viewRefreshBtn = $('#news-refresh'),
+                    template = $('#lineup-item').html()
+                ;
+
+                return {
+
+                    init: function () {
+                    },
+                    render: function() {
+
+                        field.empty();
+                        var lineup = SOC.LineupStorage.getFlatten();
+                        _.each(lineup, function(num, index) {
+
+                            if(num === null) {
+                                return;
+                            }
+
+                            var playerData = SOC.BenchCtrl.getPlayerData(num);
+                            if(_.isUndefined(playerData)) {
+                                throw 'There is no player with the id' + num + ' on the bench';
+                            }
+                            playerData.index = index + 1;
+                            playerData.team.lowerName = playerData.team.name.toLowerCase();
+
+                            var rendered = Mustache.render(template, playerData);
+
+                            field.append(rendered);
+
+
+                        });
+
+                    }
+
+                };
+
+            })();
+
+            SOC.BenchCtrl = (function () {
+
+                var bench = $('.bench'),
+                    btnsAddPlayer = $('.bench-item .exchange a', bench);
+
+                var getPlayerElement = function(playerId) {
+                    return $("div[data-ref='" + playerId + "']", bench);
+                };
+
+                return {
+
+                    init: function () {
+
+                        btnsAddPlayer.on('click', function() {
+
+                            var playerData = $(this).parent().parent().parent().parent().data('value'),
+                                position = $(this).data('position');
+
+                            var result = SOC.LineupStorage.add(position, playerData.id);
+                            SOC.LineupCtrl.render();
+                            SOC.BenchCtrl.hidePlayer(playerData.id);
+
+                        });
+
+                    },
+                    getPlayerData: function(playerId) {
+                        return getPlayerElement(playerId).data('value');
+                    },
+                    showPlayer: function(playerId) {
+                        return getPlayerElement(playerId).show(400);
+                    },
+                    hidePlayer: function(playerId) {
+                        return getPlayerElement(playerId).hide(400);
+                    }
+
+                };
+
+            })();
+
+            SOC.MainCtrl = (function () {
+
+                return {
+                    init: function () {
+                        SOC.BenchCtrl.init();
+                    }
+                };
+
+            })();
+            SOC.MainCtrl.init();
 
         });
 
