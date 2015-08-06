@@ -73,11 +73,13 @@ EOT
 
         foreach ($users as $user) {
 
+            $usernameCanonical = strtolower($user);
+
             $arguments = array(
                 'command' => 'fos:user:create',
                 'username'    => $user,
-                'email'    => $user . '@thebickers.de',
-                'password'    => '+' . $user . '+',
+                'email'    => $usernameCanonical . '@thebickers.de',
+                'password'    => '+' . $usernameCanonical . '+',
             );
 
             $input = new ArrayInput($arguments);
@@ -96,6 +98,8 @@ EOT
 
         foreach ($users as $user) {
 
+            $usernameCanonical = strtolower($user);
+
             $arguments = array(
                 'command' => 'fos:user:promote',
                 'username'    => $user,
@@ -105,7 +109,7 @@ EOT
             $input = new ArrayInput($arguments);
             $returnCode = $command->run($input, $output);
 
-            if($user === 'lutz') {
+            if($usernameCanonical === 'lutz') {
                 $arguments = array(
                     'command' => 'fos:user:promote',
                     'username'    => $user,
