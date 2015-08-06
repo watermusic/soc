@@ -26,7 +26,7 @@ class PlayerAdmin extends Admin
             ->add('name', 'text', array('label' => 'Name'))
             ->add('team', 'sonata_type_model_list')
             ->add('position', 'sonata_type_model_list')
-            ->add('vk_preis', 'money')
+            ->add('ek_preis', 'money', array('label' => 'Einkaufspreis'))
             ->add('user', 'sonata_type_model_list', array('label' => 'Teilnehmer'))
         ;
     }
