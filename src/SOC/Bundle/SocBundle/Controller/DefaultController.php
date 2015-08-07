@@ -142,7 +142,7 @@ class DefaultController extends Controller
         }
 
         $moneyLeft = ($budget - $moneySpend >= 0) ? $budget - $moneySpend : 0;
-        $playersLeft = $playersNeeded - count($allPlayers);
+        $playersLeft = ($playersNeeded - count($allPlayers) <= 0) ? 1 : $playersNeeded - count($allPlayers);
 
         $moneyPerPlayer = $moneyLeft / $playersLeft;
 

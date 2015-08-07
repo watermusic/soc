@@ -119,37 +119,68 @@ EOT
         $playerRepository = $doctrine->getRepository('SOCSocBundle:Player');
         $userRepository = $doctrine->getRepository('SOCSocBundle:User');
 
-        $user = $userRepository->find(1);
-
-        $playerIds = array(
-            '1',
-            '57',
-            '58',
-            '93',
-            '107',
-            '124',
-            '171',
-            '204',
-            '228',
-            '253',
-            '281',
-            '292',
-            '297',
-            '374',
-            '410',
-            '424',
-            '499',
-            '504'
+        $players = array(
+            'lutz' => array(
+                '1',
+                '57',
+                '58',
+                '93',
+                '107',
+                '124',
+                '171',
+                '204',
+                '228',
+                '253',
+                '281',
+                '292',
+                '297',
+                '374',
+                '410',
+                '424',
+                '499',
+                '504',
+            ),
+            'christian' => array(
+                '453',
+                '496',
+                '484',
+                '458',
+                '245',
+                '389',
+                '315',
+                '309',
+                '283',
+                '293',
+                '277',
+                '261',
+                '267',
+                '279',
+                '59',
+                '60',
+                '73',
+                '64',
+                '67',
+                '66',
+                '6',
+                '9',
+            )
         );
 
-        foreach ($playerIds as $id) {
-            $player = $playerRepository->find($id);
+        foreach ($players as $name => $ids) {
 
-            $preis = 500000 * rand(3, 14);
+            foreach ($ids as $id) {
+                $player = $playerRepository->find($id);
 
-            $player->setEkPreis($preis);
-            $player->setUser($user);
-            $om->persist($player);
+                $user = $userRepository->findOneBy(array("username" => $name));
+
+                $preis = 500000 * rand(3, 14);
+
+                $player->setEkPreis($preis);
+                $player->setUser($user);
+                $om->persist($player);
+
+            }
+
         }
 
         $om->flush();
