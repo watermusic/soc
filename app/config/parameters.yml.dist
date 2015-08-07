@@ -18,13 +18,3 @@ parameters:
     debug_redirects: false
 
     use_assetic_controller: true
-
-    soc_participants:
-        - lutz
-        - jens
-        - torsten
-        - christian
-        - alex
-
-    soc_budget: 60000000
-    soc_players_needed: 22

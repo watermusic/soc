@@ -21,19 +21,29 @@ class User extends BaseUser
     protected $id;
 
     /**
+     * @var Collection|Score[]
      * @ORM\OneToMany(targetEntity="Score", mappedBy="player")
      */
     protected $scores;
 
     /**
+     * @var Collection|Lineup[]
      * @ORM\OneToMany(targetEntity="Lineup", mappedBy="user")
      */
     protected $lineups;
 
     /**
+     * @var Collection|Player[]
      * @ORM\OneToMany(targetEntity="Player", mappedBy="user")
      */
     protected $players;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="avatar", type="string", length=255)
+     */
+    protected $avatar = '';
 
 
     public function __construct()
@@ -146,5 +156,43 @@ class User extends BaseUser
         }
         return $this;
     }
+
+    /**
+     * @return mixed
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * @param mixed $id
+     * @return User
+     */
+    public function setId($id)
+    {
+        $this->id = $id;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getAvatar()
+    {
+        return $this->avatar;
+    }
+
+    /**
+     * @param string $avatar
+     * @return User
+     */
+    public function setAvatar($avatar)
+    {
+        $this->avatar = $avatar;
+        return $this;
+    }
+
+
 
 }

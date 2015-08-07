@@ -25,11 +25,27 @@ class PlayerImportExtendedCommand extends ContainerAwareCommand
 
     protected $kickerSite = "http://manager.kicker.de/classic/bundesliga/meinteam/meinkader";
 
-    protected $sites = array(
-        'Torwart' => 'http://manager.kicker.de/classic/bundesliga/meinteam/ajax.ashx?ajaxtype=spielerauswahl&position=1&verein=0&sort=1&list=0&playerSearchStr=',
-        'Abwehr' => 'http://manager.kicker.de/classic/bundesliga/meinteam/ajax.ashx?ajaxtype=spielerauswahl&position=2&verein=0&sort=1&list=0&playerSearchStr=',
-        'Mittelfeld' => 'http://manager.kicker.de/classic/bundesliga/meinteam/ajax.ashx?ajaxtype=spielerauswahl&position=3&verein=0&sort=1&list=0&playerSearchStr=',
-        'Sturm' => 'http://manager.kicker.de/classic/bundesliga/meinteam/ajax.ashx?ajaxtype=spielerauswahl&position=4&verein=0&sort=1&list=0&playerSearchStr=',
+    protected $positionen = array(
+        'Torwart' => array(
+            'uri' => 'http://manager.kicker.de/classic/bundesliga/meinteam/ajax.ashx?ajaxtype=spielerauswahl&position=1&verein=0&sort=1&list=0&playerSearchStr=',
+            'shortcut' => 'TW',
+            'colorName' => 'danger',
+        ),
+        'Abwehr' => array(
+            'uri' => 'http://manager.kicker.de/classic/bundesliga/meinteam/ajax.ashx?ajaxtype=spielerauswahl&position=2&verein=0&sort=1&list=0&playerSearchStr=',
+            'shortcut' => 'AB',
+            'colorName' => 'success',
+        ),
+        'Mittelfeld' => array(
+            'uri' => 'http://manager.kicker.de/classic/bundesliga/meinteam/ajax.ashx?ajaxtype=spielerauswahl&position=3&verein=0&sort=1&list=0&playerSearchStr=',
+            'shortcut' => 'MF',
+            'colorName' => 'warning',
+        ),
+        'Sturm' => array(
+            'uri' => 'http://manager.kicker.de/classic/bundesliga/meinteam/ajax.ashx?ajaxtype=spielerauswahl&position=4&verein=0&sort=1&list=0&playerSearchStr=',
+            'shortcut' => 'ST',
+            'colorName' => 'primary',
+        ),
     );
 
     /**
@@ -88,7 +104,7 @@ HTML;
 
         $playerResult = array();
 
-        $uri = $this->sites[$position];
+        $uri = $this->positionen[$position]['uri'];
         $body = file_get_contents($uri);
         $html = sprintf($decorator, $body);
 
@@ -132,7 +148,7 @@ HTML;
         $positionRepo = $doctrine->getRepository('SOCSocBundle:Position');
         $positions = $positionRepo->findAll();
 
-        foreach($this->sites as $position => $url) {
+        foreach($this->positionen as $position => $posData) {
 
             $players = $this->getPlayers($position);
 
@@ -175,8 +191,8 @@ HTML;
         $doctrine = $this->getContainer()->get("doctrine");
         $om = $doctrine->getManager();
 
-        reset($this->sites);
-        $position = key($this->sites);
+        reset($this->positionen);
+        $position = key($this->positionen);
 
         $players = $this->getPlayers($position);
         $vereine = array();
@@ -202,12 +218,16 @@ HTML;
         $doctrine = $this->getContainer()->get("doctrine");
         $om = $doctrine->getManager();
 
-        $positions = array_keys($this->sites);
+        $positions = array_keys($this->positionen);
 
-        foreach($positions as $positionName) {
-            $position = new Position();
-            $position->setName($positionName);
-            $om->persist($position);
+        foreach($this->positionen as $positionName => $position) {
+            $entity = new Position();
+            $entity
+                ->setName($positionName)
+                ->setColorName($position['colorName'])
+                ->setShortcut($position['shortcut'])
+                ;
+            $om->persist($entity);
         }
         $om->flush();
     }

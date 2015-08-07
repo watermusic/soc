@@ -3,6 +3,7 @@
 namespace SOC\Bundle\SocBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Gedmo\Mapping\Annotation as Gedmo;
 
 use JMS\Serializer\Annotation as Serializer;
 
@@ -27,7 +28,7 @@ class Player
      * @Serializer\Expose
      *
      */
-    private $id;
+    protected $id;
 
     /**
      * @var string
@@ -36,7 +37,7 @@ class Player
      *
      * @Serializer\Expose
      */
-    private $name = "";
+    protected $name = "";
 
     /**
      * @var Team
@@ -45,7 +46,7 @@ class Player
      *
      * @Serializer\Expose
      */
-    private $team;
+    protected $team;
 
     /**
      * @var Position
@@ -54,7 +55,7 @@ class Player
      *
      * @Serializer\Expose
      */
-    private $position;
+    protected $position;
 
     /**
      * @var float
@@ -64,21 +65,21 @@ class Player
      * @Serializer\Expose
      * @Serializer\SerializedName("vkPreis")
      */
-    private $vkPreis = 0.0;
+    protected $vkPreis = 0.0;
 
     /**
      * @var float
      *
      * @ORM\Column(name="ek_preis", type="decimal", scale=2)
      */
-    private $ekPreis = 0.0;
+    protected $ekPreis = 0.0;
 
     /**
      * @var User
      *
      * @ORM\ManyToOne(targetEntity="User", inversedBy="players", cascade={"all"}, fetch="EAGER")
      */
-    private $user;
+    protected $user;
 
     /**
      * @var float
@@ -87,7 +88,7 @@ class Player
      *
      * @Serializer\Expose
      */
-    private $note = 3.5;
+    protected $note = 3.5;
 
     /**
      * @var float
@@ -96,7 +97,7 @@ class Player
      *
      * @Serializer\Expose
      */
-    private $punkte = 0.0;
+    protected $punkte = 0.0;
 
     /**
      * @var string
@@ -106,7 +107,31 @@ class Player
      * @Serializer\Expose
      * @Serializer\SerializedName("thumbUrl")
      */
-    private $thumbUrl = "";
+    protected $thumbUrl = "";
+
+
+    /**
+     * @var \DateTime $created
+     *
+     * @Gedmo\Timestampable(on="create")
+     * @ORM\Column(type="datetime")
+     */
+    private $created;
+
+    /**
+     * @var \DateTime $updated
+     *
+     * @Gedmo\Timestampable(on="update")
+     * @ORM\Column(type="datetime")
+     */
+    private $updated;
+
+
+    public function __construct()
+    {
+        $this->created = new \DateTime();
+        $this->updated = new \DateTime();
+    }
 
     /**
      * Get id
@@ -320,5 +345,43 @@ class Player
 
         return $this;
     }
+
+    /**
+     * @return \DateTime
+     */
+    public function getCreated()
+    {
+        return $this->created;
+    }
+
+    /**
+     * @param \DateTime $created
+     * @return Player
+     */
+    public function setCreated($created)
+    {
+        $this->created = $created;
+        return $this;
+    }
+
+    /**
+     * @return \DateTime
+     */
+    public function getUpdated()
+    {
+        return $this->updated;
+    }
+
+    /**
+     * @param \DateTime $updated
+     * @return Player
+     */
+    public function setUpdated($updated)
+    {
+        $this->updated = $updated;
+        return $this;
+    }
+
+
 
 }

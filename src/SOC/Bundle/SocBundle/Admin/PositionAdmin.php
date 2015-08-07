@@ -21,6 +21,8 @@ class PositionAdmin extends Admin
     {
         $formMapper
             ->add('name', 'text', array('label' => 'Name'))
+            ->add('shortcut', 'text', array('label' => 'Shortcut'))
+            ->add('colorName', 'text', array('label' => 'Farbe'))
         ;
     }
 
@@ -38,6 +40,8 @@ class PositionAdmin extends Admin
         $listMapper
             ->addIdentifier('id')
             ->add('name')
+            ->add('colorName')
+            ->add('shortcut')
         ;
     }
 

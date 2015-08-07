@@ -39,6 +39,7 @@ class DefaultController extends Controller
         $user = $this->get('security.token_storage')->getToken()->getUser();
 
         $view = array(
+            'title' => 'Dashboard',
             'user' => $user,
             'standings' => $standings,
             'news' => array(
@@ -90,28 +91,32 @@ class DefaultController extends Controller
         $teamRepository = $doctrine->getRepository('SOCSocBundle:Team');
         $playerRepository = $doctrine->getRepository('SOCSocBundle:Player');
         $lineupRepository = $doctrine->getRepository('SOCSocBundle:Lineup');
+        $positionenRepository = $doctrine->getRepository('SOCSocBundle:Position');
 
         $teams = $teamRepository->findAll();
-
         $lineups = $lineupRepository->findAll();
+        $positionen = $positionenRepository->findAll();
+
 
         $allPlayers = $playerRepository->findBy(array('user' => $user));
-        $positionen = array();
+        $positionenGroups = array();
 
         foreach ($allPlayers as $player) {
 
             $posName = $player->getPosition()->getName();
-            if(!isset($positionen[$posName])) {
-                $positionen[$posName] = array();
+            if(!isset($positionenGroups[$posName])) {
+                $positionenGroups[$posName] = array();
             }
-            array_push($positionen[$posName], $player);
+            array_push($positionenGroups[$posName], $player);
         }
 
         $view = array(
+            'title' => 'Aufstellung',
             'user' => $user,
             'lineup' => array(),
             'teams' => $teams,
             'positionen' => $positionen,
+            'positionenGroup' => $positionenGroups,
             'template' => file_get_contents(__DIR__ . '/../Resources/views/Default/lineup-item.html.mustache'),
         );
 
@@ -127,8 +132,9 @@ class DefaultController extends Controller
 
         $allPlayers = $playerRepository->findBy(array('user' => $user));
 
-        $playersNeeded = $this->getParameter('soc_players_needed');
-        $budget = $this->getParameter('soc_budget');
+        $socParameter = $this->getParameter('soc');
+        $playersNeeded = $socParameter['players_needed'];
+        $budget = $socParameter['budget'];
 
         $moneySpend = 0;
         foreach ($allPlayers as $player) {
@@ -187,9 +193,5 @@ class DefaultController extends Controller
         return $this->render('SOCSocBundle:Default:test.html.twig', $view);
     }
 
-
-    public function templateAction()
-    {
-    }
 
 }

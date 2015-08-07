@@ -1,5 +1,9 @@
 {% extends 'SOCSocBundle::layout.html.twig' %}
 
+{% block title %}
+    {{ title }}
+{% endblock %}
+
 {% block stylesheets %}
 
     {{ parent() }}
@@ -124,7 +128,7 @@
                                         <div class="panel-options">
                                             <ul class="nav nav-tabs">
 
-                                                {% for posName, players in positionen %}
+                                                {% for posName, players in positionenGroup %}
 
                                                 <li class="{{ loop.index == 1 ? 'active' : '' }}"><a href="#tab-{{ loop.index }}" data-toggle="tab">{{ posName }}</a></li>
 
@@ -137,7 +141,7 @@
 
                                         <div class="tab-content">
 
-                                            {% for posName, players in positionen %}
+                                            {% for posName, players in positionenGroup %}
 
                                             <div class="tab-pane{{ loop.index == 1 ? ' active' : '' }}" id="tab-{{ loop.index }}">
 
@@ -156,10 +160,9 @@
                                                                         <small class="text-muted">{{ player.team}}</small>
                                                                         <a href="#" class="player-name">{{ player.name}}</a>
                                                                         <div class="small m-t-xs exchange">
-                                                                            <a href="javascript:void(0);" class="btn btn-xs btn-danger btn-outline" data-position="Torwart">TW</a>
-                                                                            <a href="javascript:void(0);" class="btn btn-xs btn-success btn-outline" data-position="Abwehr">AB</a>
-                                                                            <a href="javascript:void(0);" class="btn btn-xs btn-warning btn-outline" data-position="Mittelfeld">MF</a>
-                                                                            <a href="javascript:void(0);" class="btn btn-xs btn-success btn-outline" data-position="Sturm">ST</a>
+                                                                            {% for position in positionen %}
+                                                                                <a href="javascript:void(0);" class="btn btn-xs btn-{{ position.colorName }} btn-outline" data-position="{{ position.name }}">{{ position.shortcut }}</a>
+                                                                            {% endfor %}
                                                                         </div>
                                                                     </div>
                                                                 </div>

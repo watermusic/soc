@@ -52,7 +52,9 @@ EOT
         $doctrine = $this->getContainer()->get('doctrine');
         $om = $doctrine->getManager();
         $connection = $doctrine->getConnection();
-        $users = $this->getContainer()->getParameter('soc_participants');
+
+        $socParameters = $this->getContainer()->getParameter('soc');
+        $users = $socParameters['participants'];
 
         $connection->executeQuery('SET foreign_key_checks = 0');
         $connection->executeQuery('TRUNCATE soc_user');
@@ -60,6 +62,7 @@ EOT
 
         $this->createUsers($users);
         $this->promoteUsers($users);
+        $this->updateUsers($users);
     }
 
     /**
@@ -73,11 +76,11 @@ EOT
 
         foreach ($users as $user) {
 
-            $usernameCanonical = strtolower($user);
+            $usernameCanonical = strtolower($user['name']);
 
             $arguments = array(
                 'command' => 'fos:user:create',
-                'username'    => $user,
+                'username'    => $user['name'],
                 'email'    => $usernameCanonical . '@thebickers.de',
                 'password'    => '+' . $usernameCanonical . '+',
             );
@@ -98,11 +101,11 @@ EOT
 
         foreach ($users as $user) {
 
-            $usernameCanonical = strtolower($user);
+            $usernameCanonical = strtolower($user['name']);
 
             $arguments = array(
                 'command' => 'fos:user:promote',
-                'username'    => $user,
+                'username'    => $user['name'],
                 'role'    => 'ROLE_USER',
             );
 
@@ -112,8 +115,16 @@ EOT
             if($usernameCanonical === 'lutz') {
                 $arguments = array(
                     'command' => 'fos:user:promote',
-                    'username'    => $user,
+                    'username'    => $user['name'],
                     'role'    => 'ROLE_ADMIN',
+                );
+
+                $input = new ArrayInput($arguments);
+                $returnCode = $command->run($input, $output);
+                $arguments = array(
+                    'command' => 'fos:user:promote',
+                    'username'    => $user['name'],
+                    'role'    => 'ROLE_SONATA_ADMIN',
                 );
 
                 $input = new ArrayInput($arguments);
@@ -124,5 +135,34 @@ EOT
 
     }
 
+    /**
+     * @param $users
+     */
+    protected function updateUsers($users) {
+
+        $doctrine = $this->getContainer()->get('doctrine');
+        $om = $doctrine->getManager();
+
+        $userRepository = $doctrine->getRepository('SOCSocBundle:User');
+
+        $storageUsers = $userRepository->findAll();
+
+        foreach ($users as $user) {
+
+            foreach ($storageUsers as $storageUser) {
+
+                if($storageUser->getUsernameCanonical() !== $user['name']) {
+                    continue;
+                }
+                $storageUser->setAvatar($user['avatar']);
+                $om->persist($storageUser);
+
+            }
+
+        }
+
+        $om->flush();
+
+    }
 
 }

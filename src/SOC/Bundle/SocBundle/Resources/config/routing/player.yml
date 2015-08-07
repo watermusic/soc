@@ -13,7 +13,7 @@ soc_player_new:
 soc_player_create:
     path:     /create
     defaults: { _controller: "SOCSocBundle:Player:create" }
-    requirements: { _method: post }
+    requirements: { methods: post }
 
 soc_player_edit:
     path:     /{id}/edit
@@ -22,12 +22,12 @@ soc_player_edit:
 soc_player_update:
     path:     /{id}/update
     defaults: { _controller: "SOCSocBundle:Player:update" }
-    requirements: { _method: post|put }
+    requirements: { methods: post|put }
 
 soc_player_delete:
     path:     /{id}/delete
     defaults: { _controller: "SOCSocBundle:Player:delete" }
-    requirements: { _method: post|delete }
+    requirements: { methods: post|delete }
 
 soc_player_search:
     path:     /search

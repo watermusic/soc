@@ -16,11 +16,21 @@ use Sonata\AdminBundle\Form\FormMapper;
 class PlayerAdmin extends Admin
 {
 
+
+    /**
+     * Default Datagrid values
+     *
+     * @var array
+     */
+    protected $datagridValues = array(
+        '_page' => 1,
+        '_sort_order' => 'DESC',
+        '_sort_by' => 'updated',
+    );
+
     // Fields to be shown on create/edit forms
     protected function configureFormFields(FormMapper $formMapper)
     {
-
-//        $this->
 
         $formMapper
             ->add('name', 'text', array('label' => 'Name'))

@@ -17,14 +17,6 @@ use JMS\Serializer\Annotation as Serializer;
 class Position
 {
 
-    const POS_TORWART = 'TW';
-
-    const POS_ABWEHR = 'AB';
-
-    const POS_MITTELFELD = 'MF';
-
-    const POS_STURM = 'ST';
-
     /**
      * @var integer
      *
@@ -32,14 +24,14 @@ class Position
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
      */
-    private $id;
+    protected $id;
 
     /**
      * @var string
      *
      * @ORM\Column(name="name", type="string", length=255)
      */
-    private $name;
+    protected $name;
 
     /**
      * @var Collection|Player[]
@@ -47,7 +39,22 @@ class Position
      *
      * @Serializer\Exclude
      */
-    private $players;
+    protected $players;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="shortcut", type="string", length=255)
+     */
+    protected $shortcut;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="color_name", type="string", length=255)
+     */
+    protected $colorName;
+
 
     /**
      * Get id
@@ -63,7 +70,7 @@ class Position
      * Set name
      *
      * @param string $name
-     * @return Player
+     * @return Position
      */
     public function setName($name)
     {
@@ -134,10 +141,48 @@ class Position
 
     /**
      * @param Collection|Player[] $players
+     * @return Position
      */
     public function setPlayers($players)
     {
         $this->players = $players;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getShortcut()
+    {
+        return $this->shortcut;
+    }
+
+    /**
+     * @param string $shortcut
+     * @return Position
+     */
+    public function setShortcut($shortcut)
+    {
+        $this->shortcut = $shortcut;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getColorName()
+    {
+        return $this->colorName;
+    }
+
+    /**
+     * @param string $colorName
+     * @return Position
+     */
+    public function setColorName($colorName)
+    {
+        $this->colorName = $colorName;
+        return $this;
     }
 
     /**
