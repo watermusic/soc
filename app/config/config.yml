@@ -76,7 +76,7 @@ assetic:
                 - bundles/socsoc/css/style.css
                 - bundles/socsoc/css/nprogress.css
                 - bundles/socsoc/css/lineup.css
-                - bundles/socsoc/css/plugins/toastr/lineup.css
+                - bundles/socsoc/css/plugins/toastr/toastr.min.css
             filters:
                 - cssrewrite
 
