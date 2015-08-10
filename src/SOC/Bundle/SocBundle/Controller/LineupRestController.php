@@ -8,30 +8,56 @@
 
 namespace SOC\Bundle\SocBundle\Controller;
 
-use FOS\RestBundle\Controller\FOSRestController;
-use FOS\RestBundle\Controller\Annotations\RequestParam;
-use FOS\RestBundle\View\View;
-use FOS\RestBundle\Request\ParamFetcher;
-use Symfony\Component\Validator\ConstraintViolationList;
+use SOC\Bundle\SocBundle\Entity\Lineup;
+use SOC\Bundle\SocBundle\Entity\Team;
+use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Response;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 
-class LineupRestController extends FOSRestController
+/**
+ * @Route("/lineup")
+ */
+class LineupRestController extends Controller
 {
 
     /**
      * Return the overall user list.
      *
-     * @return View
+     * @Route("/{username}/{id}",  requirements={"id" = "\d+"}, defaults={"id" = 1})
+     * @Method({"GET"})
+     *
+     * @param string $username
+     * @param $id
+     * @return JsonResponse
      */
-    public function getLineupsAction()
+    public function getLineupAction($username, $id)
     {
         $lineupRepository = $this->getDoctrine()->getRepository('SOCSocBundle:Lineup');
-        $entity = $lineupRepository->findAll();
+        $userRepository = $this->getDoctrine()->getRepository('SOCSocBundle:User');
+
+        $user = $userRepository->findOneBy(array('username' => $username));
+
+        if ($user === null) {
+            throw $this->createNotFoundException('User not found.');
+        }
+
+        $criteria = array(
+            'user' => $user,
+            'matchday' => $id,
+        );
+        $entity = $lineupRepository->findOneBy($criteria);
+
         if (!$entity) {
             throw $this->createNotFoundException('Data not found.');
         }
-        $view = View::create();
-        $view->setData($entity)->setStatusCode(200);
-        return $view;
+
+        $data = $this->get('jms_serializer')->serialize($entity, 'json');
+        $status = 200;
+
+        return new Response($data, $status, array('Content-Type' => 'application/json'));
+
     }
 
 }

@@ -1,5 +1,5 @@
 
 api_rest_lineup:
-    type: rest
+    type: annotation
     prefix: /v1
     resource: '@SOCSocBundle/Controller/LineupRestController.php'

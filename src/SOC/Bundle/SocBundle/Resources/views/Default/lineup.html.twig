@@ -87,26 +87,6 @@
                 <h4>Aufstellung</h4>
 
                 <div class="field">
-
-                {% for player in lineup %}
-
-                    <div class="ibox pi pi-lineup pi-position-{{ loop.index }}" data-ref="{{ player.id }}">
-                        <div class="ibox-content">
-
-                            <div class="player-imitation {{ player.team.name|lower }}">
-                                <img class="img-circle portrait" src="{{ player.thumbUrl}}">
-                            </div>
-                            <div class="player-desc">
-                                <small class="text-muted">{{ player.team}}</small>
-                                <a href="#" class="player-name">{{ player.name}}</a>
-                                <div class="small m-t-xs">
-                                    <a class="btn btn-xs btn-danger btn-outline"><i class="fa fa-exchange"></i></a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                {% endfor %}
                 </div>
 
             </div>
@@ -263,7 +243,21 @@
                         storage[position].push(playerId);
                         return storage;
                     },
-                    remove: function(position, playerId) {
+                    remove: function(playerId) {
+
+                        var position = null;
+                        _.each(storage, function(pos,positionName){
+                            _.each(pos, function(id) {
+                                if(id == playerId) {
+                                    position = positionName;
+                                }
+                            });
+                        });
+
+                        if(position === null) {
+                            return;
+                        }
+
                         storage[position] = _.without(storage[position], playerId);
                         return storage;
                     },
@@ -297,13 +291,21 @@
             SOC.LineupCtrl = (function () {
 
                 var field = $('.field'),
-                    viewRefreshBtn = $('#news-refresh'),
-                    template = $('#lineup-item').html()
-                ;
+                    template = $('#lineup-item').html();
+
 
                 return {
 
                     init: function () {
+
+                        field.on('click', '.pi-lineup .exchange a', function() {
+                            var lineupItem = $(this).parent().parent().parent().parent(),
+                                playerId = lineupItem.data('ref');
+                            SOC.LineupStorage.remove(playerId);
+                            SOC.LineupCtrl.render();
+                            SOC.BenchCtrl.showPlayer(playerId);
+                        });
+
                     },
                     render: function() {
 
@@ -383,6 +385,7 @@
                 return {
                     init: function () {
                         SOC.BenchCtrl.init();
+                        SOC.LineupCtrl.init();
                     }
                 };
 

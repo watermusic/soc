@@ -6,10 +6,6 @@ soc_dashboard_news:
     path:     /dashboard/news
     defaults: { _controller: SOCSocBundle:Default:news }
 
-soc_template_index:
-    path:     /template/{name}
-    defaults: { _controller: SOCSocBundle:Default:template }
-
 soc_lineup_index:
     path:     /lineup
     defaults: { _controller: SOCSocBundle:Default:lineup }
@@ -34,9 +30,7 @@ soc_player:
     resource: "@SOCSocBundle/Resources/config/routing/player.yml"
     prefix:   /player
 
-soc_rest:
-    resource: "@SOCSocBundle/Resources/config/routing/rest.yml"
-    prefix:   /api/rest
+
 
 
 

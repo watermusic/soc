@@ -4,8 +4,12 @@ namespace SOC\Bundle\SocBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 
+use JMS\Serializer\Annotation as Serializer;
+
 /**
  * Score
+ *
+ * @Serializer\ExclusionPolicy("all")
  *
  * @ORM\Table(name="soc_lineup")
  * @ORM\Entity(repositoryClass="SOC\Bundle\SocBundle\Entity\LineupRepository")
@@ -31,6 +35,8 @@ class Lineup
      * @var integer
      *
      * @ORM\Column(name="matchday", type="smallint")
+     *
+     * @Serializer\Expose
      */
     private $matchday;
 
@@ -38,6 +44,8 @@ class Lineup
      * @var integer
      *
      * @ORM\Column(name="data", type="json_array")
+     *
+     * @Serializer\Expose
      */
     private $data;
 
