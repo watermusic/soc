@@ -64,6 +64,7 @@ assetic:
                 - bundles/socsoc/js/jquery.mustache.js
                 - bundles/socsoc/js/nprogress.js
                 - bundles/socsoc/js/plugins/footable/footable.all.min.js
+                - bundles/socsoc/js/plugins/toastr/toastr.min.js
             filters:
                 - ?jsqueeze
 
@@ -75,6 +76,7 @@ assetic:
                 - bundles/socsoc/css/style.css
                 - bundles/socsoc/css/nprogress.css
                 - bundles/socsoc/css/lineup.css
+                - bundles/socsoc/css/plugins/toastr/toastr.min.css
             filters:
                 - cssrewrite
 

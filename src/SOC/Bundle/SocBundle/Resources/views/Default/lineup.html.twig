@@ -357,7 +357,7 @@
 
                             var result = SOC.LineupStorage.add(position, playerData.id);
                             if(_.isObject(result) === false) {
-                                console.log('Platz schon voll oder Spieler schon auf dem Platz');
+                                toastr.warning('Das Spielfeld ist schon voll oder der Spieler steht schon auf dem Platz!', 'Achtung');
                                 return;
                             }
                             SOC.LineupCtrl.render();
@@ -384,6 +384,23 @@
 
                 return {
                     init: function () {
+
+                        toastr.options = {
+                            "closeButton": true,
+                            "debug": false,
+                            "progressBar": true,
+                            "positionClass": "toast-top-center",
+                            "onclick": null,
+                            "showDuration": "400",
+                            "hideDuration": "1000",
+                            "timeOut": "7000",
+                            "extendedTimeOut": "1000",
+                            "showEasing": "swing",
+                            "hideEasing": "linear",
+                            "showMethod": "fadeIn",
+                            "hideMethod": "fadeOut"
+                        };
+
                         SOC.BenchCtrl.init();
                         SOC.LineupCtrl.init();
                     }
