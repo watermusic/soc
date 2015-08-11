@@ -123,6 +123,54 @@ class DefaultController extends Controller
         return $this->render('SOCSocBundle:Default:lineup.html.twig', $view);
     }
 
+
+    /**
+     * @param int $matchday
+     * @return Response
+     */
+    public function lineupPrintAction($matchday)
+    {
+        $doctrine = $this->getDoctrine();
+        $userRepository = $doctrine->getRepository('SOCSocBundle:User');
+        $playerRepository = $doctrine->getRepository('SOCSocBundle:Player');
+        $lineupRepository = $doctrine->getRepository('SOCSocBundle:Lineup');
+
+        $users = $userRepository->findAll();
+
+        $lineups = array();
+
+        foreach ($users as $user) {
+            $lineups[$user->getUsername()] = array();
+            $lineup = $lineupRepository->findOneBy(array('user' => $user, 'matchday' => $matchday));
+
+            $lineups[$user->getUsername()]['players'] = array();
+
+            if($lineup === null) {
+                continue;
+            }
+
+            $lineups[$user->getUsername()]['lineup'] = $lineup;
+            $data = $lineup->getData();
+
+            foreach ($data["lineup"] as $position) {
+                foreach ($position as $name => $playerId ) {
+                    $player = $playerRepository->find($playerId);
+                    array_push($lineups[$user->getUsername()]['players'], $player);
+                }
+            }
+
+        }
+
+
+        $view = array(
+            'title' => 'Aufstellung ausdrucken',
+            'lineups' => $lineups,
+            'matchday' => $matchday,
+        );
+        return $this->render('SOCSocBundle:Default:lineup-print.html.twig', $view);
+    }
+
+
     public function teamAction()
     {
 

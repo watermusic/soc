@@ -65,6 +65,8 @@ assetic:
                 - bundles/socsoc/js/nprogress.js
                 - bundles/socsoc/js/plugins/footable/footable.all.min.js
                 - bundles/socsoc/js/plugins/toastr/toastr.min.js
+                - bundles/socsoc/js/plugins/jqueryRest/jquery.rest.js
+                - bundles/socsoc/js/plugins/sweetalert/sweetalert.min.js
             filters:
                 - ?jsqueeze
 
@@ -77,6 +79,7 @@ assetic:
                 - bundles/socsoc/css/nprogress.css
                 - bundles/socsoc/css/lineup.css
                 - bundles/socsoc/css/plugins/toastr/toastr.min.css
+                - bundles/socsoc/css/plugins/sweetalert/sweetalert.css
             filters:
                 - cssrewrite
 

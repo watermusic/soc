@@ -10,6 +10,10 @@ soc_lineup_index:
     path:     /lineup
     defaults: { _controller: SOCSocBundle:Default:lineup }
 
+soc_lineup_print:
+    path:     /lineup/{matchday}/print
+    defaults: { _controller: SOCSocBundle:Default:lineupPrint }
+
 soc_team_index:
     path:     /team
     defaults: { _controller: SOCSocBundle:Default:team }

@@ -109,7 +109,6 @@ class Player
      */
     protected $thumbUrl = "";
 
-
     /**
      * @var \DateTime $created
      *

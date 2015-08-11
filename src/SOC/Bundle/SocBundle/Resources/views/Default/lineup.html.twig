@@ -25,13 +25,17 @@
             padding: 0;
         }
 
+        .bench .tools {
+            float: right;
+        }
+
         .bench-item {
             float: left;
         }
 
         .bench-item > .pi, .field > .pi {
             width: 123px;
-            margin: 0 9px 12px 0;
+            margin: 0 7px 12px 0;
         }
 
         .bench-item .ibox-content, .field .ibox-content {
@@ -45,6 +49,11 @@
         .bench-item .btn-xs, .btn-group-xs > .btn {
             font-size: 9px;
         }
+
+        #nprogress .bar {
+            height: 60px;
+        }
+
     </style>
 
 {% endblock %}
@@ -83,43 +92,58 @@
     {% block content_main %}
         <div class="row wrapper wrapper-content animated fadeInRight">
             <div class="col-lg-7">
-
-                <h4>Aufstellung</h4>
-
                 <div class="field">
                 </div>
-
             </div>
             <div class="col-lg-5">
 
                 <div class="ibox bench">
-                    <div class="ibox-content">
-                        <div class="row">
-                            <div class="col-lg-12">
-                                <div class="m-b-md">
-                                    <h2>Auswechselbank</h2>
-                                </div>
-                            </div>
+                    <div class="ibox-title">
+                        <h5>Aufstellung</h5>
+                        <div class="ibox-tools">
+                            <a class="collapse-link">
+                                <i class="fa fa-chevron-up"></i>
+                            </a>
+                            <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                                <i class="fa fa-wrench"></i>
+                            </a>
+                            <ul class="dropdown-menu dropdown-user">
+                                <li><a href="#">Config option 1</a>
+                                </li>
+                                <li><a href="#">Config option 2</a>
+                                </li>
+                            </ul>
                         </div>
+                    </div>
+                    <div class="ibox-content">
                         <div class="row m-t-sm">
                             <div class="col-lg-12">
-                                <div class="panel blank-panel">
-                                    <div class="panel-heading">
-                                        <div class="panel-options">
-                                            <ul class="nav nav-tabs">
-
-                                                {% for posName, players in positionenGroup %}
-
-                                                <li class="{{ loop.index == 1 ? 'active' : '' }}"><a href="#tab-{{ loop.index }}" data-toggle="tab">{{ posName }}</a></li>
-
-                                                {% endfor %}
-                                            </ul>
-                                        </div>
+                                <label for="ddMatchday">Spieltag</label>
+                                <form role="form" class="form-inline m-b">
+                                    <div class="form-group">
+                                        <select class="form-control" id="ddMatchday" name="matchday">
+                                            {% for i in range(1, 34) %}
+                                                <option value="{{ i }}">{{ i }}. Spieltag</option>
+                                            {% endfor %}
+                                        </select>
                                     </div>
+                                    <div class="form-group tools">
+                                        <button class="btn btn-primary btn-save" type="button"><i class="fa fa-save"></i> Speichern</button>
+                                        <button class="btn btn-outline btn-default btn-print" type="button"><i class="fa fa-print"></i></button>
+                                        <button class="btn btn-outline btn-warning btn-reset" type="button"><i class="fa fa-repeat"></i></button>
+                                    </div>
+                                </form>
+                                <label>Auswechselbank</label>
+                                <ul class="nav nav-tabs">
 
-                                    <div class="panel-body">
+                                    {% for posName, players in positionenGroup %}
 
-                                        <div class="tab-content">
+                                    <li class="{{ loop.index == 1 ? 'active' : '' }}"><a href="#tab-{{ loop.index }}" data-toggle="tab">{{ posName }}</a></li>
+
+                                    {% endfor %}
+                                </ul>
+
+                                <div class="tab-content">
 
                                             {% for posName, players in positionenGroup %}
 
@@ -159,9 +183,6 @@
 
                                         </div>
 
-                                    </div>
-
-                                </div>
                             </div>
                         </div>
                     </div>
@@ -210,13 +231,14 @@
                     CONST_MITTELFELD    = 'Mittelfeld',
                     CONST_STURM         = 'Sturm',
 
+                    that = this,
+                    restClient = null,
+
+                    endpoint = '{{ path('soc_rest_lineup_endpoint')  }}',
+                    username = '{{ user.username }}',
+
                     storage = {},
                     limits = {};
-
-                storage[CONST_TORWART] = [];
-                storage[CONST_ABWEHR] = [];
-                storage[CONST_MITTELFELD] = [];
-                storage[CONST_STURM] = [];
 
                 limits[CONST_TORWART] = 1;
                 limits[CONST_ABWEHR] = 3;
@@ -231,6 +253,16 @@
                 return {
 
                     init: function () {
+                        that = this;
+                        that.reset();
+
+                        var opts = {stripTrailingSlash: true};
+                        restClient = new $.RestClient(endpoint, opts);
+                        restClient.add(username);
+
+                    },
+                    hasSpace: function() {
+                        return _.without(SOC.LineupStorage.getFlatten(), null).length == 11;
                     },
                     add: function(position, playerId) {
                         if(isSpace(position) === false) {
@@ -282,8 +314,29 @@
                     set: function(lineup) {
                         storage = lineup;
                         return storage;
-                    }
+                    },
+                    reset: function() {
+                        storage[CONST_TORWART] = [];
+                        storage[CONST_ABWEHR] = [];
+                        storage[CONST_MITTELFELD] = [];
+                        storage[CONST_STURM] = [];
+                    },
+                    save: function() {
 
+                        var data = {
+                            matchday: SOC.BenchCtrl.getMatchday(),
+                            data: {
+                                lineup: that.get()
+                            }
+                        };
+                        return restClient[username].create(data);
+                    },
+                    read: function(num) {
+                        return restClient[username].read(num);
+                    },
+                    update: function() {
+
+                    }
                 };
 
             })();
@@ -300,7 +353,7 @@
 
                         field.on('click', '.pi-lineup .exchange a', function() {
                             var lineupItem = $(this).parent().parent().parent().parent(),
-                                playerId = lineupItem.data('ref');
+                                playerId = lineupItem.data('ref').toString();
                             SOC.LineupStorage.remove(playerId);
                             SOC.LineupCtrl.render();
                             SOC.BenchCtrl.showPlayer(playerId);
@@ -340,7 +393,13 @@
             SOC.BenchCtrl = (function () {
 
                 var bench = $('.bench'),
-                    btnsAddPlayer = $('.bench-item .exchange a', bench);
+                    btnsAddPlayer = $('.bench-item .exchange a', bench),
+                    ddMatchday = $('#ddMatchday'),
+                    btnSave = $('.btn-save', bench),
+                    btnPrint = $('.btn-print', bench),
+                    btnReset = $('.btn-reset', bench),
+                    that = this
+                ;
 
                 var getPlayerElement = function(playerId) {
                     return $("div[data-ref='" + playerId + "']", bench);
@@ -349,6 +408,8 @@
                 return {
 
                     init: function () {
+
+                        that = this;
 
                         btnsAddPlayer.on('click', function() {
 
@@ -365,12 +426,89 @@
 
                         });
 
+//                        btnSave
+//                        btnPrint
+
+                        btnReset.on('click', function() {
+                            swal({
+                                title: "Bist du sicher?",
+                                text: "Möchtest du alle Spieler vom Platz nehmen?",
+                                type: "warning",
+                                showCancelButton: true,
+                                confirmButtonColor: "#DD6B55",
+                                confirmButtonText: "Ja, bitte vom Platz nehmen!",
+                                closeOnConfirm: false
+                            }, function () {
+                                swal("Glückwunsch!", "Du hast alle Spieler vom Platz genommen.", "success");
+                                SOC.LineupStorage.reset();
+                                SOC.LineupCtrl.render();
+                                that.showAll();
+                            });
+                        });
+
+                        btnPrint.on('click', function() {
+                            var url = '{{ path('soc_lineup_print', {'matchday' : 'NUM'}) }}';
+                            url = url.replace("NUM", that.getMatchday());
+                            window.open(url);
+                        });
+
+                        btnSave.on('click', function() {
+
+                            if(SOC.LineupStorage.hasSpace() === false) {
+                                toastr.error('Du musst eine vollständige Mannschaft aufstellen.', 'Fehler');
+                                return;
+                            }
+
+                            var request = SOC.LineupStorage.save();
+                            request.done(function() {
+                                toastr.success('Deine Aufstellung für den ' + that.getMatchday() + ' . Spieltag wurde gespeichert!', 'Super');
+                            });
+                            request.fail(function() {
+                                toastr.error('Beim Speichern traten Probleme auf! Bitte Aufstellung zurücksetzen und noch einmal probieren', 'Fehler');
+                            });
+
+                        });
+
+                        ddMatchday.on('change', function() {
+
+                            var request = SOC.LineupStorage.read(that.getMatchday());
+                            request.done(function (result) {
+                                SOC.LineupStorage.reset();
+                                SOC.LineupStorage.set(result.data.lineup);
+                                var flatten = SOC.LineupStorage.getFlatten();
+                                _.each(flatten, function(id) {
+                                    that.hidePlayer(id);
+                                });
+                                SOC.LineupCtrl.render();
+                            });
+                            request.fail(function (result) {
+                                SOC.LineupStorage.reset();
+                                SOC.LineupCtrl.render();
+                                that.showAll();
+                                toastr.warning('Für diesen Spieltag liegt noch keine Aufstellung vor!', 'Achtung');
+                            });
+
+                        });
+
+                        _.delay(function() {
+                            ddMatchday.trigger('change');
+                        }, 1000);
+
+                    },
+                    getMatchday: function() {
+                        return ddMatchday.val();
                     },
                     getPlayerData: function(playerId) {
                         return getPlayerElement(playerId).data('value');
                     },
                     showPlayer: function(playerId) {
                         return getPlayerElement(playerId).show(400);
+                    },
+                    showAll: function() {
+                        var players = $(".bench-item .pi", bench);
+                        _.each(players, function(element) {
+                            $(element).show(400);
+                        });
                     },
                     hidePlayer: function(playerId) {
                         return getPlayerElement(playerId).hide(400);
@@ -384,6 +522,12 @@
 
                 return {
                     init: function () {
+
+                        $(document).ajaxStart(function() {
+                            NProgress.start();
+                        }).ajaxStop(function() {
+                            NProgress.done();
+                        });
 
                         toastr.options = {
                             "closeButton": true,
@@ -401,6 +545,7 @@
                             "hideMethod": "fadeOut"
                         };
 
+                        SOC.LineupStorage.init();
                         SOC.BenchCtrl.init();
                         SOC.LineupCtrl.init();
                     }

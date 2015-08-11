@@ -122,13 +122,21 @@ class User extends BaseUser
         return $this;
     }
 
-
     /**
      * @return Collection|Lineup[]
      */
     public function getLineups()
     {
         return $this->lineups;
+    }
+
+    /**
+     * @param $index
+     * @return Lineup
+     */
+    public function getLineup($index)
+    {
+        return $this->lineups->get($index);
     }
 
     /**
