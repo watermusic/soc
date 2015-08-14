@@ -276,7 +276,6 @@
                         return storage;
                     },
                     remove: function(playerId) {
-
                         var position = null;
                         _.each(storage, function(pos,positionName){
                             _.each(pos, function(id) {
@@ -353,7 +352,7 @@
 
                         field.on('click', '.pi-lineup .exchange a', function() {
                             var lineupItem = $(this).parent().parent().parent().parent(),
-                                playerId = lineupItem.data('ref').toString();
+                                playerId = parseInt(lineupItem.data('ref').toString(), 10);
                             SOC.LineupStorage.remove(playerId);
                             SOC.LineupCtrl.render();
                             SOC.BenchCtrl.showPlayer(playerId);
