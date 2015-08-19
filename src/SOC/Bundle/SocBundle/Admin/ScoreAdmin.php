@@ -20,7 +20,7 @@ class ScoreAdmin extends Admin
     protected function configureFormFields(FormMapper $formMapper)
     {
         $formMapper
-            ->add('matchday', 'choice', array('label' => 'Spieltag', 'choices' => range(1, 34)))
+            ->add('matchday', 'choice', array('label' => 'Spieltag', 'choices' => $this->getChoices()))
             ->add('player', 'sonata_type_model_list', array('label' => 'Teilnehmer'))
             ->add('score', 'text', array('label' => 'Punkte'))
         ;
@@ -43,6 +43,17 @@ class ScoreAdmin extends Admin
             ->add('player')
             ->add('score')
         ;
+    }
+
+    private function getChoices()
+    {
+
+        $choices = array();
+        foreach (range(1, 34) as $matchday) {
+            $choices[$matchday] = $matchday;
+        }
+
+        return $choices;
     }
 
 }
