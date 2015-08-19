@@ -12,6 +12,9 @@ use Symfony\Component\HttpFoundation\Response;
 class DefaultController extends Controller
 {
 
+    /**
+     * @return Response
+     */
     public function indexAction()
     {
         $scoreRepo = $this->getDoctrine()->getRepository('SOCSocBundle:Score');
@@ -55,7 +58,9 @@ class DefaultController extends Controller
         return $this->render('SOCSocBundle:Dashboard:index.html.twig', $view);
     }
 
-
+    /**
+     * @return JsonResponse
+     */
     public function newsAction()
     {
 
@@ -82,7 +87,9 @@ class DefaultController extends Controller
         return new JsonResponse($data);
     }
 
-
+    /**
+     * @return Response
+     */
     public function lineupAction()
     {
 
@@ -170,7 +177,29 @@ class DefaultController extends Controller
         return $this->render('SOCSocBundle:Default:lineup-print.html.twig', $view);
     }
 
+    /**
+     * @return Response
+     */
+    public function scoreAction()
+    {
+        $user = $this->get('security.token_storage')->getToken()->getUser();
+        $doctrine = $this->getDoctrine();
+        $scoreRepository = $doctrine->getRepository('SOCSocBundle:Score');
 
+        $scores = array();
+
+        $view = array(
+            'user' => $user,
+            'scores' => $scores,
+            'title' => 'Punkte',
+        );
+
+        return $this->render('SOCSocBundle:Default:score.html.twig', $view);
+    }
+
+    /**
+     * @return Response
+     */
     public function teamAction()
     {
 
