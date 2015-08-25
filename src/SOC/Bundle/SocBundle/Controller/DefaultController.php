@@ -146,7 +146,6 @@ class DefaultController extends Controller
         $users = $userRepository->findAll();
 
         $lineups = array();
-        $matchday = 1;
 
         foreach ($users as $user) {
             $lineups[$user->getUsername()] = array();
