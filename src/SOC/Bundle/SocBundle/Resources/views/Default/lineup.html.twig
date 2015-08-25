@@ -446,7 +446,7 @@
                         });
 
                         btnPrint.on('click', function() {
-                            var url = '{{ path('soc_lineup_print', {'matchday' : 'NUM'}) }}';
+                            var url = '{{ path('soc_lineup_print', {'matchday' : 'NUM', '_format' : 'pdf'}) }}';
                             url = url.replace("NUM", that.getMatchday());
                             window.open(url);
                         });

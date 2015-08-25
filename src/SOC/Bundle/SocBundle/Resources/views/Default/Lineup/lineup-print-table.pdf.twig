@@ -10,7 +10,8 @@
         <td class="col-header"><img src="{{ pdf_image('SOCSocBundle:lu-startlineup.png') }}" width="5mm" /></td>  {# Auf dem Platz #}
     </tr>
     {% for player in lineup.players %}
-    <tr class="bg-light">
+        {% set class = (loop.index <= 4) ? 'bg-light' : '' %}
+    <tr class="{{ class }}">
         <td>{{ loop.index }}</td>
         <td class="player-name">{{ player.name }}</td>
         <td></td>

@@ -130,8 +130,9 @@ class DefaultController extends Controller
         return $this->render('SOCSocBundle:Default:lineup.html.twig', $view);
     }
 
-
     /**
+     * @Pdf(stylesheet="SOCSocBundle:Default:stylesheet.pdf.twig")
+     *
      * @param int $matchday
      * @return Response
      */
@@ -145,6 +146,7 @@ class DefaultController extends Controller
         $users = $userRepository->findAll();
 
         $lineups = array();
+        $matchday = 1;
 
         foreach ($users as $user) {
             $lineups[$user->getUsername()] = array();
@@ -168,13 +170,13 @@ class DefaultController extends Controller
 
         }
 
-
         $view = array(
             'title' => 'Aufstellung ausdrucken',
             'lineups' => $lineups,
             'matchday' => $matchday,
         );
-        return $this->render('SOCSocBundle:Default:lineup-print.html.twig', $view);
+
+        return $this->render('SOCSocBundle:Default:lineup-print.pdf.twig', $view);
     }
 
     /**
