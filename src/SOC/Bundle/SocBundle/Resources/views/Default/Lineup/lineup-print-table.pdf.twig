@@ -1,0 +1,30 @@
+<table class="player">
+    <tr>
+        <td class="col-header" colspan="2"><h3 class="username">{{ username|title }}</h3></td>
+        <td class="col-header"><img src="{{ pdf_image('SOCSocBundle:lu-award.png') }}" width="5mm" /></td> {# Elf des Tages #}
+        <td class="col-header"><img src="{{ pdf_image('SOCSocBundle:lu-note.png') }}" width="5mm" /></td>  {# Note #}
+        <td class="col-header"><img src="{{ pdf_image('SOCSocBundle:lu-assist.png') }}" width="5mm" /></td>  {# Assists #}
+        <td class="col-header"><img src="{{ pdf_image('SOCSocBundle:lu-goal.png') }}"  width="5mm"/></td>  {# Tor #}
+        <td class="col-header"><img src="{{ pdf_image('SOCSocBundle:lu-goal-against.png') }}" width="5mm" /></td>  {# Gegentor #}
+        <td class="col-header"><img src="{{ pdf_image('SOCSocBundle:lu-cards.png') }}" width="5mm" /></td>  {# Rot/Gelb-Rot #}
+        <td class="col-header"><img src="{{ pdf_image('SOCSocBundle:lu-startlineup.png') }}" width="5mm" /></td>  {# Auf dem Platz #}
+    </tr>
+    {% for player in lineup.players %}
+    <tr class="bg-light">
+        <td>{{ loop.index }}</td>
+        <td class="player-name">{{ player.name }}</td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+    </tr>
+    {% endfor %}
+    {% if lineup['lineup'] is defined %}
+    <tr class="tb-footer">
+        <td colspan="9">{{ lineup['lineup'].updated|date("d.m.Y / H:i:s") }}</td>
+    </tr>
+    {% endif %}
+</table>
