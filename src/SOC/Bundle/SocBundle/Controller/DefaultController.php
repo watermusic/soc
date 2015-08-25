@@ -7,7 +7,7 @@ use SOC\Bundle\SocBundle\Entity\Team;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
-
+use Ps\PdfBundle\Annotation\Pdf;
 
 class DefaultController extends Controller
 {
@@ -238,36 +238,18 @@ class DefaultController extends Controller
     }
 
     /**
+     * @Pdf(stylesheet="SOCSocBundle:Default:stylesheet.pdf.twig")
      * @return Response
      */
     public function testAction()
     {
-
-        $doctrine = $this->getDoctrine();
-        $user = $this->get('security.token_storage')->getToken()->getUser();
-        $om = $doctrine->getManager();
-
-        $data = array(
-            "lineup" => array(1, 57, 58, 93, 228, 253, 281, 292, 297, 499, 504),
-        );
-
-        $lineup = new Lineup();
-        $lineup
-            ->setUser($user)
-            ->setMatchday(1)
-            ->setData($data)
-            ;
-
-
-        $om->persist($lineup);
-        $om->flush();
+        $format = $this->get('request')->get('_format');
 
         $view = array(
-            "slug" => '',
-            "_format" => '',
+            'name' => 'Lutz',
         );
 
-        return $this->render('SOCSocBundle:Default:test.html.twig', $view);
+        return $this->render(sprintf('SOCSocBundle:Default:test.%s.twig', $format), $view);
     }
 
 

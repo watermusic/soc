@@ -32,7 +32,8 @@
         "friendsofsymfony/rest-bundle"         : "^1.7",
         "jms/serializer-bundle"                : "~0.13",
         "sonata-project/admin-bundle": "^2.3",
-        "sonata-project/doctrine-orm-admin-bundle": "^2.3"
+        "sonata-project/doctrine-orm-admin-bundle": "^2.3",
+        "psliwa/pdf-bundle": "^1.0"
     },
     "require-dev": {
         "sensio/generator-bundle": "~2.3"
