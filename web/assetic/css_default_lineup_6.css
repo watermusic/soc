@@ -25,8 +25,15 @@
     padding: 20px;
     position: relative;
 }
+
+.pi .player-desc .position {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+}
+
 .pi .player-name {
-    font-size: 16px;
+    font-size: 15px;
     font-weight: 600;
     color: #676a6c;
     display: block;
@@ -103,7 +110,7 @@
 
 
 .pi .player-imitation.frankfurt:before {
-    background-image: url(/bundles/socsoc/img/frankfurt.svg);
+    background-image: url(../../bundles/socsoc/img/frankfurt.svg);
 }
 
 

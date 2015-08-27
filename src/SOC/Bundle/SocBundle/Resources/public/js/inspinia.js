@@ -69,50 +69,12 @@ $(document).ready(function () {
         wheelStep: 10
     });
 
-    // Open close small chat
-    $('.open-small-chat').click(function () {
-        $(this).children().toggleClass('fa-comments').toggleClass('fa-remove');
-        $('.small-chat-box').toggleClass('active');
-    });
-
-    // Initialize slimscroll for small chat
-    $('.small-chat-box .content').slimScroll({
-        height: '234px',
-        railOpacity: 0.4
-    });
-
-    // Small todo handler
-    $('.check-link').click(function () {
-        var button = $(this).find('i');
-        var label = $(this).next('span');
-        button.toggleClass('fa-check-square').toggleClass('fa-square-o');
-        label.toggleClass('todo-completed');
-        return false;
-    });
-
-    // Append config box / Only for demo purpose
-    // Uncomment on server mode to enable XHR calls
-    $.get("skin-config.html", function (data) {
-        if (!$('body').hasClass('no-skin-config'))
-            $('body').append(data);
-    });
-
     // Minimalize menu
     $('.navbar-minimalize').click(function () {
         $("body").toggleClass("mini-navbar");
         SmoothlyMenu();
 
     });
-
-    // Tooltips demo
-    $('.tooltip-demo').tooltip({
-        selector: "[data-toggle=tooltip]",
-        container: "body"
-    });
-
-    // Move modal to body
-    // Fix Bootstrap backdrop issu with animation.css
-    $('.modal').appendTo("body");
 
     // Full height of sidebar
     function fix_height() {
@@ -162,9 +124,6 @@ $(document).ready(function () {
             fix_height();
         }
     });
-
-    $("[data-toggle=popover]")
-        .popover();
 
     // Add slimscroll to element
     $('.full-height-scroll').slimscroll({
@@ -234,21 +193,6 @@ $(document).ready(function () {
 // check if browser support HTML5 local storage
 function localStorageSupport() {
     return (('localStorage' in window) && window['localStorage'] !== null)
-}
-
-// For demo purpose - animation css script
-function animationHover(element, animation) {
-    element = $(element);
-    element.hover(
-        function () {
-            element.addClass('animated ' + animation);
-        },
-        function () {
-            //wait for animation to finish before removing classes
-            window.setTimeout(function () {
-                element.removeClass('animated ' + animation);
-            }, 2000);
-        });
 }
 
 function SmoothlyMenu() {

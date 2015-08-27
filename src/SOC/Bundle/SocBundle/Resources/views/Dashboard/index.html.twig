@@ -130,8 +130,7 @@
                         num.date = moment(num.date).calendar();
                         return num;
                     });
-                    var items = {'items' : items};
-                    var rendered = Mustache.render(template, items);
+                    var rendered = Mustache.render(template, {'items' : items});
                     viewCont.html(rendered);
                 };
 
@@ -169,22 +168,14 @@
                         lineOptions,
                         lineData,
                         pptMatchdayChart,
+                        userName = '{{ user.getUsername()|title }}',
+                        chartData = {{ ppd.data|raw }},
                         matchdays = {{ ppd.labels|raw }};
 
                 ctx = document.getElementById("pptMatchday").getContext("2d");
 
                 lineOptions = {
-                    scaleShowGridLines: true,
-                    scaleGridLineColor: "rgba(0,0,0,.05)",
-                    scaleGridLineWidth: 1,
-                    bezierCurve: true,
-                    bezierCurveTension: 0.4,
-                    pointDot: true,
-                    pointDotRadius: 4,
-                    pointDotStrokeWidth: 1,
-                    pointHitDetectionRadius: 20,
-                    datasetStroke: true,
-                    datasetStrokeWidth: 2,
+                    scaleBeginAtZero: true,
                     datasetFill: true,
                     responsive: true
                 };
@@ -193,18 +184,18 @@
                     labels: matchdays,
                     datasets: [
                         {
-                            label: "{{ user.getUsername()|title }}",
+                            label: userName,
                             fillColor: "rgba(220,220,220,0.5)",
                             strokeColor: "rgba(220,220,220,1)",
                             pointColor: "rgba(220,220,220,1)",
                             pointStrokeColor: "#fff",
                             pointHighlightFill: "#fff",
                             pointHighlightStroke: "rgba(220,220,220,1)",
-                            data: {{ ppd.data|raw }}
+                            data: chartData[userName]
                         }
                     ]
                 };
-                pptMatchdayChart = new Chart(ctx).Bar(lineData, lineOptions);
+                pptMatchdayChart = new Chart(ctx).Line(lineData, lineOptions);
 
                 return {
 
