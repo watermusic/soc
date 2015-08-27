@@ -64,7 +64,7 @@
                     <h5>Punkte pro Spieltag</h5>
                 </div>
                 <div class="ibox-content">
-                    <canvas id="pptMatchday" width="400" height="400"></canvas>
+                    <canvas id="pptMatchday" width="400" height="280"></canvas>
                 </div>
             </div>
             <div class="ibox float-e-margins">
@@ -195,7 +195,7 @@
                         }
                     ]
                 };
-                pptMatchdayChart = new Chart(ctx).Line(lineData, lineOptions);
+                pptMatchdayChart = new Chart(ctx).Bar(lineData, lineOptions);
 
                 return {
 
