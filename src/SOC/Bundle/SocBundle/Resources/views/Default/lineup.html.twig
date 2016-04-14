@@ -131,6 +131,7 @@
                                         <button class="btn btn-primary btn-save" type="button"><i class="fa fa-save"></i> Speichern</button>
                                         <button class="btn btn-outline btn-default btn-print" type="button"><i class="fa fa-print"></i></button>
                                         <button class="btn btn-outline btn-warning btn-reset" type="button"><i class="fa fa-repeat"></i></button>
+                                        <a href="{{ path('soc_lineup_print', {'_format': 'pdf', 'matchday': '1'}) }}" class="btn btn-outline btn-default btn-print"><i class="fa fa-print"></i></a>
                                     </div>
                                 </form>
                                 <label>Auswechselbank</label>
@@ -352,7 +353,7 @@
 
                         field.on('click', '.pi-lineup .exchange a', function() {
                             var lineupItem = $(this).parent().parent().parent().parent(),
-                                playerId = parseInt(lineupItem.data('ref').toString(), 10);
+                                playerId = lineupItem.data('ref');
                             SOC.LineupStorage.remove(playerId);
                             SOC.LineupCtrl.render();
                             SOC.BenchCtrl.showPlayer(playerId);
@@ -472,6 +473,11 @@
 
                             var request = SOC.LineupStorage.read(that.getMatchday());
                             request.done(function (result) {
+
+                                _.each(result.data.lineup, function(v,k) {
+                                    result.data.lineup[k] = _.map(v, function(num) { return parseInt(num, 10) });
+                                });
+
                                 SOC.LineupStorage.reset();
                                 SOC.LineupStorage.set(result.data.lineup);
                                 var flatten = SOC.LineupStorage.getFlatten();
